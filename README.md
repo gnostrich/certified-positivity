@@ -12,6 +12,13 @@ with a verified coverage theorem. Two preprints in `papers/`:
    positive-definiteness certificate one site at a time: every step a theorem,
    honest halt (explicit counterexample), certifier = instrument.
 
+## Exact claims
+
+Prose is not the claim — [STATEMENTS.md](STATEMENTS.md) lists the verbatim
+formal statements of every headline result, definitions first, plus an
+explicit list of what is not claimed. Read that file to evaluate this
+repository.
+
 ## Provenance (read first)
 
 The `.lean` files are per-batch deliverables of an automated theorem prover
@@ -42,6 +49,7 @@ the primary evidence. Scrutiny welcome — issues/PRs open.
 - `lean/` — the development (75 files): D/E/F/G/K/T/GW/V5 = paper 1 tiers;
   `R_*`, `R5*` = paper 2 (frontier object, coverage).
 - `papers/` — the two preprint PDFs.
+- `STATEMENTS.md` — verbatim formal statements of the headline results.
 - `TIER_R_FINAL.md` — closing ledger of the frontier (R) tier.
 
 Key entry points: `V5_1.lean` (the kernel), `V5_5.lean` (true-kernel window,
