@@ -17,9 +17,13 @@ with a verified coverage theorem. Two preprints in `papers/`:
 The `.lean` files are per-batch deliverables of an automated theorem prover
 (Aristotle, by Harmonic), produced from human-written specifications and
 human-audited statement-by-statement. Axiom status of headline theorems:
-`propext`, `Classical.choice`, `Quot.sound`. Two files (`E2.lean`,
-`G4.lean`) use `native_decide` in numeric bound lemmas; no other file uses
-compiler-trusting tactics (`G1.lean` documents its avoidance explicitly).
+`propext`, `Classical.choice`, `Quot.sound`. `native_decide` appears in two
+files, both in numeric bound lemmas: `E2.lean` (six uses) and `G4.lean`
+(one). `G5`/`G6` import `G4` and therefore inherit its single
+`native_decide` use (and, since `G4` imports `E2`, `E2`'s uses as well),
+while the V5 and R tiers — all true-kernel certificates — are
+`native_decide`-free, including transitively. `G1.lean` documents its
+avoidance explicitly.
 Three documented `sorry` sites (`D4.lean`, `F3.lean`, `F3R.lean`), one shared
 cause (unitary diagonalizability, absent from Mathlib). The prover refuted two
 of the author's pre-registered conjectures; both are reported in the papers as
@@ -32,6 +36,7 @@ the primary evidence. Scrutiny welcome — issues/PRs open.
 - `lean/` — the development (75 files): D/E/F/G/K/T/GW/V5 = paper 1 tiers;
   `R_*`, `R5*` = paper 2 (frontier object, coverage).
 - `papers/` — the two preprint PDFs.
+- `TIER_R_FINAL.md` — closing ledger of the frontier (R) tier.
 
 Key entry points: `V5_1.lean` (the kernel), `V5_5.lean` (true-kernel window,
 margin ≥ 0.005), `R_A2/R_A3_A4.lean` (GramState / expand / honest halt),
