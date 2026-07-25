@@ -15,8 +15,13 @@ with a verified coverage theorem. Two preprints in `papers/`:
 ## Provenance (read first)
 
 The `.lean` files are per-batch deliverables of an automated theorem prover
-(Aristotle, by Harmonic), produced from human-written specifications and
-human-audited statement-by-statement. Axiom status of headline theorems:
+(Aristotle, by Harmonic). The author set the problems and made the
+decisions; the specifications were developed in collaboration with an AI
+assistant (Claude, Anthropic), and the statement-level audit of prover
+output against those specifications was likewise AI-assisted. No human has
+reviewed the proof terms line by line; the trust model is Lean's kernel,
+with per-theorem axiom status recorded here and in the papers.
+Axiom status of headline theorems:
 `propext`, `Classical.choice`, `Quot.sound`. `native_decide` appears in two
 files, both in numeric bound lemmas: `E2.lean` (six uses) and `G4.lean`
 (one). `G5`/`G6` import `G4` and therefore inherit its single
@@ -25,9 +30,10 @@ while the V5 and R tiers — all true-kernel certificates — are
 `native_decide`-free, including transitively. `G1.lean` documents its
 avoidance explicitly.
 Three documented `sorry` sites (`D4.lean`, `F3.lean`, `F3R.lean`), one shared
-cause (unitary diagonalizability, absent from Mathlib). The prover refuted two
-of the author's pre-registered conjectures; both are reported in the papers as
-results. A consolidated all-files `lake build` has not been independently
+cause (unitary diagonalizability, absent from Mathlib). The workflow included
+pre-registered hypotheses; the prover refuted two of them
+(`PsiArch_not_convex` in `R5.lean`; the newest-prime-binds refutation in
+`G3.lean`), and both refutations are reported in the papers as results. A consolidated all-files `lake build` has not been independently
 re-run outside the prover's environment; the per-batch compilation reports are
 the primary evidence. Scrutiny welcome — issues/PRs open.
 
