@@ -1,1 +1,4 @@
 /.lake/
+# local build shim: verbatim copies of lean/*.lean placed where the
+# lakefile globs expect them (see README "Toolchain and build status")
+/RequestProject/
