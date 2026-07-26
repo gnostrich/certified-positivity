@@ -17,7 +17,8 @@ with a verified coverage theorem. Two preprints in `papers/`:
 Prose is not the claim — [STATEMENTS.md](STATEMENTS.md) lists the verbatim
 formal statements of every headline result, definitions first, plus an
 explicit list of what is not claimed. Read that file to evaluate this
-repository.
+repository. [`Challenge.lean`](Challenge.lean) — the same claims as a single
+Mathlib-only sorried file, for mechanical comparison against the repo.
 
 ## Provenance (read first)
 
@@ -50,6 +51,7 @@ the primary evidence. Scrutiny welcome — issues/PRs open.
   `R_*`, `R5*` = paper 2 (frontier object, coverage).
 - `papers/` — the two preprint PDFs.
 - `STATEMENTS.md` — verbatim formal statements of the headline results.
+- `Challenge.lean` — the headline statements as one Mathlib-only sorried file.
 - `TIER_R_FINAL.md` — closing ledger of the frontier (R) tier.
 
 Key entry points: `V5_1.lean` (the kernel), `V5_5.lean` (true-kernel window,
