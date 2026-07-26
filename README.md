@@ -41,9 +41,17 @@ Three documented `sorry` sites (`D4.lean`, `F3.lean`, `F3R.lean`), one shared
 cause (unitary diagonalizability, absent from Mathlib). The workflow included
 pre-registered hypotheses; the prover refuted two of them
 (`PsiArch_not_convex` in `R5.lean`; the newest-prime-binds refutation in
-`G3.lean`), and both refutations are reported in the papers as results. A consolidated all-files `lake build` has not been independently
-re-run outside the prover's environment; the per-batch compilation reports are
-the primary evidence. Scrutiny welcome — issues/PRs open.
+`G3.lean`), and both refutations are reported in the papers as results. The consolidated all-files `lake build` has now been independently
+re-run outside the prover's environment: on 2026-07-26, in a Claude Code
+cloud session (session link in the trailer of the commit introducing this
+sentence), all 75 modules were built with Lean 4 `v4.28.0` / Mathlib
+`v4.28.0` (modules placed under `RequestProject/` per the lakefile globs) —
+zero errors, exactly the three disclosed `sorry` warnings (`D4`, `F3`,
+`F3R`), and `#print axioms` on the headline theorems matching the axiom
+disclosures above; `G5_c_prime` additionally reports `Lean.ofReduceBool` and
+`Lean.trustCompiler` (the `native_decide` axioms), exactly as disclosed. The
+per-batch compilation reports remain the original provenance record.
+Scrutiny welcome — issues/PRs open.
 
 ## Layout
 
@@ -65,9 +73,9 @@ margin ≥ 0.005), `R_A2/R_A3_A4.lean` (GramState / expand / honest halt),
 the environment the prover batches compiled against. The files in `lean/`
 import each other under the `RequestProject.*` namespace (the prover
 project's name); they are archived here as flat per-batch modules rather
-than wired into a single lake target. Reproducing a consolidated build
-(placing the modules under `RequestProject/` and running `lake build`) is
-stated follow-up work; see the provenance note above.
+than wired into a single lake target. A consolidated build — placing the
+modules under `RequestProject/` and running `lake build` — has been
+reproduced independently; see the provenance note above.
 
 ## License
 
