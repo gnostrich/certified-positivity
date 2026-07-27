@@ -1,5 +1,7 @@
 # Certified Positivity — Lean 4 development
 
+[![consolidated build](https://github.com/gnostrich/certified-positivity/actions/workflows/build.yml/badge.svg)](https://github.com/gnostrich/certified-positivity/actions/workflows/build.yml)
+
 Machine-checked positivity results for truncated Weil-type quadratic forms,
 and a self-expanding positive-definiteness certificate ("certified frontier")
 with a verified coverage theorem. Two preprints in `papers/`:
