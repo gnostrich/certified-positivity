@@ -22,6 +22,17 @@ explicit list of what is not claimed. Read that file to evaluate this
 repository. [`Challenge.lean`](Challenge.lean) — the same claims as a single
 Mathlib-only sorried file, for mechanical comparison against the repo.
 
+Comparator ([leanprover/comparator](https://github.com/leanprover/comparator),
+pinned) accepts this repository against `Challenge.lean` for the 16 headline
+theorems whose permitted axioms are exactly `propext`, `Quot.sound`,
+`Classical.choice` — statement match, byte-identical definition graphs, axiom
+allowlist, and Lean-kernel replay all pass (config, bridge `Solution.lean`,
+and pins in-repo; re-run in CI). The two `native_decide` G-tier statements
+(`G3_cert_neg`, `G5_c_prime`) pass comparator's statement-match and
+axiom-allowlist stages under the extended allowlist, but its final
+kernel-replay stage cannot replay `native_decide` proofs (exports do not carry
+compiled auxiliaries), so the comparator-certified set is the strict 16.
+
 ## Provenance (read first)
 
 The `.lean` files are per-batch deliverables of an automated theorem prover

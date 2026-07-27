@@ -1,0 +1,16 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "Challenge.G3_cert_neg",
+    "Challenge.G5_c_prime"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice",
+    "Lean.ofReduceBool",
+    "Lean.trustCompiler"
+  ],
+  "enable_nanoda": false
+}
