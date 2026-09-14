@@ -1,4 +1,5 @@
 import Mathlib
+import RequestProject.F3R
 
 open scoped BigOperators Matrix ComplexOrder
 open Complex
@@ -12,11 +13,11 @@ Let `T` be an `(r+1) × (r+1)` Hermitian PSD Toeplitz matrix `T j k = c (j−k)`
 `r × r` block is positive definite but which is itself singular.  Let `u` be a nonzero null
 vector and `P(z) = ∑ k, u k · z^k`.  Then all roots of `P` lie on the unit circle and are simple.
 
-NOTE: This is the classical hard Carathéodory step; its proof requires the Fejér–Riesz /
-positivity-on-the-circle structure of PSD Toeplitz extensions, which is not available in
-Mathlib.  The statement is recorded faithfully and its proof is left open (`sorry`), as the
-batch instructions explicitly permit for this item.  F1 and F2 already lock the atomicity
-pipeline conditionally.
+NOTE: This is the classical hard Carathéodory step.  It is now proved: the data here is
+literally the same as in `F3R` (same Toeplitz matrix, same leading block, same annihilator
+polynomial), and `F3R.F3R_roots` establishes both halves — unimodularity via the shift identity
+and simplicity via the same identity applied one level deeper.  So `F3_roots` is obtained by
+transferring `F3R.F3R_roots`.
 -/
 
 variable {r : ℕ}
@@ -41,7 +42,7 @@ theorem F3_roots (c : ℤ → ℂ)
     (hsing : (toeplitz (r := r) c).det = 0)
     (u : Fin (r + 1) → ℂ) (hu : u ≠ 0)
     (hnull : (toeplitz (r := r) c).mulVec u = 0) :
-    (∀ z ∈ (annihilator u).roots, ‖z‖ = 1) ∧ (annihilator u).roots.Nodup := by
-  sorry
+    (∀ z ∈ (annihilator u).roots, ‖z‖ = 1) ∧ (annihilator u).roots.Nodup :=
+  F3R.F3R_roots c hHerm hPSD hlead hsing u hu hnull
 
 end F3

@@ -58,29 +58,49 @@ always `native_decide`-free — only mentions `native_decide` in its module
 docstring, describing what it avoids. As a consequence, `G3_cert_neg` and
 `G5_c_prime` now depend only on `propext`, `Classical.choice`, `Quot.sound`
 and have been restored to the comparator surface (see above).
-Three documented `sorry` sites (`D4.lean`, `F3.lean`, `F3R.lean`), one shared
-cause (unitary diagonalizability, absent from Mathlib). The workflow included
+The three previously documented `sorry` sites (`D4.lean`, `F3.lean`,
+`F3R.lean`), whose shared cause was unitary diagonalizability being absent
+from Mathlib, were closed on 2026-09-14 by the Aristotle prover in a second
+API job, without changing any of the three statements: `F3R.F3R_simple`
+(simplicity of the annihilator's roots) by a deeper use of the file's own
+Toeplitz shift identity, avoiding unitary diagonalization entirely;
+`F3.F3_roots` by transfer from the now-complete `F3R.F3R_roots` (`F3.lean`
+now imports `F3R`); and `D4.D4_caratheodory` (the full Carathéodory–Fejér
+theorem) via least-singular-block selection, `F3R`, window propagation of the
+null relation, and Vandermonde interpolation, with general-purpose lemmas
+factored into the new module `RequestProject/D4Aux.lean`. The development is
+now sorry-free (and, as above, `native_decide`-free) across all 76 modules,
+with every declaration depending only on `propext`, `Classical.choice` and
+`Quot.sound`; the change was verified by a full rebuild, `#print axioms` on
+the newly closed theorems, and comparator replay (Lean-kernel and NanoDa)
+against `Challenge.lean`/`comparator.json`. The 18 comparator theorems are
+unchanged by this. The workflow included
 pre-registered hypotheses; the prover refuted two of them
 (`PsiArch_not_convex` in `R5.lean`; the newest-prime-binds refutation in
 `G3.lean`), and both refutations are reported in the papers as results. The consolidated all-files `lake build` has now been independently
 re-run outside the prover's environment: on 2026-07-26, in a Claude Code
 cloud session (session link in the trailer of the commit introducing this
-sentence), all 75 modules were built with Lean 4 `v4.28.0` / Mathlib
-`v4.28.0` (modules placed under `RequestProject/` per the lakefile globs) —
-zero errors, exactly the three disclosed `sorry` warnings (`D4`, `F3`,
-`F3R`), and `#print axioms` on the headline theorems matching the axiom
+sentence), all 75 modules then present were built with Lean 4 `v4.28.0` /
+Mathlib `v4.28.0` (modules placed under `RequestProject/` per the lakefile
+globs) — zero errors, exactly the three disclosed `sorry` warnings (`D4`,
+`F3`, `F3R`), and `#print axioms` on the headline theorems matching the axiom
 disclosures above; at that time, `G5_c_prime` additionally reported
 `Lean.ofReduceBool` and `Lean.trustCompiler` (the `native_decide` axioms), as
 disclosed then. That no longer holds: since the 2026-09-14 re-proof of the
 `E2`/`G4` bound lemmas described above, `G5_c_prime` (and `G3_cert_neg`) are
-on the 3-axiom baseline like everything else. The
+on the 3-axiom baseline like everything else. The three disclosed `sorry`
+warnings from that 2026-07-26 build no longer hold either: as of 2026-09-14
+(see above) the consolidated build emits no `sorry` warnings at all. The
 per-batch compilation reports remain the original provenance record.
 Scrutiny welcome — issues/PRs open.
 
 ## Layout
 
-- `RequestProject/` — the development (75 files): D/E/F/G/K/T/GW/V5 = paper 1
-  tiers; `R_*`, `R5*` = paper 2 (frontier object, coverage).
+- `RequestProject/` — the development (76 files): D/E/F/G/K/T/GW/V5 = paper 1
+  tiers; `R_*`, `R5*` = paper 2 (frontier object, coverage); `D4Aux.lean` is
+  the general-purpose supporting module for `D4.D4_caratheodory` (rank of
+  principal submatrices, Vandermonde-atom rank bound, null-vector window
+  propagation, and Vandermonde interpolation).
 - `papers/` — the two preprint PDFs.
 - `STATEMENTS.md` — verbatim formal statements of the headline results.
 - `Challenge.lean` — the headline statements as one Mathlib-only sorried file.

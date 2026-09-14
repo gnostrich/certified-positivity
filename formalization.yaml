@@ -203,19 +203,28 @@ status:
   scope: >-
     Formalized: exactly the eighteen statements listed in comparator.json and
     stated in Challenge.lean, with sorry-free proofs in RequestProject/, all
-    inside the wider 75-module development in that directory (253 theorem
-    and lemma declarations). These are
+    inside the wider 76-module development in that directory. These are
     positivity and non-positivity certificates about explicit finite objects at
     explicit rationals.
 
-    Sorry sites. The proof development contains exactly three documented sorry
-    sites, in RequestProject/D4.lean, RequestProject/F3.lean and
-    RequestProject/F3R.lean, with one shared cause: unitary diagonalizability
-    of a Hermitian matrix is not available in Mathlib in the form required.
-    None of the eighteen compared theorems depends on any of them, directly or
-    transitively. There are no sorries in any definition. Challenge.lean's own
-    eighteen deliberate sorries are the comparator placeholders and are not
-    counted here.
+    Sorry sites. The development is sorry-free. It formerly contained exactly
+    three documented sorry sites, in RequestProject/D4.lean,
+    RequestProject/F3.lean and RequestProject/F3R.lean, with one shared cause:
+    unitary diagonalizability of a Hermitian matrix is not available in
+    Mathlib in the form required. On 2026-09-14, in a second Aristotle
+    (Harmonic) API job, all three were closed without changing their
+    statements: F3R.F3R_simple (simplicity of the annihilator's roots) by a
+    deeper use of the file's own Toeplitz shift identity, avoiding unitary
+    diagonalization entirely; F3.F3_roots by transfer from the now-complete
+    F3R.F3R_roots (F3.lean now imports F3R); and D4.D4_caratheodory, the full
+    Carathéodory-Fejér theorem, via least-singular-block selection, F3R,
+    window propagation of the null relation, and Vandermonde interpolation,
+    with general-purpose lemmas factored into the new module
+    RequestProject/D4Aux.lean. None of the eighteen compared theorems
+    depended on any of them, directly or transitively, either before or after
+    this change. There are no sorries in any definition, and none anywhere in
+    the development now. Challenge.lean's own eighteen deliberate sorries are
+    the comparator placeholders and are not counted here.
 
     native_decide. native_decide was formerly used in two files of the wider
     development, both in numeric bound lemmas: RequestProject/E2.lean (six
@@ -260,7 +269,7 @@ status:
     is sound but not complete, and no interval-arithmetic engine beyond it was
     added. Proof terms were audited at statement level only; see the review
     block.
-  sorry_count: 3
+  sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
   main_results:
@@ -330,7 +339,21 @@ automation:
         (E2_log3, E2_log5, E2_log7 in RequestProject/E2.lean and G4_log11 in
         RequestProject/G4.lean), replacing them with kernel-checkable proofs
         via Mathlib's Mercator-series tail bound, making the whole development
-        native_decide-free.
+        native_decide-free. In a second API job the same day, Aristotle
+        closed the three previously open sorry declarations without changing
+        their statements: F3R.F3R_simple (RequestProject/F3R.lean), by a
+        deeper use of the file's Toeplitz shift identity, avoiding unitary
+        diagonalization, with new supporting lemmas in the same file;
+        F3.F3_roots (RequestProject/F3.lean), obtained by transfer from the
+        completed F3R.F3R_roots, with F3.lean now importing F3R; and
+        D4.D4_caratheodory (RequestProject/D4.lean), the full
+        Carathéodory-Fejér theorem, via least-singular-block selection, F3R,
+        window propagation of the null relation, and Vandermonde
+        interpolation, with general-purpose lemmas in the new module
+        RequestProject/D4Aux.lean. The development is now sorry-free as well
+        as native_decide-free, across all 76 modules, with every declaration
+        depending only on propext, Classical.choice and Quot.sound; the
+        eighteen compared theorems are unchanged.
       cost:
         wall_time: "not tracked"
         spend_usd: "not tracked"
@@ -394,11 +417,14 @@ automation:
     (Harmonic). No human has reviewed the proof terms line by line. The trust
     model is Lean's kernel plus the axiom audit: the consolidated all-files
     lake build was re-run outside the prover's environment on 2026-07-26 on the
-    pinned toolchain (Lean 4 v4.28.0, Mathlib v4.28.0), building all 75 modules
-    with zero errors, exactly the three disclosed sorry warnings, and
-    #print axioms output on the headline theorems matching the disclosures
-    here; it is re-run in CI. The per-batch compilation reports remain the
-    original provenance record.
+    pinned toolchain (Lean 4 v4.28.0, Mathlib v4.28.0), building all 75
+    modules then present with zero errors, exactly the three disclosed sorry
+    warnings, and #print axioms output on the headline theorems matching the
+    disclosures here. On 2026-09-14 those three sorry warnings were closed
+    (see automation.methods.autonomous and status.scope above); the
+    consolidated build, now covering 76 modules, emits none, and this is
+    re-run in CI. The per-batch compilation reports remain the original
+    provenance record.
 
 fidelity:
   divergences: >-
@@ -443,8 +469,9 @@ review:
   notes: >-
     What was checked mechanically: the consolidated all-files lake build on the
     pinned toolchain, re-run independently of the prover's environment and
-    re-run in CI, with exactly the three disclosed sorry warnings and no
-    errors; #print axioms on the headline theorems; and leanprover/comparator
+    re-run in CI, with no sorry warnings and no errors (as of the 2026-09-14
+    closure of the three previously disclosed sorry sites; see status.scope
+    above); #print axioms on the headline theorems; and leanprover/comparator
     (pinned) against Challenge.lean for the eighteen theorems in
     comparator.json, covering statement match, byte-identical definition
     graphs, the axiom allowlist (propext, Quot.sound, Classical.choice only)

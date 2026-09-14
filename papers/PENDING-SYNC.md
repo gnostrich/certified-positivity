@@ -58,6 +58,23 @@ corrected in the canonical versions before arXiv submission.
    the three-site coverage theorem's mesh condition forces the unique coarse
    grid `(1/5, 2/5, 3/5)`, so it is not a continuum of movable three-site
    configurations.
+7. **Both PDFs**, in Table 1 and in the surrounding trust-table prose,
+   describe three open `sorry` sites (`D4`, `F3`, `F3R`) attributed to
+   unitary diagonalizability being absent from Mathlib. This is no longer
+   true: as of 2026-09-14, all three are proved. In a second Aristotle
+   (Harmonic) API job that day, the prover closed all three without changing
+   any of their statements — `F3R.F3R_simple` (simplicity of the
+   annihilator's roots) by a deeper use of the file's own Toeplitz shift
+   identity, avoiding unitary diagonalization entirely; `F3.F3_roots` by
+   transfer from the now-complete `F3R.F3R_roots` (`F3.lean` now imports
+   `F3R`); and `D4.D4_caratheodory` (the full Carathéodory–Fejér theorem) via
+   least-singular-block selection, `F3R`, window propagation of the null
+   relation, and Vandermonde interpolation, with general-purpose lemmas
+   factored into the new module `RequestProject/D4Aux.lean`. The development
+   is now sorry-free (and remains `native_decide`-free) across all 76
+   modules; the eighteen comparator theorems are unchanged. The canonical
+   versions should update Table 1 and the trust-table prose to drop the
+   three-sorry-site caveat and record the closure.
 
 None of the above touches the eighteen comparator-certified theorems. Sixteen
 of them are in the `V5` and `R` tiers and were already `native_decide`-free
