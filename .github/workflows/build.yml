@@ -21,9 +21,6 @@ jobs:
       - name: Get Mathlib olean cache
         run: lake exe cache get
 
-      - name: Place modules where the lakefile globs expect them
-        run: mkdir -p RequestProject && cp lean/*.lean RequestProject/
-
       - name: Build all modules
         shell: bash
         run: |
@@ -90,8 +87,5 @@ jobs:
       - name: Get Mathlib olean cache
         run: lake exe cache get
 
-      - name: Place modules where the lakefile globs expect them
-        run: mkdir -p RequestProject && cp lean/*.lean RequestProject/
-
-      - name: Run comparator (strict 16, classical axioms only)
-        run: lake env comparator config-comparator-strict.json
+      - name: Run comparator (Palomar submission surface, classical axioms only)
+        run: lake env comparator comparator.json
