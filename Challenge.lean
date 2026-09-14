@@ -14,7 +14,7 @@ exactly these claims and not something subtly different.
 Toolchain: `leanprover/lean4:v4.28.0`, Mathlib `v4.28.0` (as pinned by
 `lean-toolchain` / `lakefile.toml` / `lake-manifest.json` at the repo root).
 Checked: this file elaborates with no errors under that toolchain
-(`lake env lean Challenge.lean`), emitting exactly the 16 expected
+(`lake env lean Challenge.lean`), emitting exactly the 18 expected
 `declaration uses 'sorry'` warnings.
 
 Because all definitions live here in the single namespace `Challenge`, the
@@ -24,13 +24,13 @@ applied to every inlined definition and statement. Individual deviations
 beyond that are marked `-- deviates from repo statement:` at the theorem.
 
 This file makes **no axiom claim**: every proof below is `sorry`, so
-`#print axioms` on this file is meaningless by design. Two G-tier statements,
-`G3_cert_neg` and `G5_c_prime`, are deliberately not included here: in the
-repository their proofs inherit `native_decide` (`Lean.ofReduceBool`)
-exposure, which cannot be kernel-replayed, so they are excluded from the
-comparator surface. They remain documented in STATEMENTS.md and the README.
-Axiom status of the real proofs is a property of the repository modules, not
-of this file.
+`#print axioms` on this file is meaningless by design. Axiom status of the
+real proofs is a property of the repository modules, not of this file. All
+eighteen statements below are proved in the repository on `propext`,
+`Classical.choice`, `Quot.sound` only: the numeric bound lemmas in `E2.lean`
+and `G4.lean` that once used `native_decide` were re-proved on 2026-09-14
+with kernel-checkable Mercator-series bounds, so the whole development is
+`native_decide`-free.
 -/
 
 open scoped BigOperators Matrix
@@ -179,6 +179,12 @@ def CoveragePrimeFree (δ μ : ℝ) : Prop :=
     IsPDq (fun i j => G (t i) (t j)) ∧
       μ ≤ lambdaMin (fun i j => G (t i) (t j))
 
+/-! ## Definitions — from `RequestProject/G3.lean` (namespace `G3`) -/
+
+/-- The third-window `4 × 4` form. -/
+def U (κ u v w : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![κ, u, v, w; u, κ, u, v; v, u, κ, u; w, v, u, κ]
+
 /-! ## Headline theorems, stated with `sorry`
 Sorry-free proofs live in the named repository modules. -/
 
@@ -289,5 +295,16 @@ theorem frontier_covers_band_final :
       (∀ i j, i ≠ j → (1 / 5 : ℝ) ≤ |t i - t j|) →
       ∃ G : GramState,
         G.dim = 3 ∧ HEq G.M (fun i j => Challenge.G (t i) (t j)) := by sorry
+
+/-- From `RequestProject/G3.lean` (`G3.G3_cert_neg`).
+Positivity genuinely fails at `κ₁ = 0.789` for the true atoms. -/
+theorem G3_cert_neg :
+    ¬ IsPDq (U 0.789 (Real.log 2 / Real.sqrt 2) (Real.log 3 / Real.sqrt 3)
+      (Real.log 5 / Real.sqrt 5)) := by sorry
+
+/-- From `RequestProject/G5.lean` (`G5.G5_c_prime`).
+(c, prime form) For every prime `p ≠ 7`, `(log p)/√p < (log 7)/√7`. -/
+theorem G5_c_prime (p : ℕ) (hp : p.Prime) (hp7 : p ≠ 7) :
+    Real.log p / Real.sqrt p < Real.log 7 / Real.sqrt 7 := by sorry
 
 end Challenge

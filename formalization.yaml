@@ -35,7 +35,10 @@ project:
     showing that the diagonal-dominance margin of its last row is zero. Fifth,
     two pre-registered hypotheses refuted by machine and reported as results:
     the archimedean profile is not convex on [0, 2/5], and no positive mesh
-    and margin can cover every admissible grid.
+    and margin can cover every admissible grid. Sixth, two horizon-window
+    results at the true prime atoms: non-positivity of the third window's
+    4 by 4 Toeplitz-like form at kappa_1 = 0.789, and the global maximum of
+    log p over sqrt p at p = 7 among all primes.
 
     The interest is that the surrounding literature (Connes and van Suijlekom;
     Connes, Consani and Moscovici; Suzuki) works either in floating point or at
@@ -161,7 +164,7 @@ sources:
       the structural skeleton of the wider development (finite
       Osterwalder-Schrader reconstruction, the finite KMS identity, the
       Caratheodory-Toeplitz ladder). Context only: none of its results is
-      formalized, and none of the sixteen compared theorems is one of theirs.
+      formalized, and none of the eighteen compared theorems is one of theirs.
   - title: 'Sur les "formules explicites" de la theorie des nombres premiers'
     authors:
       - "Andre Weil"
@@ -198,9 +201,10 @@ related_formalizations: []
 
 status:
   scope: >-
-    Formalized: exactly the sixteen statements listed in comparator.json and
+    Formalized: exactly the eighteen statements listed in comparator.json and
     stated in Challenge.lean, with sorry-free proofs in RequestProject/, all
-    inside the wider 137-theorem development in that directory. These are
+    inside the wider 75-module development in that directory (253 theorem
+    and lemma declarations). These are
     positivity and non-positivity certificates about explicit finite objects at
     explicit rationals.
 
@@ -208,24 +212,31 @@ status:
     sites, in RequestProject/D4.lean, RequestProject/F3.lean and
     RequestProject/F3R.lean, with one shared cause: unitary diagonalizability
     of a Hermitian matrix is not available in Mathlib in the form required.
-    None of the sixteen compared theorems depends on any of them, directly or
+    None of the eighteen compared theorems depends on any of them, directly or
     transitively. There are no sorries in any definition. Challenge.lean's own
-    sixteen deliberate sorries are the comparator placeholders and are not
+    eighteen deliberate sorries are the comparator placeholders and are not
     counted here.
 
-    native_decide. native_decide appears in two files of the wider
+    native_decide. native_decide was formerly used in two files of the wider
     development, both in numeric bound lemmas: RequestProject/E2.lean (six
-    uses) and RequestProject/G4.lean (one use). G5 and G6 import G4, and G4
-    imports E2, so those tiers inherit the Lean.ofReduceBool and
-    Lean.trustCompiler axioms. The two G-tier statements G3_cert_neg and
-    G5_c_prime are therefore excluded from the compared set: they are stated
-    neither in Challenge.lean nor in comparator.json, because comparator's
-    kernel-replay stage cannot replay native_decide proofs and Palomar does not
-    permit Lean.ofReduceBool. They remain documented in STATEMENTS.md and the
-    README. The V5 tier and the whole R tier, that is every true-kernel
-    certificate and every frontier and coverage result, are native_decide-free
-    including transitively; RequestProject/G1.lean documents its avoidance of
-    native_decide explicitly.
+    uses, underlying E2_log3, E2_log5 and E2_log7) and RequestProject/G4.lean
+    (one use, underlying G4_log11). G5, G6 and G3_cert_neg depended on it
+    transitively via G4 importing E2, and via the E3/G2 atoms G3_cert_neg
+    cites. On 2026-09-14 those four bound lemmas were re-proved by the
+    Aristotle prover using Mathlib's Real.abs_log_sub_add_sum_range_le
+    Mercator-series tail bound together with Real.log_two_gt_d9 and
+    Real.log_two_lt_d9, with all arithmetic discharged by norm_num/linarith;
+    no statement changed. The whole development is now native_decide-free,
+    verified by a full rebuild, #print axioms on the affected theorems, and
+    comparator replay (Lean-kernel and NanoDa) against the updated
+    Challenge.lean and comparator.json. As a consequence the two G-tier
+    statements G3_cert_neg and G5_c_prime now depend only on propext,
+    Classical.choice and Quot.sound like every other compared theorem, and
+    have been restored to Challenge.lean, Solution.lean and comparator.json:
+    the compared set is now eighteen theorems, the previous sixteen plus these
+    two. RequestProject/G1.lean, which was always native_decide-free, remains
+    unused by the rest of the development and only mentions native_decide in
+    its module docstring, describing what it avoids.
 
     Not claimed. No statement here is about the Riemann Hypothesis and none
     implies progress on it. There is no fine-grid or delta-to-zero result: the
@@ -288,6 +299,11 @@ status:
       sorry_count: 0
       axioms: ["propext", "Quot.sound", "Classical.choice"]
       comparator_config: "comparator.json"
+    - declaration: "G5.G5_c_prime"
+      file: "RequestProject/G5.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
 
 automation:
   methods:
@@ -308,7 +324,13 @@ automation:
         specification; in another it discovered that the requested
         diagonal-dominance bound was exactly tight on the target grid and
         certified positivity by a different route rather than misattribute the
-        method. No proof search or tactic scripting was done by hand.
+        method. No proof search or tactic scripting was done by hand. On
+        2026-09-14, in a single follow-up API job, Aristotle also re-proved
+        the four numeric bound lemmas that had originally used native_decide
+        (E2_log3, E2_log5, E2_log7 in RequestProject/E2.lean and G4_log11 in
+        RequestProject/G4.lean), replacing them with kernel-checkable proofs
+        via Mathlib's Mercator-series tail bound, making the whole development
+        native_decide-free.
       cost:
         wall_time: "not tracked"
         spend_usd: "not tracked"
@@ -333,7 +355,7 @@ automation:
         definitions and statements handed to the prover, and for the
         statement-level audit of prover output against those specifications,
         including the construction and checking of Challenge.lean as the
-        Mathlib-only restatement of the sixteen compared theorems. The prose of
+        Mathlib-only restatement of the eighteen compared theorems. The prose of
         the two preprints and of this metadata record was likewise produced
         with that assistance. It produced no proof terms.
       cost:
@@ -355,7 +377,7 @@ automation:
         the discretization families, designed the certificate schemas and the
         tier architecture, pre-registered the structural hypotheses before the
         batches that decided them, made every mathematical and editorial
-        decision, selected the sixteen theorems for the compared set, and
+        decision, selected the eighteen theorems for the compared set, and
         performed the final review of statements, axiom disclosures and scope.
         The consolidated lake build was re-run independently of the prover's
         environment. The author takes responsibility for all claims.
@@ -385,7 +407,7 @@ fidelity:
     their restatement in Challenge.lean, which is what Palomar compares.
 
     One systematic transformation: Challenge.lean imports only Mathlib and
-    therefore contains inlined copies of every custom definition the sixteen
+    therefore contains inlined copies of every custom definition the eighteen
     statements need, copied from the named repository files. Because those
     copies all live in the single namespace Challenge, the namespace prefixes
     of the originals (Horizon., V5_1., V5_5., V5_6., TierR., R5. and so on) are
@@ -411,8 +433,9 @@ fidelity:
 review:
   status: >-
     self-assessed; automated mechanical checks (consolidated lake build in CI
-    with sorry census; leanprover/comparator statement match and kernel replay
-    against Challenge.lean for all 16 compared theorems); statement-level audit
+    with sorry census; leanprover/comparator statement match and both
+    Lean-kernel and NanoDa replay against Challenge.lean for all 18 compared
+    theorems); statement-level audit
     of prover output was AI-assisted; no line-by-line human review of proof
     terms; no external mathematical peer review yet
   reviewers:
@@ -422,10 +445,10 @@ review:
     pinned toolchain, re-run independently of the prover's environment and
     re-run in CI, with exactly the three disclosed sorry warnings and no
     errors; #print axioms on the headline theorems; and leanprover/comparator
-    (pinned) against Challenge.lean for the sixteen theorems in
+    (pinned) against Challenge.lean for the eighteen theorems in
     comparator.json, covering statement match, byte-identical definition
     graphs, the axiom allowlist (propext, Quot.sound, Classical.choice only)
-    and Lean-kernel replay.
+    and both Lean-kernel and NanoDa replay.
 
     What was checked by a human: the choice and wording of every statement, the
     scope and non-claim lists in STATEMENTS.md and TIER_R_FINAL.md, the axiom
@@ -595,6 +618,31 @@ alignment:
         R5.frontier_covers_band_final in RequestProject/R5Final.lean. The
         Challenge statement differs in kernel notation only, as recorded in
         fidelity.divergences.
+    - source: "Certified Positivity, G3 (third-window non-positivity certificate)"
+      lean: "Challenge.G3_cert_neg"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Positivity genuinely fails at the third window's negative threshold
+        kappa_1 = 0.789 for the true prime atoms (log 2)/sqrt 2, (log 3)/sqrt 3,
+        (log 5)/sqrt 5 against the third-window 4 by 4 symmetric Toeplitz-like
+        form U; proved sorry-free as G3.G3_cert_neg in RequestProject/G3.lean.
+        Its numeric-bound dependencies in RequestProject/E2.lean and
+        RequestProject/G4.lean were re-proved native_decide-free on
+        2026-09-14 (see status.scope), so this theorem now sits on the
+        3-axiom baseline and has been restored to the compared set.
+    - source: "Certified Positivity, G5 (global maximum of log p/√p at p = 7, prime form)"
+      lean: "Challenge.G5_c_prime"
+      module: "Challenge"
+      status: proved
+      note: >-
+        For every prime p other than 7, (log p)/sqrt p is strictly less than
+        (log 7)/sqrt 7: the atom at p = 7 is the global maximum over all
+        primes; proved sorry-free as G5.G5_c_prime in RequestProject/G5.lean.
+        Depends on RequestProject/G4.lean's log 11 enclosure, re-proved
+        native_decide-free on 2026-09-14 (see status.scope), so this theorem
+        now sits on the 3-axiom baseline and has been restored to the
+        compared set.
 
 acknowledgements: >-
   Mathlib and its community, and the Lean 4 toolchain and the Lean FRO, for
