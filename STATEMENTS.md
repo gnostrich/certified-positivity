@@ -216,6 +216,12 @@ theorem frontier_covers_band_final :
         G.dim = 3 ∧ HEq G.M (fun i j => V5_1.G (t i) (t j)) := by (proof omitted)
 ```
 
+### `G3.lean` — `U`
+```lean
+def U (κ u v w : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![κ, u, v, w; u, κ, u, v; v, u, κ, u; w, v, u, κ]
+```
+
 ### `G3.lean` — `G3_cert_neg` (the newest-binds refutation certificate)
 ```lean
 theorem G3_cert_neg :
@@ -239,10 +245,15 @@ theorem G5_c_prime (p : ℕ) (hp : p.Prime) (hp7 : p ≠ 7) :
   fine-grid regime is explicitly open (see TIER_R_FINAL.md).
 - Three `sorry` sites exist (D4, F3, F3R), one shared cause (unitary
   diagonalizability, absent from Mathlib); nothing below depends on them.
-- `G5`/`G6` inherit `native_decide` axioms via `G4`→`E2` (integer-power
-  comparison + legacy log bounds); `G3_cert_neg` likewise sits downstream of
-  `E2` via the `E3`/`G2` atoms it cites; the V5 and R tiers are
-  native_decide-free.
+- `native_decide` was formerly used in `E2.lean` (six uses, underlying
+  `E2_log3`/`E2_log5`/`E2_log7`) and `G4.lean` (one use, `G4_log11`), with
+  `G5`/`G6`/`G3_cert_neg` inheriting it transitively via `G4`→`E2` and via the
+  `E3`/`G2` atoms `G3_cert_neg` cites. On 2026-09-14 those four bound lemmas
+  were re-proved by the Aristotle prover using Mathlib's
+  `Real.abs_log_sub_add_sum_range_le` Mercator-series tail bound plus
+  `Real.log_two_gt_d9`/`Real.log_two_lt_d9`, discharged by norm_num/linarith;
+  no statements changed. The whole development, including `G3_cert_neg` and
+  `G5_c_prime`, is now `native_decide`-free and on the 3-axiom baseline.
 - `Psi` uses the even-extension convention `Psi t = PsiNonneg |t|`; the prime
   sum is over `2 ≤ n ≤ ⌊exp t⌋` with von Mangoldt weights, as written above.
 - Proof terms were produced by an automated prover and audited at STATEMENT

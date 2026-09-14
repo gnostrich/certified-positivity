@@ -9,6 +9,8 @@ import RequestProject.R_B1
 import RequestProject.R5
 import RequestProject.R5Prime
 import RequestProject.R5Final
+import RequestProject.G3
+import RequestProject.G5
 
 /-!
 # Solution.lean — comparator bridge
@@ -173,6 +175,12 @@ def CoveragePrimeFree (δ μ : ℝ) : Prop :=
     IsPDq (fun i j => G (t i) (t j)) ∧
       μ ≤ lambdaMin (fun i j => G (t i) (t j))
 
+/-! ## Definitions — from `RequestProject/G3.lean` (namespace `G3`) -/
+
+/-- The third-window `4 × 4` form. -/
+def U (κ u v w : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![κ, u, v, w; u, κ, u, v; v, u, κ, u; w, v, u, κ]
+
 /-! ## Headline theorems, proved by bridging to the repository modules. -/
 
 theorem true_kernel_grid_margin (x : Fin 3 → ℝ) :
@@ -259,5 +267,14 @@ theorem frontier_covers_band_final :
   intro t ht hlo hhi hsep
   obtain ⟨S, hdim, hM⟩ := R5.frontier_covers_band_final t ht hlo hhi hsep
   exact ⟨⟨S.dim, S.M, S.hsymm, S.hpd, S.nonempty⟩, hdim, hM⟩
+
+theorem G3_cert_neg :
+    ¬ IsPDq (U 0.789 (Real.log 2 / Real.sqrt 2) (Real.log 3 / Real.sqrt 3)
+      (Real.log 5 / Real.sqrt 5)) :=
+  G3.G3_cert_neg
+
+theorem G5_c_prime (p : ℕ) (hp : p.Prime) (hp7 : p ≠ 7) :
+    Real.log p / Real.sqrt p < Real.log 7 / Real.sqrt 7 :=
+  G5.G5_c_prime p hp hp7
 
 end Challenge

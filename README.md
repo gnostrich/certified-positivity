@@ -23,16 +23,14 @@ repository. [`Challenge.lean`](Challenge.lean) — the same claims as a single
 Mathlib-only sorried file, for mechanical comparison against the repo.
 
 Comparator ([leanprover/comparator](https://github.com/leanprover/comparator),
-pinned) accepts this repository against `Challenge.lean` for the 16 headline
+pinned) accepts this repository against `Challenge.lean` for all 18 headline
 theorems whose permitted axioms are exactly `propext`, `Quot.sound`,
 `Classical.choice` — statement match, byte-identical definition graphs, axiom
-allowlist, and Lean-kernel replay all pass (config `comparator.json`, bridge
-`Solution.lean`, and pins in-repo; re-run in CI). The two `native_decide`
-G-tier statements (`G3_cert_neg`, `G5_c_prime`) are not in `Challenge.lean`
-or `comparator.json`: comparator's final kernel-replay stage cannot replay
-`native_decide` proofs (exports do not carry compiled auxiliaries), so they
-are excluded from the comparator surface and documented instead in
-[STATEMENTS.md](STATEMENTS.md) and below.
+allowlist, and both Lean-kernel replay and NanoDa replay all pass (config
+`comparator.json`, bridge `Solution.lean`, and pins in-repo; re-run in CI).
+The set includes the two G-tier statements `G3_cert_neg` and `G5_c_prime`,
+whose numeric bound dependencies were re-proved `native_decide`-free on
+2026-09-14 (see Provenance below).
 
 ## Provenance (read first)
 
@@ -44,13 +42,22 @@ output against those specifications was likewise AI-assisted. No human has
 reviewed the proof terms line by line; the trust model is Lean's kernel,
 with per-theorem axiom status recorded here and in the papers.
 Axiom status of headline theorems:
-`propext`, `Classical.choice`, `Quot.sound`. `native_decide` appears in two
-files, both in numeric bound lemmas: `E2.lean` (six uses) and `G4.lean`
-(one). `G5`/`G6` import `G4` and therefore inherit its single
-`native_decide` use (and, since `G4` imports `E2`, `E2`'s uses as well),
-while the V5 and R tiers — all true-kernel certificates — are
-`native_decide`-free, including transitively. `G1.lean` documents its
-avoidance explicitly.
+`propext`, `Classical.choice`, `Quot.sound`. `native_decide` was originally
+used in two files, both in numeric bound lemmas: `E2.lean` (six uses,
+`E2_log3`/`E2_log5`/`E2_log7`) and `G4.lean` (one use, `G4_log11`); `G5`/`G6`
+inherited it transitively via `G4`→`E2`. On 2026-09-14 those four lemmas were
+re-proved by the Aristotle prover using Mathlib's
+`Real.abs_log_sub_add_sum_range_le` Mercator-series tail bound together with
+`Real.log_two_gt_d9`/`Real.log_two_lt_d9`, with all arithmetic discharged by
+`norm_num`/`linarith` — kernel-checkable, with no `native_decide` and no
+`Lean.ofReduceBool`/`Lean.trustCompiler` axioms. The change was verified by a
+full rebuild, `#print axioms` on the affected theorems, and comparator replay
+(Lean-kernel and NanoDa) against the updated `Challenge.lean`/`comparator.json`.
+The development is now `native_decide`-free everywhere; `G1.lean` — which was
+always `native_decide`-free — only mentions `native_decide` in its module
+docstring, describing what it avoids. As a consequence, `G3_cert_neg` and
+`G5_c_prime` now depend only on `propext`, `Classical.choice`, `Quot.sound`
+and have been restored to the comparator surface (see above).
 Three documented `sorry` sites (`D4.lean`, `F3.lean`, `F3R.lean`), one shared
 cause (unitary diagonalizability, absent from Mathlib). The workflow included
 pre-registered hypotheses; the prover refuted two of them
@@ -62,8 +69,11 @@ sentence), all 75 modules were built with Lean 4 `v4.28.0` / Mathlib
 `v4.28.0` (modules placed under `RequestProject/` per the lakefile globs) —
 zero errors, exactly the three disclosed `sorry` warnings (`D4`, `F3`,
 `F3R`), and `#print axioms` on the headline theorems matching the axiom
-disclosures above; `G5_c_prime` additionally reports `Lean.ofReduceBool` and
-`Lean.trustCompiler` (the `native_decide` axioms), exactly as disclosed. The
+disclosures above; at that time, `G5_c_prime` additionally reported
+`Lean.ofReduceBool` and `Lean.trustCompiler` (the `native_decide` axioms), as
+disclosed then. That no longer holds: since the 2026-09-14 re-proof of the
+`E2`/`G4` bound lemmas described above, `G5_c_prime` (and `G3_cert_neg`) are
+on the 3-axiom baseline like everything else. The
 per-batch compilation reports remain the original provenance record.
 Scrutiny welcome — issues/PRs open.
 
@@ -95,13 +105,9 @@ see the provenance note above.
 
 `comparator.json`, [`Challenge.lean`](Challenge.lean),
 [`Solution.lean`](Solution.lean), and `formalization.yaml` together form the
-Palomar submission surface for this repository. The compared set is the 16
+Palomar submission surface for this repository. The compared set is the 18
 classical-axiom theorems listed in `comparator.json`, each checked against
-`propext`, `Quot.sound`, and `Classical.choice` only. The two `native_decide`
-G-tier statements (`G3_cert_neg`, `G5_c_prime`) are outside this surface —
-they are not stated in `Challenge.lean` or listed in `comparator.json`,
-since Palomar rejects anything depending on `Lean.ofReduceBool`; they remain
-documented in [STATEMENTS.md](STATEMENTS.md).
+`propext`, `Quot.sound`, and `Classical.choice` only.
 
 ## License
 

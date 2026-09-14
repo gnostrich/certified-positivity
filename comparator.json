@@ -17,7 +17,9 @@
     "Challenge.coverage_band",
     "Challenge.three_grid_last_row_gershgorin_zero",
     "Challenge.coverage_band_final",
-    "Challenge.frontier_covers_band_final"
+    "Challenge.frontier_covers_band_final",
+    "Challenge.G3_cert_neg",
+    "Challenge.G5_c_prime"
   ],
   "definition_names": [],
   "permitted_axioms": [
