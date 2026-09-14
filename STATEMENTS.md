@@ -243,8 +243,18 @@ theorem G5_c_prime (p : ℕ) (hp : p.Prime) (hp7 : p ≠ 7) :
   there is no infinite-grid or all-mesh statement anywhere in the corpus.
 - `coverage_band_final` covers the single 3-point grid (1/5, 2/5, 3/5); the
   fine-grid regime is explicitly open (see TIER_R_FINAL.md).
-- Three `sorry` sites exist (D4, F3, F3R), one shared cause (unitary
-  diagonalizability, absent from Mathlib); nothing below depends on them.
+- The development is sorry-free as of 2026-09-14. The three `sorry` sites
+  that formerly existed (D4, F3, F3R), whose shared cause was unitary
+  diagonalizability being absent from Mathlib, were all closed that day by
+  the Aristotle prover in a second API job, with no change to any of the
+  three statements (`D4.D4_caratheodory`, `F3.F3_roots`, `F3R.F3R_simple`):
+  `F3R_simple` by a deeper use of the file's own Toeplitz shift identity
+  (no unitary diagonalization needed); `F3_roots` by transfer from the
+  completed `F3R.F3R_roots`; and `D4_caratheodory` — the full
+  Carathéodory–Fejér theorem — via least-singular-block selection, `F3R`,
+  window propagation of the null relation, and Vandermonde interpolation
+  (general lemmas in the new module `D4Aux.lean`). Nothing below ever
+  depended on them.
 - `native_decide` was formerly used in `E2.lean` (six uses, underlying
   `E2_log3`/`E2_log5`/`E2_log7`) and `G4.lean` (one use, `G4_log11`), with
   `G5`/`G6`/`G3_cert_neg` inheriting it transitively via `G4`→`E2` and via the

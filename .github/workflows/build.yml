@@ -27,20 +27,14 @@ jobs:
           set -o pipefail
           lake build 2>&1 | tee build.log
 
-      - name: Sorry census — only the three disclosed sites are allowed
+      - name: Sorry census — no sorry anywhere in the development
         shell: bash
         run: |
-          if grep "declaration uses" build.log \
-              | grep -vE 'RequestProject/(D4|F3|F3R)\.lean'; then
-            echo "::error::sorry warning outside the disclosed sites (D4, F3, F3R)"
+          if grep "declaration uses" build.log; then
+            echo "::error::sorry warning found; the development is sorry-free as of 2026-09-14"
             exit 1
           fi
-          count=$(grep -c "declaration uses" build.log || true)
-          if [ "$count" -ne 3 ]; then
-            echo "::error::expected exactly 3 disclosed sorry warnings, found $count"
-            exit 1
-          fi
-          echo "sorry census OK: exactly the 3 disclosed sites"
+          echo "sorry census OK: no sorry anywhere in the development"
 
   # Comparator verification (leanprover/comparator): checks that the repo
   # proves exactly the statements in Challenge.lean, for the 16 headline
