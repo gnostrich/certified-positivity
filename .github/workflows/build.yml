@@ -21,9 +21,6 @@ jobs:
       - name: Get Mathlib olean cache
         run: lake exe cache get
 
-      - name: Place modules where the lakefile globs expect them
-        run: mkdir -p RequestProject && cp lean/*.lean RequestProject/
-
       - name: Build all modules
         shell: bash
         run: |
@@ -48,7 +45,8 @@ jobs:
   # Comparator verification (leanprover/comparator): checks that the repo
   # proves exactly the statements in Challenge.lean, for the 16 headline
   # theorems whose axioms are propext/Quot.sound/Classical.choice only.
-  # Pins follow leanprover/lean-eval's SECURITY.md; lean4export uses the
+  # Pins follow leanprover/lean-eval's SECURITY.md (NanoDa pin from
+  # PalomarRegistry/PalomarTemplate); lean4export uses the
   # v4.28.0 tag to match this repo's toolchain.
   comparator:
     needs: build
@@ -87,11 +85,16 @@ jobs:
           lake build comparator
           echo "$PWD/.lake/build/bin" >> "$GITHUB_PATH"
 
+      - name: Build NanoDa kernel (pinned; comparator.json enables the NanoDa replay)
+        run: |
+          git clone https://github.com/robsimmons/nanoda_lib .ci/nanoda_lib
+          cd .ci/nanoda_lib
+          git checkout 68d5ca9db226849b41a6fff59d796ff19d0a8840
+          cargo build --release --locked
+          echo "$PWD/target/release" >> "$GITHUB_PATH"
+
       - name: Get Mathlib olean cache
         run: lake exe cache get
 
-      - name: Place modules where the lakefile globs expect them
-        run: mkdir -p RequestProject && cp lean/*.lean RequestProject/
-
-      - name: Run comparator (strict 16, classical axioms only)
-        run: lake env comparator config-comparator-strict.json
+      - name: Run comparator (Palomar submission surface, classical axioms only, Lean + NanoDa replay)
+        run: lake env comparator comparator.json

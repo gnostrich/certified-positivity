@@ -26,12 +26,13 @@ Comparator ([leanprover/comparator](https://github.com/leanprover/comparator),
 pinned) accepts this repository against `Challenge.lean` for the 16 headline
 theorems whose permitted axioms are exactly `propext`, `Quot.sound`,
 `Classical.choice` — statement match, byte-identical definition graphs, axiom
-allowlist, and Lean-kernel replay all pass (config, bridge `Solution.lean`,
-and pins in-repo; re-run in CI). The two `native_decide` G-tier statements
-(`G3_cert_neg`, `G5_c_prime`) pass comparator's statement-match and
-axiom-allowlist stages under the extended allowlist, but its final
-kernel-replay stage cannot replay `native_decide` proofs (exports do not carry
-compiled auxiliaries), so the comparator-certified set is the strict 16.
+allowlist, and Lean-kernel replay all pass (config `comparator.json`, bridge
+`Solution.lean`, and pins in-repo; re-run in CI). The two `native_decide`
+G-tier statements (`G3_cert_neg`, `G5_c_prime`) are not in `Challenge.lean`
+or `comparator.json`: comparator's final kernel-replay stage cannot replay
+`native_decide` proofs (exports do not carry compiled auxiliaries), so they
+are excluded from the comparator surface and documented instead in
+[STATEMENTS.md](STATEMENTS.md) and below.
 
 ## Provenance (read first)
 
@@ -68,8 +69,8 @@ Scrutiny welcome — issues/PRs open.
 
 ## Layout
 
-- `lean/` — the development (75 files): D/E/F/G/K/T/GW/V5 = paper 1 tiers;
-  `R_*`, `R5*` = paper 2 (frontier object, coverage).
+- `RequestProject/` — the development (75 files): D/E/F/G/K/T/GW/V5 = paper 1
+  tiers; `R_*`, `R5*` = paper 2 (frontier object, coverage).
 - `papers/` — the two preprint PDFs.
 - `STATEMENTS.md` — verbatim formal statements of the headline results.
 - `Challenge.lean` — the headline statements as one Mathlib-only sorried file.
@@ -83,12 +84,24 @@ margin ≥ 0.005), `R_A2/R_A3_A4.lean` (GramState / expand / honest halt),
 
 `lean-toolchain` pins Lean 4 `v4.28.0`; `lakefile.toml` /
 `lake-manifest.json` pin Mathlib `v4.28.0` and its transitive dependencies —
-the environment the prover batches compiled against. The files in `lean/`
-import each other under the `RequestProject.*` namespace (the prover
-project's name); they are archived here as flat per-batch modules rather
-than wired into a single lake target. A consolidated build — placing the
-modules under `RequestProject/` and running `lake build` — has been
-reproduced independently; see the provenance note above.
+the environment the prover batches compiled against. The modules are
+committed under `RequestProject/` and import each other under the
+`RequestProject.*` namespace (the prover project's name, and the lakefile's
+`lean_lib` glob target), so `lake build` builds them directly with no
+placement step. This consolidated build has been reproduced independently;
+see the provenance note above.
+
+## Palomar submission
+
+`comparator.json`, [`Challenge.lean`](Challenge.lean),
+[`Solution.lean`](Solution.lean), and `formalization.yaml` together form the
+Palomar submission surface for this repository. The compared set is the 16
+classical-axiom theorems listed in `comparator.json`, each checked against
+`propext`, `Quot.sound`, and `Classical.choice` only. The two `native_decide`
+G-tier statements (`G3_cert_neg`, `G5_c_prime`) are outside this surface —
+they are not stated in `Challenge.lean` or listed in `comparator.json`,
+since Palomar rejects anything depending on `Lean.ofReduceBool`; they remain
+documented in [STATEMENTS.md](STATEMENTS.md).
 
 ## License
 

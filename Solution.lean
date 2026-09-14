@@ -9,8 +9,6 @@ import RequestProject.R_B1
 import RequestProject.R5
 import RequestProject.R5Prime
 import RequestProject.R5Final
-import RequestProject.G3
-import RequestProject.G5
 
 /-!
 # Solution.lean — comparator bridge
@@ -20,7 +18,7 @@ theorem statements (same `Challenge` namespace, same source text), with each
 `sorry` replaced by a proof that defers to the corresponding repository
 theorem. Comparator verifies that every statement here is byte-identical to
 `Challenge.lean`'s and that the proofs stay within the permitted axioms
-(`config-comparator-strict.json` / `config-comparator-gtier.json`).
+(`comparator.json`).
 
 Bridge policy: every proof is an `exact`/term-level appeal to the named
 repository theorem. Where the repository states a result via the
@@ -34,7 +32,7 @@ open ArithmeticFunction
 
 namespace Challenge
 
-/-! ## Definitions — from `lean/Horizon.lean` (namespace `Horizon`) -/
+/-! ## Definitions — from `RequestProject/Horizon.lean` (namespace `Horizon`) -/
 
 variable {n : ℕ}
 
@@ -54,7 +52,7 @@ def valueSet (M : Matrix (Fin n) (Fin n) ℝ) : Set ℝ :=
 noncomputable def lambdaMin (M : Matrix (Fin n) (Fin n) ℝ) : ℝ :=
   sInf (valueSet M)
 
-/-! ## Definitions — from `lean/V5_1.lean` (namespace `V5_1`) -/
+/-! ## Definitions — from `RequestProject/V5_1.lean` (namespace `V5_1`) -/
 
 /-- The Hurwitz value `ζ(2,1/4)` in the normalization used by Suzuki. -/
 noncomputable def C : ℝ := ∑' n : ℕ, (1 / ((n : ℝ) + 1 / 4) ^ 2)
@@ -87,7 +85,7 @@ noncomputable def Psi (t : ℝ) : ℝ := PsiNonneg |t|
 /-- Krein's Gram kernel. -/
 noncomputable def G (t u : ℝ) : ℝ := Psi t + Psi u - Psi (t - u)
 
-/-! ## Definitions — from `lean/V5_5.lean` / `lean/V5_6.lean` / `lean/V5_7.lean`
+/-! ## Definitions — from `RequestProject/V5_5.lean` / `RequestProject/V5_6.lean` / `RequestProject/V5_7.lean`
 (namespaces `V5_5`, `V5_6`, `V5_7`) -/
 
 /-- The genuine screw Gram matrix on the grid `(0.2,0.4,0.6)`. -/
@@ -103,7 +101,7 @@ noncomputable def M2 : Matrix (Fin 2) (Fin 2) ℝ := fun i j =>
 noncomputable def triangle (t x : ℝ) : ℝ :=
   if |x| ≤ t then (t - |x|) / 2 else 0
 
-/-! ## Definitions — from `lean/R_A1.lean` / `lean/R_A2.lean`
+/-! ## Definitions — from `RequestProject/R_A1.lean` / `RequestProject/R_A2.lean`
 (namespace `TierR`) -/
 
 /-- A symmetric one-site border of `A`, indexed so the old matrix is the top-left block. -/
@@ -126,7 +124,7 @@ structure GramState where
   hpd : IsPDq M
   nonempty : NeZero dim
 
-/-! ## Definitions — from `lean/R_A5.lean` (namespace `TierR`) -/
+/-! ## Definitions — from `RequestProject/R_A5.lean` (namespace `TierR`) -/
 
 /-- Number of eigenvalues strictly above a threshold. -/
 noncomputable def nPlus (M : Matrix (Fin n) (Fin n) ℝ) (hM : Mᵀ = M) (τ : ℝ) : ℕ :=
@@ -140,7 +138,7 @@ noncomputable def nZero (M : Matrix (Fin n) (Fin n) ℝ) (hM : Mᵀ = M) (τ : �
 noncomputable def nMinus (M : Matrix (Fin n) (Fin n) ℝ) (hM : Mᵀ = M) (τ : ℝ) : ℕ :=
   ((Finset.univ : Finset (Fin n)).filter fun i => (show M.IsHermitian from hM).eigenvalues i < τ).card
 
-/-! ## Definitions — from `lean/R_B1.lean` (namespace `TierR`) -/
+/-! ## Definitions — from `RequestProject/R_B1.lean` (namespace `TierR`) -/
 
 /-- Rational leading principal submatrix, in the same indexing convention as D6. -/
 def leadingSubRat {n : ℕ} (A : Matrix (Fin n) (Fin n) ℚ) (k : Fin n) :
@@ -152,7 +150,7 @@ since positivity of leading minors alone characterizes PD only for symmetric mat
 def checkPDq {n : ℕ} (M : Matrix (Fin n) (Fin n) ℚ) : Bool :=
   decide (Mᵀ = M ∧ ∀ k : Fin n, 0 < (leadingSubRat M k).det)
 
-/-! ## Definitions — from `lean/R5.lean` (namespace `R5`) -/
+/-! ## Definitions — from `RequestProject/R5.lean` (namespace `R5`) -/
 
 /-- The endpoint requested in R5, written exactly as the rational `0.69`. -/
 noncomputable def b : ℝ := 69 / 100
@@ -174,12 +172,6 @@ def CoveragePrimeFree (δ μ : ℝ) : Prop :=
     adjacentGap δ t →
     IsPDq (fun i j => G (t i) (t j)) ∧
       μ ≤ lambdaMin (fun i j => G (t i) (t j))
-
-/-! ## Definitions — from `lean/G3.lean` (namespace `G3`) -/
-
-/-- The third-window `4 × 4` form. -/
-def U (κ u v w : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
-  !![κ, u, v, w; u, κ, u, v; v, u, κ, u; w, v, u, κ]
 
 /-! ## Headline theorems, proved by bridging to the repository modules. -/
 
@@ -267,14 +259,5 @@ theorem frontier_covers_band_final :
   intro t ht hlo hhi hsep
   obtain ⟨S, hdim, hM⟩ := R5.frontier_covers_band_final t ht hlo hhi hsep
   exact ⟨⟨S.dim, S.M, S.hsymm, S.hpd, S.nonempty⟩, hdim, hM⟩
-
-theorem G3_cert_neg :
-    ¬ IsPDq (U 0.789 (Real.log 2 / Real.sqrt 2) (Real.log 3 / Real.sqrt 3)
-      (Real.log 5 / Real.sqrt 5)) :=
-  G3.G3_cert_neg
-
-theorem G5_c_prime (p : ℕ) (hp : p.Prime) (hp7 : p ≠ 7) :
-    Real.log p / Real.sqrt p < Real.log 7 / Real.sqrt 7 :=
-  G5.G5_c_prime p hp hp7
 
 end Challenge

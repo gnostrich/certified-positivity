@@ -1,0 +1,613 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4. Palomar registry submission for this repository.
+version: "v0.4"
+
+project:
+  name: "Certified Positivity and Certified Frontiers: machine-checked positivity windows for truncated Weil-type quadratic forms and the Suzuki screw kernel"
+  description: >-
+    This Lean 4 and Mathlib development produces exact, machine-checked
+    positivity certificates for truncated Weil-type quadratic forms and for
+    the finite Gram matrices of Suzuki's zeta screw function. Weil's explicit
+    formula recasts the Riemann Hypothesis as positivity of a quadratic form
+    assembled from prime powers, and a recent line of work truncates that form
+    and studies the resulting finite matrices. The objects formalized here are
+    the screw function Psi, built from an archimedean profile minus a von
+    Mangoldt weighted prime sum; its Gram kernel G(t,u) = Psi(t) + Psi(u) -
+    Psi(t-u); positive definiteness of the finite matrices this kernel
+    generates on explicit grids; Schur-complement bordering of such a matrix
+    by one new site; and quantitative Gershgorin diagonal-dominance margins
+    that furnish explicit Rayleigh floors.
+
+    The compared results are as follows. First, an explicit positivity window
+    for the genuine screw kernel: on the grid (0.2, 0.4, 0.6) the three by
+    three Gram matrix is positive definite with certified Rayleigh margin
+    0.005, and positivity persists on (0.4, 0.9), across the entry of the
+    first prime atom. Second, an exact prime-side identity: the triangle-kernel
+    sum over prime powers equals the prime sum appearing in Psi. Third, a
+    certified-frontier object: a state carrying a symmetric matrix with its own
+    positive-definiteness proof and a certified margin, a one-site expansion
+    gated by a single scalar Schur condition, an honest halt proving that the
+    proposed bordered matrix is not positive definite whenever the gate fails,
+    a characterisation of positive definiteness as vanishing
+    nonpositive inertia, and a sound executable rational Sylvester checker.
+    Fourth, a three-site full-band coverage theorem on the band [1/5, 3/5]
+    with explicit mesh 1/5 and margin 1/200, together with the exact identity
+    showing that the diagonal-dominance margin of its last row is zero. Fifth,
+    two pre-registered hypotheses refuted by machine and reported as results:
+    the archimedean profile is not convex on [0, 2/5], and no positive mesh
+    and margin can cover every admissible grid.
+
+    The interest is that the surrounding literature (Connes and van Suijlekom;
+    Connes, Consani and Moscovici; Suzuki) works either in floating point or at
+    the level of existence statements, whereas these are exact certificates
+    checked against the definition of Psi itself. Suzuki establishes that some
+    positivity window exists; here an explicit one is exhibited and verified,
+    to our knowledge for the first time.
+
+    Scope is finite and explicit. Every positivity statement concerns
+    specified rational grids; there is no asymptotic or fine-mesh result; the
+    coverage theorem's mesh condition forces the unique coarse grid
+    (1/5, 2/5, 3/5) rather than a continuum of three-site configurations; and
+    nothing here bears on the Riemann Hypothesis.
+  authors:
+    - "Rohan Badade"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Rohan Badade"
+
+classification:
+  arxiv: ["math.NT", "math.LO"]
+  msc2020: ["11M26", "15B48", "68V20", "65G20", "15A63", "11M06"]
+
+sources:
+  - title: >-
+      Explicit machine-checked positivity windows for the genuine Suzuki zeta
+      screw kernel, the exact prime-side identity for its prime sum, and the
+      certified-frontier object with its three-site full-band coverage theorem
+      and two machine-refuted pre-registered hypotheses
+    authors:
+      - "Rohan Badade"
+    type: original-proof
+    relationship: other
+    author_endorsement: participated
+    note: >-
+      These results are first presented by this formalization and the two
+      accompanying preprints, which are written from it. No earlier source
+      states them. Recorded as type original-proof with relationship other, as
+      the Palomar original-result contract requires; every other source below
+      is contextual background.
+  - title: >-
+      Certified Positivity: Formally Verified Horizon Thresholds for Truncated
+      Weil Quadratic Forms in Lean
+    authors:
+      - "Rohan Badade"
+    type: paper
+    location: "papers/certified-positivity-paper.pdf in this repository"
+    relationship: background
+    license: "unknown"
+    author_endorsement: participated
+    note: >-
+      Unsubmitted preprint by the submitter, carried in this repository. It has
+      no arXiv identifier and no DOI; it is not archived anywhere outside this
+      repository, and the copy here is one or more revisions behind the
+      canonical off-repo version (see papers/PENDING-SYNC.md). It is the
+      informal write-up of part of this development rather than a prior source
+      for it, hence background. Supplies the V5 tier results in the compared
+      set: the true-kernel positivity window with margin 0.005, its
+      persistence across the first prime's entry, and the prime-side identity.
+  - title: >-
+      Certified Frontiers: Self-Expanding Positivity Certificates with a
+      Verified Coverage Theorem
+    authors:
+      - "Rohan Badade"
+    type: paper
+    location: "papers/certified-frontiers-paper.pdf in this repository"
+    relationship: background
+    license: "unknown"
+    author_endorsement: participated
+    note: >-
+      Companion unsubmitted preprint by the submitter, also carried in this
+      repository, with no arXiv identifier and no DOI and the same
+      pending-sync caveat. Its own bibliography is anonymised for double-blind
+      submission and names several neighbouring results (Rump; Kwan; Schaub
+      and Zaspel; Yedidia and Aaronson) in prose only, with no resolvable
+      entries. It is the informal write-up of the Tier R part of this
+      development rather than a prior source for it, hence background.
+      Supplies the frontier object, the Gershgorin margin lemma, the coverage
+      theorems, and the two refutations in the compared set.
+  - title: "Screw functions and the Weil quadratic form"
+    authors:
+      - "Masatoshi Suzuki"
+    id: "arXiv:2606.09096"
+    type: paper
+    location: "Theorem 4.2 (existence of a positivity window)"
+    relationship: background
+    license: "unknown"
+    author_endorsement: not-contacted
+    note: >-
+      Source of the zeta screw function and its Gram kernel, which are
+      transcribed into Lean here as Psi and G. Suzuki's Theorem 4.2 establishes
+      that some window of positive definiteness for the genuine kernel exists;
+      this development exhibits and certifies an explicit such window on the
+      grid (0.2, 0.4, 0.6) with an explicit margin. Background rather than
+      formalizes: the compared statements are explicit finite instances with
+      explicit margins, not Suzuki's existence theorem.
+  - title: "Quadratic forms, real zeros and echoes of the spectral action"
+    authors:
+      - "Alain Connes"
+      - "Walter D. van Suijlekom"
+    id: "arXiv:2511.23257"
+    type: paper
+    relationship: background
+    license: "unknown"
+    author_endorsement: not-contacted
+    note: >-
+      One of the two studies of truncated Weil quadratic forms that this
+      development is positioned against. It works with floating-point
+      numerics for the truncated form; no statement of theirs is formalized
+      here, and none of the compared theorems is theirs.
+  - title: "Zeta spectral triples"
+    authors:
+      - "Alain Connes"
+      - "Caterina Consani"
+      - "Henri Moscovici"
+    id: "arXiv:2511.22755"
+    type: paper
+    relationship: background
+    license: "unknown"
+    author_endorsement: not-contacted
+    note: >-
+      The operator-theoretic reading of the truncated Weil form that motivates
+      the structural skeleton of the wider development (finite
+      Osterwalder-Schrader reconstruction, the finite KMS identity, the
+      Caratheodory-Toeplitz ladder). Context only: none of its results is
+      formalized, and none of the sixteen compared theorems is one of theirs.
+  - title: 'Sur les "formules explicites" de la theorie des nombres premiers'
+    authors:
+      - "Andre Weil"
+    type: paper
+    location: "Comm. Sem. Math. Univ. Lund (1952), 252-265"
+    relationship: background
+    license: "unknown"
+    author_endorsement: "n/a"
+    note: >-
+      The explicit formula and the positivity criterion that give the whole
+      programme its subject. The finite Weil-type functional and the
+      prime-side identity in the compared set are finite analogues of objects
+      from this source; the source's own results are not formalized here.
+  - title: "mathlib4: the Lean mathematical library"
+    authors:
+      - "The Mathlib Community"
+    id: "https://github.com/leanprover-community/mathlib4"
+    type: other
+    location: "Mathlib v4.28.0, as pinned by lakefile.toml and lake-manifest.json"
+    relationship: background
+    license: "Apache-2.0"
+    author_endorsement: "n/a"
+    note: >-
+      The ambient library. Challenge.lean imports only Mathlib. Mathlib
+      supplies the matrix, spectral, analytic and arithmetic-function
+      infrastructure used throughout (Matrix.PosDef, Hermitian eigenvalues,
+      the von Mangoldt function, digit lemmas for log 2), and its recently
+      merged zeta and L-function stratum is the layer this work sits above.
+      Recorded as a background source because the mathematics used from it is
+      contextual infrastructure rather than the recorded result; it is a Lean
+      dependency and not a mathematical source for any compared statement.
+
+related_formalizations: []
+
+status:
+  scope: >-
+    Formalized: exactly the sixteen statements listed in comparator.json and
+    stated in Challenge.lean, with sorry-free proofs in RequestProject/, all
+    inside the wider 137-theorem development in that directory. These are
+    positivity and non-positivity certificates about explicit finite objects at
+    explicit rationals.
+
+    Sorry sites. The proof development contains exactly three documented sorry
+    sites, in RequestProject/D4.lean, RequestProject/F3.lean and
+    RequestProject/F3R.lean, with one shared cause: unitary diagonalizability
+    of a Hermitian matrix is not available in Mathlib in the form required.
+    None of the sixteen compared theorems depends on any of them, directly or
+    transitively. There are no sorries in any definition. Challenge.lean's own
+    sixteen deliberate sorries are the comparator placeholders and are not
+    counted here.
+
+    native_decide. native_decide appears in two files of the wider
+    development, both in numeric bound lemmas: RequestProject/E2.lean (six
+    uses) and RequestProject/G4.lean (one use). G5 and G6 import G4, and G4
+    imports E2, so those tiers inherit the Lean.ofReduceBool and
+    Lean.trustCompiler axioms. The two G-tier statements G3_cert_neg and
+    G5_c_prime are therefore excluded from the compared set: they are stated
+    neither in Challenge.lean nor in comparator.json, because comparator's
+    kernel-replay stage cannot replay native_decide proofs and Palomar does not
+    permit Lean.ofReduceBool. They remain documented in STATEMENTS.md and the
+    README. The V5 tier and the whole R tier, that is every true-kernel
+    certificate and every frontier and coverage result, are native_decide-free
+    including transitively; RequestProject/G1.lean documents its avoidance of
+    native_decide explicitly.
+
+    Not claimed. No statement here is about the Riemann Hypothesis and none
+    implies progress on it. There is no fine-grid or delta-to-zero result: the
+    fine-mesh regime is neither covered nor expected to be reachable by a
+    diagonal-dominance argument, and this is stated as the natural boundary of
+    the method (see TIER_R_FINAL.md). The three-site full-band coverage
+    theorem is a genuine three-site theorem on the band [1/5, 3/5] under an
+    explicit total-pairwise mesh condition, but that mesh condition forces the
+    unique coarse grid (1/5, 2/5, 3/5); it is not a continuum of movable
+    three-site configurations. There is no infinite-grid or all-mesh
+    positivity statement anywhere in the corpus. The claim that the true
+    kernel's positivity window is the first machine-checked instance of its
+    kind is made only to our knowledge, on the basis of the literature search
+    reported in the preprints, and no priority claim is attached to the
+    Mathlib gap noted above. The positive three-site floor is not obtained
+    from the Gershgorin engine: the last row's diagonal-dominance margin on
+    that grid is exactly zero, which is itself one of the compared theorems, so
+    the coverage theorem invokes the audited V5 eigenvalue margin instead. A
+    uniform analytic diagonal floor and a separation-dependent off-diagonal
+    bound for freely moving grids were not established. The executable checker
+    is sound but not complete, and no interval-arithmetic engine beyond it was
+    added. Proof terms were audited at statement level only; see the review
+    block.
+  sorry_count: 3
+  sorry_in_definitions: 0
+  axioms: []
+  main_results:
+    - declaration: "V5_5.true_kernel_grid_margin"
+      file: "RequestProject/V5_5.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
+    - declaration: "V5_6.true_kernel_first_prime_posdef"
+      file: "RequestProject/V5_6.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
+    - declaration: "V5_7.weil_triangle_prime_side"
+      file: "RequestProject/V5_7.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
+    - declaration: "TierR.GramState.expand_pd"
+      file: "RequestProject/R_A3_A4.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
+    - declaration: "TierR.GramState.halt_not_pd"
+      file: "RequestProject/R_A3_A4.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
+    - declaration: "R5.gershgorin_margin"
+      file: "RequestProject/R5Prime.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
+    - declaration: "R5.coverage_band_final"
+      file: "RequestProject/R5Final.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator.json"
+
+automation:
+  methods:
+    - method: autonomous
+      models: ["Aristotle"]
+      framework: "Aristotle (Harmonic)"
+      tool_setup: >-
+        Every .lean file under RequestProject/ is a per-batch deliverable of the
+        automated theorem prover Aristotle, by Harmonic. The workflow ran in
+        batches: the human author wrote a specification for a batch of
+        statements (definitions first, then the theorem statements to be
+        proved, with the pinned toolchain fixed at Lean 4 v4.28.0 and Mathlib
+        v4.28.0); the prover produced the Lean sources; and each batch came
+        back with a compilation report that was retained as the primary
+        provenance record. Statements that failed, or that the prover reported
+        as false, were returned to the specification stage and re-posed. In
+        one case the prover corrected a false numerical enclosure in the human
+        specification; in another it discovered that the requested
+        diagonal-dominance bound was exactly tight on the target grid and
+        certified positivity by a different route rather than misattribute the
+        method. No proof search or tactic scripting was done by hand.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: >-
+        Batches were posed as written mathematical specifications rather than
+        conversational prompts: the exact Lean definitions to be used, the
+        exact statements to be proved, the axiom budget (propext, Quot.sound,
+        Classical.choice only, with native_decide to be avoided wherever
+        possible and disclosed where not), and, for the experimental batches,
+        pre-registered hypotheses stated in advance so that a refutation would
+        count as a result rather than a failure. Two such hypotheses were
+        refuted by the prover and are reported as results. Certificate schemas
+        were specified so that exact rational verification could compose with
+        analytic error bounds.
+    - method: copilot
+      models: ["Claude (Anthropic)"]
+      framework: "Claude"
+      tool_setup: >-
+        An AI assistant (Claude, Anthropic) was used by the author for
+        specification development, that is drafting and refining the Lean
+        definitions and statements handed to the prover, and for the
+        statement-level audit of prover output against those specifications,
+        including the construction and checking of Challenge.lean as the
+        Mathlib-only restatement of the sixteen compared theorems. The prose of
+        the two preprints and of this metadata record was likewise produced
+        with that assistance. It produced no proof terms.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: >-
+        Used interactively on specification text and on statement-by-statement
+        comparison of delivered Lean statements against the intended ones. The
+        audit protocol was to read each delivered statement against its
+        specification and record any deviation explicitly; the deviations found
+        are recorded in fidelity.divergences and marked at the theorems in
+        Challenge.lean.
+    - method: manual
+      models: []
+      framework: "n/a"
+      tool_setup: >-
+        The human author set the problems, chose the mathematical objects and
+        the discretization families, designed the certificate schemas and the
+        tier architecture, pre-registered the structural hypotheses before the
+        batches that decided them, made every mathematical and editorial
+        decision, selected the sixteen theorems for the compared set, and
+        performed the final review of statements, axiom disclosures and scope.
+        The consolidated lake build was re-run independently of the prover's
+        environment. The author takes responsibility for all claims.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: "n/a"
+  spend_usd: "not tracked"
+  notes: >-
+    The division of labour is: human problem-setting, specification design,
+    pre-registration and decisions; AI-assisted specification drafting and
+    statement-level audit; automated proof production by Aristotle
+    (Harmonic). No human has reviewed the proof terms line by line. The trust
+    model is Lean's kernel plus the axiom audit: the consolidated all-files
+    lake build was re-run outside the prover's environment on 2026-07-26 on the
+    pinned toolchain (Lean 4 v4.28.0, Mathlib v4.28.0), building all 75 modules
+    with zero errors, exactly the three disclosed sorry warnings, and
+    #print axioms output on the headline theorems matching the disclosures
+    here; it is re-run in CI. The per-batch compilation reports remain the
+    original provenance record.
+
+fidelity:
+  divergences: >-
+    There is no cited source whose statements this development reproduces, so
+    the fidelity question here is between the sorry-free repository modules and
+    their restatement in Challenge.lean, which is what Palomar compares.
+
+    One systematic transformation: Challenge.lean imports only Mathlib and
+    therefore contains inlined copies of every custom definition the sixteen
+    statements need, copied from the named repository files. Because those
+    copies all live in the single namespace Challenge, the namespace prefixes
+    of the originals (Horizon., V5_1., V5_5., V5_6., TierR., R5. and so on) are
+    necessarily dropped. This applies to every inlined definition and
+    statement.
+
+    Two individual statement deviations, both marked at the theorem in
+    Challenge.lean. (1) expand_pd: the repository states
+    IsPDq (G.expand b d hs).M, where expand is a GramState-valued constructor
+    whose hsymm and hpd fields carry proofs and so cannot be inlined without
+    them; Challenge.lean states IsPDq (border G.M b d) instead. Since
+    (G.expand b d hs).M is definitionally border G.M b d, this is the same
+    claim with the constructor unfolded. (2) frontier_covers_band_final:
+    notation only. The repository writes the kernel as V5_1.G, but in
+    Challenge.lean the existential binder G : GramState shadows the
+    unqualified kernel name, so the kernel is written Challenge.G. Same
+    constant, same statement.
+
+    Challenge.lean makes no axiom claim of its own: every proof in it is sorry,
+    so #print axioms on that file is meaningless by design. Axiom status is a
+    property of the repository modules.
+
+review:
+  status: >-
+    self-assessed; automated mechanical checks (consolidated lake build in CI
+    with sorry census; leanprover/comparator statement match and kernel replay
+    against Challenge.lean for all 16 compared theorems); statement-level audit
+    of prover output was AI-assisted; no line-by-line human review of proof
+    terms; no external mathematical peer review yet
+  reviewers:
+    - "Rohan Badade (self)"
+  notes: >-
+    What was checked mechanically: the consolidated all-files lake build on the
+    pinned toolchain, re-run independently of the prover's environment and
+    re-run in CI, with exactly the three disclosed sorry warnings and no
+    errors; #print axioms on the headline theorems; and leanprover/comparator
+    (pinned) against Challenge.lean for the sixteen theorems in
+    comparator.json, covering statement match, byte-identical definition
+    graphs, the axiom allowlist (propext, Quot.sound, Classical.choice only)
+    and Lean-kernel replay.
+
+    What was checked by a human: the choice and wording of every statement, the
+    scope and non-claim lists in STATEMENTS.md and TIER_R_FINAL.md, the axiom
+    and sorry disclosures, and the contents of this file. STATEMENTS.md carries
+    the verbatim formal statements so that the claims can be read without
+    trusting any prose.
+
+    What was not done: no human has read the proof terms line by line; the
+    statement-level audit of prover output against the specifications was
+    AI-assisted rather than independently human-verified; and neither preprint
+    has been submitted or peer-reviewed. Scrutiny is invited through the
+    repository's issues and pull requests.
+
+alignment:
+  namespace: "Challenge"
+  statements:
+    - source: "Certified Positivity, headline theorem V5_5 (true-kernel window)"
+      lean: "Challenge.true_kernel_grid_margin"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The explicit Rayleigh floor of the paper's true-kernel window: 0.005
+        times the squared norm bounds the quadratic form of the genuine screw
+        Gram matrix on the grid (0.2, 0.4, 0.6); proved sorry-free as
+        V5_5.true_kernel_grid_margin in RequestProject/V5_5.lean.
+    - source: "Certified Positivity, headline theorem V5_5 (true-kernel window)"
+      lean: "Challenge.true_kernel_grid_posdef"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The positive-definiteness half of the same window, the paper's claimed
+        first explicit machine-checked instance of Suzuki's existential
+        Theorem 4.2; proved sorry-free as V5_5.true_kernel_grid_posdef in
+        RequestProject/V5_5.lean.
+    - source: "Certified Positivity, headline theorem V5_6 (persistence across the first prime)"
+      lean: "Challenge.true_kernel_first_prime_posdef"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The two-site true-kernel Gram matrix on (0.4, 0.9) remains positive
+        definite across the entry of the first prime atom; proved sorry-free as
+        V5_6.true_kernel_first_prime_posdef in RequestProject/V5_6.lean.
+    - source: "Certified Positivity, headline theorem V5_7 (prime-side identity)"
+      lean: "Challenge.weil_triangle_prime_side"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The exact identity welding the paper's two formal objects: the von
+        Mangoldt weighted triangle-kernel sum over prime powers up to N equals
+        the prime sum of the screw function, for exp t at most N; proved
+        sorry-free as V5_7.weil_triangle_prime_side in
+        RequestProject/V5_7.lean.
+    - source: "Certified Frontiers, headline theorem R_A1 (Schur criterion)"
+      lean: "Challenge.schur_pos_isPDq"
+      module: "Challenge"
+      status: proved
+      note: >-
+        A positive scalar Schur complement extends a positive-definite matrix
+        to its symmetric one-site border, which is the soundness of the
+        frontier's expansion gate; proved sorry-free as TierR.schur_pos_isPDq
+        in RequestProject/R_A1.lean.
+    - source: "Certified Frontiers, headline theorem R_A3_A4 (gated expansion)"
+      lean: "Challenge.expand_pd"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Faithfulness of the gated one-site expansion of a GramState; proved
+        sorry-free as TierR.GramState.expand_pd in
+        RequestProject/R_A3_A4.lean. The Challenge statement unfolds the
+        GramState constructor to the definitionally equal bordered matrix, as
+        recorded in fidelity.divergences.
+    - source: "Certified Frontiers, headline theorem R_A3_A4 (honest halt)"
+      lean: "Challenge.halt_not_pd"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Honest halting: when the scalar gate fails, the proposed border is
+        provably not positive definite, so a halt is a certified
+        counterexample and not an inconclusive result; proved sorry-free as
+        TierR.GramState.halt_not_pd in RequestProject/R_A3_A4.lean.
+    - source: "Certified Frontiers, headline theorem R_A5 (inertia meter)"
+      lean: "Challenge.isPDq_iff_nMinus_nZero_eq_zero"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Positive definiteness of a symmetric matrix is exactly the vanishing
+        of the negative and zero eigenvalue counts at threshold zero, the
+        paper's certifier-equals-instrument reading; proved sorry-free as
+        TierR.isPDq_iff_nMinus_nZero_eq_zero in RequestProject/R_A5.lean.
+    - source: "Certified Frontiers, headline theorem R_B1 (executable checker)"
+      lean: "Challenge.checkPDq_sound"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Soundness of the Boolean rational Sylvester checker: if the checker
+        returns true then the real cast of the rational matrix is positive
+        definite, decidable over the rationals without native_decide; proved
+        sorry-free as TierR.checkPDq_sound in RequestProject/R_B1.lean.
+    - source: "Certified Frontiers, headline theorem R5 (refutation, ground 1)"
+      lean: "Challenge.PsiArch_not_convex"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Machine refutation of the first pre-registered hypothesis: the
+        archimedean profile of the screw function is not convex on [0, 2/5],
+        so the originally proposed convexity route to coverage is unavailable;
+        proved sorry-free as R5.PsiArch_not_convex in RequestProject/R5.lean.
+    - source: "Certified Frontiers, headline theorem R5 (refutation, ground 2)"
+      lean: "Challenge.coverage_prime_free"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Machine refutation of the pre-registered all-grid coverage statement as
+        posed: no positive mesh and margin exist, because the admissible
+        singleton grid at the origin has zero diagonal; proved sorry-free as
+        R5.coverage_prime_free in RequestProject/R5.lean.
+    - source: "Certified Frontiers, headline theorem R5Prime (Rayleigh floor from diagonal dominance)"
+      lean: "Challenge.gershgorin_margin"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The general quantitative diagonal-dominance Rayleigh floor for finite
+        real symmetric matrices, with no sign assumption on the margin,
+        strengthening the dominance direction of Gershgorin's theorem; proved
+        sorry-free as R5.gershgorin_margin in RequestProject/R5Prime.lean.
+    - source: "Certified Frontiers, headline theorem R5Prime (two-site coverage)"
+      lean: "Challenge.coverage_band"
+      module: "Challenge"
+      status: proved
+      note: >-
+        Two-site coverage of the band [1/5, 3/5] at an explicit mesh and
+        margin, obtained by instantiating the Rayleigh-floor lemma at
+        separation 2/5 and margin 3/100; proved sorry-free as
+        R5.coverage_band in RequestProject/R5Prime.lean.
+    - source: "Certified Frontiers, headline theorem R5Final (tightness discovery); Tier R ledger, TIER_R_FINAL.md"
+      lean: "Challenge.three_grid_last_row_gershgorin_zero"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The exact identity showing that on the grid (1/5, 2/5, 3/5) the last
+        row's diagonal equals the sum of its two off-diagonal entries, so its
+        diagonal-dominance margin is exactly zero and the Gershgorin engine
+        cannot supply a positive three-site floor; proved sorry-free as
+        R5.three_grid_last_row_gershgorin_zero in
+        RequestProject/R5Final.lean.
+    - source: "Certified Frontiers, headline theorem R5Final (coverage theorem); Tier R ledger, TIER_R_FINAL.md"
+      lean: "Challenge.coverage_band_final"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The closing coverage rung: three strictly increasing sites in
+        [1/5, 3/5] at total-pairwise mesh 1/5 give a positive-definite genuine
+        screw Gram matrix with Rayleigh floor 1/200; proved sorry-free as
+        R5.coverage_band_final (stated identically as R5.coverage_band_k) in
+        RequestProject/R5Final.lean, using the audited V5_5 margin rather than
+        a Gershgorin floor. The ledger records that the mesh condition forces
+        the unique grid (1/5, 2/5, 3/5).
+    - source: "Certified Frontiers, headline theorem R5Final (frontier form); Tier R ledger, TIER_R_FINAL.md"
+      lean: "Challenge.frontier_covers_band_final"
+      module: "Challenge"
+      status: proved
+      note: >-
+        The frontier form of the coverage theorem: under the same explicit
+        mesh a three-dimensional certified GramState represents the true
+        kernel matrix, built literally by one singleton and two successful
+        expansions with both Schur gates discharged; proved sorry-free as
+        R5.frontier_covers_band_final in RequestProject/R5Final.lean. The
+        Challenge statement differs in kernel notation only, as recorded in
+        fidelity.divergences.
+
+acknowledgements: >-
+  Mathlib and its community, and the Lean 4 toolchain and the Lean FRO, for
+  the library and the kernel that this development rests on. Aristotle, the
+  automated theorem prover by Harmonic, produced every Lean proof in
+  RequestProject/ from the author's specifications. Claude, by Anthropic,
+  assisted with specification development, with the statement-level audit of
+  prover output against those specifications, and with prose. The compared set
+  is checked with leanprover/comparator (pinned) against Challenge.lean. The
+  author set the problems, made the mathematical and editorial decisions, and
+  takes responsibility for all claims; no human has reviewed the proof terms
+  line by line, and the trust model is Lean's kernel together with the
+  per-theorem axiom audit. The acknowledgments printed in the two preprint
+  PDFs in papers/ are the corresponding statement there; papers/PENDING-SYNC.md
+  records that the canonical off-repo versions extend them with the comparator
+  result, wording not yet reflected in the PDFs carried here.

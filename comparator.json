@@ -19,10 +19,11 @@
     "Challenge.coverage_band_final",
     "Challenge.frontier_covers_band_final"
   ],
+  "definition_names": [],
   "permitted_axioms": [
     "propext",
     "Quot.sound",
     "Classical.choice"
   ],
-  "enable_nanoda": false
+  "enable_nanoda": true
 }
