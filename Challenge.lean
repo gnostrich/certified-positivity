@@ -26,6 +26,12 @@ namespace prefixes of the originals (`Horizon.`, `V5_1.`, `TierR.`,
 `R5.`, …) are necessarily dropped; this is the one systematic transformation
 applied to every inlined definition and statement. Individual deviations
 beyond that are marked `-- deviates from repo statement:` at the theorem.
+One definition, `leadingSubRat`, also differs in a proof argument only: its
+index bound is the term `k.isLt` where `R_B1.lean` has `by omega`. Under the
+module system `omega` emits a private helper lemma whose name embeds the
+defining module, so the `Challenge` and `Solution` copies would no longer be
+byte-identical. The two bounds prove the same proposition, so by proof
+irrelevance the definitions are equal.
 
 This file makes **no axiom claim**: every proof below is `sorry`, so
 `#print axioms` on this file is meaningless by design. Axiom status of the
@@ -153,7 +159,8 @@ noncomputable def nMinus (M : Matrix (Fin n) (Fin n) ℝ) (hM : Mᵀ = M) (τ : 
 /-- Rational leading principal submatrix, in the same indexing convention as D6. -/
 def leadingSubRat {n : ℕ} (A : Matrix (Fin n) (Fin n) ℚ) (k : Fin n) :
     Matrix (Fin (k + 1)) (Fin (k + 1)) ℚ :=
-  A.submatrix (fun i => Fin.castLE (by omega) i) (fun i => Fin.castLE (by omega) i)
+  -- deviates from repo definition: `k.isLt` replaces `by omega` (see the module doc)
+  A.submatrix (fun i => Fin.castLE k.isLt i) (fun i => Fin.castLE k.isLt i)
 
 /-- R-B1: exact executable Sylvester checker. Symmetry is checked as part of the Boolean,
 since positivity of leading minors alone characterizes PD only for symmetric matrices. -/

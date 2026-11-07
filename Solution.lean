@@ -149,7 +149,8 @@ noncomputable def nMinus (M : Matrix (Fin n) (Fin n) ℝ) (hM : Mᵀ = M) (τ : 
 /-- Rational leading principal submatrix, in the same indexing convention as D6. -/
 def leadingSubRat {n : ℕ} (A : Matrix (Fin n) (Fin n) ℚ) (k : Fin n) :
     Matrix (Fin (k + 1)) (Fin (k + 1)) ℚ :=
-  A.submatrix (fun i => Fin.castLE (by omega) i) (fun i => Fin.castLE (by omega) i)
+  -- deviates from repo definition: `k.isLt` replaces `by omega` (see the module doc)
+  A.submatrix (fun i => Fin.castLE k.isLt i) (fun i => Fin.castLE k.isLt i)
 
 /-- R-B1: exact executable Sylvester checker. Symmetry is checked as part of the Boolean,
 since positivity of leading minors alone characterizes PD only for symmetric matrices. -/
