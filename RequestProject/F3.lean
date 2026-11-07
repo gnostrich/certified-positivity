@@ -1,5 +1,9 @@
-import Mathlib
-import RequestProject.F3R
+module
+
+public import Mathlib
+public import RequestProject.F3R
+
+@[expose] public section
 
 open scoped BigOperators Matrix ComplexOrder
 open Complex

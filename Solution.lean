@@ -1,16 +1,20 @@
-import Mathlib
-import RequestProject.V5_5
-import RequestProject.V5_6
-import RequestProject.V5_7
-import RequestProject.R_A1
-import RequestProject.R_A3_A4
-import RequestProject.R_A5
-import RequestProject.R_B1
-import RequestProject.R5
-import RequestProject.R5Prime
-import RequestProject.R5Final
-import RequestProject.G3
-import RequestProject.G5
+module
+
+public import Mathlib
+public import RequestProject.V5_5
+public import RequestProject.V5_6
+public import RequestProject.V5_7
+public import RequestProject.R_A1
+public import RequestProject.R_A3_A4
+public import RequestProject.R_A5
+public import RequestProject.R_B1
+public import RequestProject.R5
+public import RequestProject.R5Prime
+public import RequestProject.R5Final
+public import RequestProject.G3
+public import RequestProject.G5
+
+@[expose] public section
 
 /-!
 # Solution.lean — comparator bridge

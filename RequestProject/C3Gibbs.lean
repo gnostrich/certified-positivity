@@ -1,4 +1,8 @@
-import RequestProject.C3Base
+module
+
+public import RequestProject.C3Base
+
+@[expose] public section
 
 open scoped BigOperators Classical
 

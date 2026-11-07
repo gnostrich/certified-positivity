@@ -1,8 +1,12 @@
-import RequestProject.V5_1
-import RequestProject.V5_2
-import RequestProject.V5_3
-import RequestProject.V5_4
-import RequestProject.Horizon
+module
+
+public import RequestProject.V5_1
+public import RequestProject.V5_2
+public import RequestProject.V5_3
+public import RequestProject.V5_4
+public import RequestProject.Horizon
+
+@[expose] public section
 
 open Horizon
 

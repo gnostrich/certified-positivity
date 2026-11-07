@@ -1,5 +1,9 @@
-import RequestProject.V5_1
-import RequestProject.GW1
+module
+
+public import RequestProject.V5_1
+public import RequestProject.GW1
+
+@[expose] public section
 
 open scoped BigOperators
 open ArithmeticFunction

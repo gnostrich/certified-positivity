@@ -1,7 +1,11 @@
-import Mathlib
-import RequestProject.Horizon
-import RequestProject.K1
-import RequestProject.D5
+module
+
+public import Mathlib
+public import RequestProject.Horizon
+public import RequestProject.K1
+public import RequestProject.D5
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon

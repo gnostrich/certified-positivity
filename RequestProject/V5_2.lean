@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.G1
-import RequestProject.V5_1
+module
+
+public import Mathlib
+public import RequestProject.G1
+public import RequestProject.V5_1
+
+@[expose] public section
 
 namespace V5_2
 

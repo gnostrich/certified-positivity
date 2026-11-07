@@ -1,7 +1,11 @@
-import Mathlib
-import RequestProject.D4Aux
-import RequestProject.F2
-import RequestProject.F3R
+module
+
+public import Mathlib
+public import RequestProject.D4Aux
+public import RequestProject.F2
+public import RequestProject.F3R
+
+@[expose] public section
 
 open scoped BigOperators Matrix ComplexOrder
 open Complex

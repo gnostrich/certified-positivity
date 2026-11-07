@@ -1,8 +1,12 @@
-import RequestProject.C3Base
-import RequestProject.C3Feasible
-import RequestProject.C3Objective
-import RequestProject.C3Pos
-import RequestProject.C3Gibbs
+module
+
+public import RequestProject.C3Base
+public import RequestProject.C3Feasible
+public import RequestProject.C3Objective
+public import RequestProject.C3Pos
+public import RequestProject.C3Gibbs
+
+@[expose] public section
 
 open scoped BigOperators
 
