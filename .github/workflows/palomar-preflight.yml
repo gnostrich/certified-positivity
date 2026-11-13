@@ -1,0 +1,26 @@
+name: Palomar preflight
+
+# Runs Palomar's own complete verification job (mode: full) against the pushed
+# commit, as Palomar's agent guidance recommends before submitting. It has no
+# Palomar state or credentials and is predictive only; its report (status and
+# diagnostics) appears in the job summary and report artifact. The workflow
+# reference and pipeline_commit must be the same full PalomarSubmission commit.
+on:
+  push:
+    branches: [claude/blissful-hopper-duy4uf]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  palomar-preflight:
+    uses: PalomarRegistry/PalomarSubmission/.github/workflows/submission.yml@14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+    with:
+      repository: ${{ github.repository }}
+      commit: ${{ github.sha }}
+      pipeline_commit: 14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+      request_id: preflight001
+      mode: full
+      execution_profile: palomar-standard-v1
+      options: '{"comparator_config_path":"comparator.json","authorization_relationship":"I am a responsible author or maintainer"}'
