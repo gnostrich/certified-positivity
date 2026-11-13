@@ -37,7 +37,7 @@ theorem B2_recurrence (m : ℕ → ℝ) (r : ℕ) (hr : 1 ≤ r)
       rw [ @LinearMap.finrank_range_of_inj ];
       · norm_num;
       · exact fun x y hxy => Classical.not_not.1 fun h => h_rank ( x - y ) ( sub_ne_zero_of_ne h ) ( by simpa [ sub_eq_add_neg, Matrix.mulVec_add, Matrix.mulVec_neg ] using sub_eq_zero.2 hxy );
-    exact ⟨ h_subspace.choose, h_subspace.choose_spec.1, fun i => by simpa only [ Matrix.mulVec, dotProduct, mul_comm ] using congr_fun h_subspace.choose_spec.2 i ⟩;
+    exact ⟨ h_subspace.choose, h_subspace.choose_spec.1, fun i => by simpa only [ Matrix.mulVec, dotProduct, mul_comm, Matrix.of_apply, Pi.zero_apply ] using congr_fun h_subspace.choose_spec.2 i ⟩;
   choose f hf1 hf2 using h_nonempty;
   -- By normalizing $f_N$, we can ensure that $\|f_N\| = 1$ for all $N$.
   obtain ⟨g, hg⟩ : ∃ g : ℕ → Fin (r + 1) → ℝ, (∀ N, ∑ j, g N j ^ 2 = 1) ∧ (∀ N, ∀ i : Fin N, ∑ j : Fin (r + 1), g N j * m (i.val + j.val) = 0) := by

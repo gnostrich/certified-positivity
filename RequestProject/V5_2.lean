@@ -21,8 +21,12 @@ lemma corrected_harmonic_lower (n : ℕ) (hn : 0 < n) :
         -- Let's choose any $x > 0$ and derive the inequality.
         intro x hx_pos
         have h_deriv : ∀ y ∈ Set.Ioo 0 x, deriv (fun y => Real.log (1 + y) - y + y^2 / (2 * (1 + y))) y < 0 := by
-          intro y hy; norm_num [ add_comm, show y + 1 ≠ 0 from by linarith [ hy.1 ] ];
-          rw [ inv_eq_one_div, div_sub_one, div_add_div, div_lt_iff₀ ] <;> nlinarith [ hy.1, hy.2, pow_pos hy.1 3 ];
+          intro y hy
+          have hy0 : 0 < 1 + y := by linarith [hy.1]
+          have hd : HasDerivAt (fun y => Real.log (1 + y) - y + y^2 / (2 * (1 + y))) (1 / (1 + y) - 1 + ((2 : ℕ) * y ^ (2 - 1) * 1 * (2 * (1 + y)) - y ^ 2 * (2 * 1)) / (2 * (1 + y)) ^ 2) y :=
+            ((((hasDerivAt_id' y).const_add 1).log hy0.ne').sub (hasDerivAt_id' y)).add (((hasDerivAt_id' y).pow 2).div (((hasDerivAt_id' y).const_add 1).const_mul 2) (by positivity))
+          rw [hd.deriv, div_sub_one hy0.ne', div_add_div _ _ hy0.ne' (by positivity), div_lt_iff₀ (by positivity)]
+          norm_num; nlinarith [hy.1, hy.2, pow_pos hy.1 3]
         -- Apply the mean value theorem to the interval $[0, x]$.
         obtain ⟨c, hc⟩ : ∃ c ∈ Set.Ioo 0 x, deriv (fun y => Real.log (1 + y) - y + y^2 / (2 * (1 + y))) c = (Real.log (1 + x) - x + x^2 / (2 * (1 + x)) - (Real.log (1 + 0) - 0 + 0^2 / (2 * (1 + 0)))) / (x - 0) := by
           have := exists_deriv_eq_slope ( f := fun y => Real.log ( 1 + y ) - y + y ^ 2 / ( 2 * ( 1 + y ) ) ) hx_pos;
@@ -51,8 +55,12 @@ lemma corrected_harmonic_upper (n : ℕ) (hn : 0 < n) :
       have h_log_approx : ∀ x : ℝ, 0 < x → Real.log (1 + x) > 2 * x / (1 + x + 1) := by
         intros x hx_pos
         have h_log_approx : ∀ x : ℝ, 0 < x → deriv (fun x => Real.log (1 + x) - 2 * x / (1 + x + 1)) x > 0 := by
-          intro x hx_pos; norm_num [ add_comm, mul_comm, ne_of_gt, add_pos, hx_pos ];
-          rw [ inv_eq_one_div, div_lt_div_iff₀ ] <;> nlinarith only [ hx_pos ];
+          intro x hx_pos
+          have hx0 : 0 < 1 + x := by linarith
+          have hd : HasDerivAt (fun x => Real.log (1 + x) - 2 * x / (1 + x + 1)) (1 / (1 + x) - (2 * 1 * (1 + x + 1) - 2 * x * 1) / (1 + x + 1) ^ 2) x :=
+            (((hasDerivAt_id' x).const_add 1).log hx0.ne').sub (((hasDerivAt_id' x).const_mul 2).div (((hasDerivAt_id' x).const_add 1).add_const 1) (by positivity))
+          rw [hd.deriv, gt_iff_lt, sub_pos, div_lt_div_iff₀ (by positivity) (by positivity)]
+          nlinarith [hx_pos]
         -- Apply the mean value theorem to the interval $[0, x]$.
         obtain ⟨c, hc⟩ : ∃ c ∈ Set.Ioo 0 x, deriv (fun x => Real.log (1 + x) - 2 * x / (1 + x + 1)) c = (Real.log (1 + x) - 2 * x / (1 + x + 1) - (Real.log (1 + 0) - 2 * 0 / (1 + 0 + 1))) / (x - 0) := by
           have := exists_deriv_eq_slope ( f := fun x => Real.log ( 1 + x ) - 2 * x / ( 1 + x + 1 ) ) hx_pos;

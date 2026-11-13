@@ -104,8 +104,7 @@ theorem L_point_four : (16.3391 : ℝ) < V5_1.L 0.4 ∧ V5_1.L 0.4 < 16.3394 := 
     have h_final : V5_1.L 0.4 < ∑ n ∈ Finset.range 16, (0.44934 : ℝ) ^ n * (1 / ((n : ℝ) + 1 / 4) ^ 2) + (0.44934 ^ 16 * (1 / ((16 : ℝ) + 1 / 4) ^ 2)) / (1 - 0.44934) := by
       refine' h_split.symm ▸ add_lt_add_of_le_of_lt _ _;
       · gcongr;
-        rename_i i hi;
-        convert pow_le_pow_left₀ ( by positivity ) ( show Real.exp ( -0.8 ) ≤ 0.44934 by exact le_of_lt ( by have := V5_4.exp_neg_four_fifths_bounds; norm_num at *; linarith ) ) i using 1 ; rw [ ← Real.exp_nat_mul ] ; ring;
+        convert pow_le_pow_left₀ ( by positivity ) ( show Real.exp ( -0.8 ) ≤ 0.44934 by exact le_of_lt ( by have := V5_4.exp_neg_four_fifths_bounds; norm_num at *; linarith ) ) n using 1 ; rw [ ← Real.exp_nat_mul ] ; ring;
       · refine' lt_of_le_of_lt h_tail _;
         gcongr <;> norm_num [ Real.exp_neg ] at *;
         · rw [ inv_lt_comm₀, Real.exp_eq_exp_ℝ ] <;> norm_num [ NormedSpace.exp_eq_tsum_div ] at *;

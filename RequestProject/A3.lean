@@ -22,6 +22,6 @@ theorem A3_exists :
   use !![0, 1, -1; -1, 0, 1; 1, -1, 0];
   simp +decide [ Fin.forall_fin_succ ];
   norm_num [ Fin.sum_univ_succ, ← List.ofFn_inj ];
-  aesop
+  ext i j; fin_cases i <;> fin_cases j <;> simp
 
 end A3

@@ -112,9 +112,11 @@ margin ≥ 0.005), `R_A2/R_A3_A4.lean` (GramState / expand / honest halt),
 
 ## Toolchain and build status
 
-`lean-toolchain` pins Lean 4 `v4.28.0`; `lakefile.toml` /
-`lake-manifest.json` pin Mathlib `v4.28.0` and its transitive dependencies —
-the environment the prover batches compiled against. The modules are
+`lean-toolchain` pins Lean 4 `v4.35.0`; `lakefile.toml` /
+`lake-manifest.json` pin Mathlib `v4.35.0` and its transitive dependencies.
+The prover batches compiled against Lean and Mathlib `v4.28.0`; the move to
+`v4.35.0` (Palomar's minimum is `v4.35.0-rc2`) required proof-script repairs
+in 29 files, recorded in `formalization.yaml` under `automation`. The modules are
 committed under `RequestProject/` and import each other under the
 `RequestProject.*` namespace (the prover project's name, and the lakefile's
 `lean_lib` glob target), so `lake build` builds them directly with no

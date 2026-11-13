@@ -78,7 +78,7 @@ theorem F3R_uLast_ne (c : ℤ → ℂ) (hlead : (leadingBlock (r := r) c).PosDef
   -- Since `u (Fin.last r) = 0`, we have `((leadingBlock c).mulVec (fun k => u (Fin.castSucc k))) = 0`.
   have h_leading_block : (leadingBlock (r := r) c).mulVec (fun k => u (Fin.castSucc k)) = 0 := by
     ext i; replace hnull := congr_fun hnull ( Fin.castSucc i ) ; simp_all +decide [ Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc ] ;
-    convert hnull using 1;
+    exact hnull;
   exact hu <| funext fun i => Fin.lastCases h_last_zero ( fun i => by simpa [ h_last_zero ] using congr_fun ( Matrix.eq_zero_of_mulVec_eq_zero hlead.det_pos.ne' h_leading_block ) i ) i
 
 /-

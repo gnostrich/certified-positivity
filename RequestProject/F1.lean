@@ -137,9 +137,9 @@ theorem F1_rankone (c : ℤ → ℂ)
       -- For `m : ℕ` with `m ≤ n`, `c m = T ⟨m⟩ ⟨0⟩ = u m * w 0 = (u 0 * w 0) * q ^ m = c0 * q ^ m` (using `c0 = u 0 * w 0 = T 0 0`).
       intros m hm
       have h_c_m : c m = u (⟨m, by linarith⟩) * w 0 := by
-        convert h_outer ⟨ m, by linarith ⟩ 0 using 1;
+        convert h_outer ⟨ m, by linarith ⟩ 0 using 1; simp [toeplitz]
       rw [ h_c_m, h_u_ind ⟨ m, by linarith ⟩ ];
-      convert congr_arg ( · * q ^ m ) ( h_outer 0 0 |> Eq.symm ) using 1 ; ring!;
+      convert congr_arg ( · * q ^ m ) ( h_outer 0 0 |> Eq.symm ) using 1 ; ring!; simp [toeplitz, c0]
     -- Let `θ := Complex.arg q`.
     obtain ⟨θ, hθ⟩ : ∃ θ : ℝ, q = Complex.exp (θ * Complex.I) := by
       rw [ Complex.norm_eq_one_iff ] at hq_norm ; tauto;

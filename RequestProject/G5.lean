@@ -36,7 +36,8 @@ theorem G5_a : StrictAntiOn atom (Set.Ici 8) := by
   have h_deriv_neg : ∀ x ∈ Set.Ioi (Real.exp 2), deriv atom x < 0 := by
     intro x hx
     have h_deriv : deriv atom x = (2 - Real.log x) / (2 * x * Real.sqrt x) := by
-      convert HasDerivAt.deriv ( HasDerivAt.div ( Real.hasDerivAt_log ( show x ≠ 0 by linarith [ hx.out, Real.exp_pos 2 ] ) ) ( Real.hasDerivAt_sqrt ( show x ≠ 0 by linarith [ hx.out, Real.exp_pos 2 ] ) ) ( ne_of_gt <| Real.sqrt_pos.mpr <| show 0 < x by linarith [ hx.out, Real.exp_pos 2 ] ) ) using 1 ; ring;
+      convert HasDerivAt.deriv ( HasDerivAt.div ( Real.hasDerivAt_log ( show x ≠ 0 by linarith [ hx.out, Real.exp_pos 2 ] ) ) ( Real.hasDerivAt_sqrt ( show x ≠ 0 by linarith [ hx.out, Real.exp_pos 2 ] ) ) ( ne_of_gt <| Real.sqrt_pos.mpr <| show 0 < x by linarith [ hx.out, Real.exp_pos 2 ] ) ) using 1 ; · rfl
+      ring;
       grind;
     exact h_deriv.symm ▸ div_neg_of_neg_of_pos ( by linarith [ Real.log_exp 2, Real.log_lt_log ( by positivity ) hx ] ) ( mul_pos ( mul_pos two_pos ( lt_trans ( by positivity ) hx ) ) ( Real.sqrt_pos.mpr ( lt_trans ( by positivity ) hx ) ) );
   -- Apply the mean value theorem to the interval $[x, y]$.

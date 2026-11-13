@@ -18,7 +18,7 @@ the statements here can be compared against the repository modules (e.g. with
 a statement comparator) to check that the sorry-free proofs in `RequestProject/` prove
 exactly these claims and not something subtly different.
 
-Toolchain: `leanprover/lean4:v4.28.0`, Mathlib `v4.28.0` (as pinned by
+Toolchain: `leanprover/lean4:v4.35.0`, Mathlib `v4.35.0` (as pinned by
 `lean-toolchain` / `lakefile.toml` / `lake-manifest.json` at the repo root).
 Checked: this file elaborates with no errors under that toolchain
 (`lake env lean Challenge.lean`), emitting exactly the 6 expected

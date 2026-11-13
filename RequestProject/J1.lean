@@ -67,6 +67,6 @@ theorem J1_b (x : ℤ → ℝ) (hx : (Function.support x).Finite) (n : ℕ) :
           intro i hi; contrapose! hi; simp_all +decide [ Finset.sum_eq_zero_iff_of_nonneg, mul_nonneg ] ;
       aesop;
     simp_all +decide [ sq, mul_assoc, mul_comm, mul_left_comm, Finset.mul_sum _ _ _, Finset.sum_mul ];
-  convert h_quad_form.ge.trans' ( finsum_nonneg fun i => sq_nonneg _ ) using 1
+  exact h_quad_form.ge.trans' ( finsum_nonneg fun i => sq_nonneg _ )
 
 end J1

@@ -137,7 +137,7 @@ lemma window_null {N q : ℕ} (c : ℤ → ℂ) (hPSD : (T (N := N) c).PosSemide
       refine Finset.sum_congr rfl fun k _ => ?_
       ring_nf
     rw [hzero, mul_zero]
-  have hker := (hPSD.dotProduct_mulVec_zero_iff y).mp hform
+  have hker := (hPSD.dotProduct_mulVec_zero_iff (x := y)).mp hform
   have := congr_fun hker i
   rw [key i] at this
   exact this

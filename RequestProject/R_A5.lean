@@ -66,7 +66,8 @@ theorem pd_readout_congruence_iff (M P : Matrix (Fin n) (Fin n) ℝ)
       ← isPDq_iff_nMinus_nZero_eq_zero M hM,
       D6.isPDq_iff_posDef _ (by simp [Matrix.transpose_mul, hM, Matrix.mul_assoc]),
       D6.isPDq_iff_posDef _ hM]
-  simpa only [Matrix.star_eq_conjTranspose, Matrix.conjTranspose, star_trivial] using
-    (Matrix.IsUnit.posDef_star_left_conjugate_iff (x := M) hP)
+  have hstar : star P = Pᵀ := by
+    rw [Matrix.star_eq_conjTranspose, Matrix.conjTranspose_eq_transpose_of_trivial]
+  simpa only [hstar] using (Matrix.IsUnit.posDef_star_left_conjugate_iff (x := M) hP)
 
 end TierR

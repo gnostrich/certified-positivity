@@ -159,7 +159,7 @@ sources:
       - "The Mathlib Community"
     id: "https://github.com/leanprover-community/mathlib4"
     type: other
-    location: "Mathlib v4.28.0, as pinned by lakefile.toml and lake-manifest.json"
+    location: "Mathlib v4.35.0, as pinned by lakefile.toml and lake-manifest.json"
     relationship: background
     license: "Apache-2.0"
     author_endorsement: "n/a"
@@ -277,7 +277,8 @@ automation:
       tool_setup: >-
         Every .lean file under RequestProject/ is a per-batch deliverable of the
         automated theorem prover Aristotle, by Harmonic, apart from the
-        mechanical module-system header described under the copilot method.
+        mechanical module-system header and the proof repairs required by the
+        move to Lean v4.35.0, both described under the copilot method.
         The workflow ran in
         batches: the human author wrote a specification for a batch of
         statements (definitions first, then the theorem statements to be
@@ -338,8 +339,20 @@ automation:
         the two preprints and of this metadata record was likewise produced
         with that assistance, as was the mechanical port of every .lean file
         to Lean's module system (a module header, public imports and an
-        exposed public section, with no statement or proof changed). It
-        produced no proof terms.
+        exposed public section, with no statement or proof changed). In
+        November 2026 the development was moved from Lean and Mathlib v4.28.0
+        to v4.35.0, because Palomar now requires Lean v4.35.0-rc2 or later.
+        Proof scripts in 29 files of RequestProject/ no longer elaborated (A1,
+        A3, A5, B2, B4, C1, C3Gibbs, C3Objective, C3Pos, D4Aux, D6, E5, F1,
+        F2, F3R, G5, H3a, H3b, I2, J1, K1, K3, R5Final, R5Prime, R_A5, R_A6,
+        V5_2, V5_4, V5_7); five
+        of them (D6, G5, V5_2, V5_4, V5_7) are in the import closure of the
+        compared theorems. Claude agents repaired them, editing proof scripts
+        only: no statement, definition or name changed, no sorry or new axiom
+        was introduced, and no heartbeat limit was raised. Most repairs close a
+        side goal true by definition that the old convert or simp had closed
+        implicitly, or adapt to a changed Mathlib lemma signature. Apart from
+        these repairs it produced no proof terms.
       cost:
         wall_time: "not tracked"
         spend_usd: "not tracked"
@@ -382,8 +395,12 @@ automation:
     disclosures here. On 2026-09-14 those three sorry warnings were closed
     (see automation.methods.autonomous and status.scope above); the
     consolidated build, now covering 76 modules, emits none, and this is
-    re-run in CI. The per-batch compilation reports remain the original
-    provenance record.
+    re-run in CI. On 2026-11-13 the development was moved to Lean v4.35.0
+    and Mathlib v4.35.0 (see automation.methods.copilot for the proof repairs
+    this required); the consolidated build of all 76 modules was re-run on
+    that toolchain with zero errors and no sorry warnings, and the compared
+    set was re-checked with the toolchain's lake comparator. The per-batch
+    compilation reports remain the original provenance record.
 
 fidelity:
   divergences: >-
@@ -406,9 +423,9 @@ fidelity:
 review:
   status: >-
     self-assessed; automated mechanical checks (consolidated lake build in CI
-    with sorry census; leanprover/comparator statement match and both
-    Lean-kernel and NanoDa replay against Challenge.lean for all 6 compared
-    theorems); statement-level audit
+    with sorry census; the toolchain's lake comparator statement match with
+    replay through Lean's kernel and the bundled NanoDa and con-ron kernels,
+    against Challenge.lean for all 6 compared theorems); statement-level audit
     of prover output was AI-assisted; no line-by-line human review of proof
     terms; no external mathematical peer review yet
   reviewers:
@@ -418,11 +435,12 @@ review:
     pinned toolchain, re-run independently of the prover's environment and
     re-run in CI, with no sorry warnings and no errors (as of the 2026-09-14
     closure of the three previously disclosed sorry sites; see status.scope
-    above); #print axioms on the headline theorems; and leanprover/comparator
-    (pinned) against Challenge.lean for the six theorems in comparator.json,
-    covering statement match, byte-identical definition graphs, the axiom
-    allowlist (propext, Quot.sound, Classical.choice only) and both
-    Lean-kernel and NanoDa replay.
+    above); #print axioms on the headline theorems; and the lake comparator
+    bundled with the pinned Lean v4.35.0 toolchain, run against
+    Challenge.lean for the six theorems in comparator.json, covering statement
+    match, byte-identical definition graphs, the axiom allowlist (propext,
+    Quot.sound, Classical.choice only) and replay through Lean's kernel and
+    the toolchain's bundled NanoDa and con-ron kernels.
 
     What was checked by a human: the choice and wording of every statement, the
     scope and non-claim lists, the axiom and sorry disclosures, and the
@@ -430,7 +448,8 @@ review:
     the verbatim formal statements so that the claims can be read without
     trusting any prose.
 
-    What was not done: no human has read the proof terms line by line; the
+    What was not done: no human has read the proof terms line by line,
+    including the AI-made repairs for the Lean v4.35.0 move; the
     statement-level audit of prover output against the specifications was
     AI-assisted rather than independently human-verified; and neither preprint
     has been submitted or peer-reviewed. Scrutiny is invited through the
@@ -506,11 +525,13 @@ alignment:
 acknowledgements: >-
   Mathlib and its community, and the Lean 4 toolchain and the Lean FRO, for
   the library and the kernel that this development rests on. Aristotle, the
-  automated theorem prover by Harmonic, produced every Lean proof in
+  automated theorem prover by Harmonic, produced the Lean proofs in
   RequestProject/ from the author's specifications. Claude, by Anthropic,
   assisted with specification development, with the statement-level audit of
-  prover output against those specifications, and with prose. The compared set
-  is checked with leanprover/comparator (pinned) against Challenge.lean. The
+  prover output against those specifications, with prose, and with the proof
+  repairs required by the move to Lean v4.35.0. The compared set
+  is checked against Challenge.lean with the lake comparator bundled in the
+  pinned Lean toolchain. The
   author set the problems, made the mathematical and editorial decisions, and
   takes responsibility for all claims; no human has reviewed the proof terms
   line by line, and the trust model is Lean's kernel together with the

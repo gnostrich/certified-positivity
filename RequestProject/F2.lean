@@ -106,6 +106,7 @@ theorem F2_c (hrn : r ≤ n) (θ : Fin r → ℝ)
       intros j k
       have h_subst : (section' c) j k = ∑ s : Fin r, (a s) * (z s) ^ (j : ℕ) * (starRingEnd ℂ (z s)) ^ (k : ℕ) := by
         convert hrep ( j - k ) _ using 1;
+        · rfl
         · simp +zetaDelta at *;
           norm_num [ sub_mul, mul_assoc, ← Complex.exp_nat_mul, ← Complex.exp_conj ];
           exact Finset.sum_congr rfl fun _ _ => by rw [ ← Complex.exp_add ] ; ring;
