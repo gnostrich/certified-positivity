@@ -3,11 +3,12 @@
 version: "v0.4"
 
 project:
-  name: "Certified Positivity: machine-checked positivity windows for the Suzuki zeta screw kernel and truncated Weil-type quadratic forms"
+  name: "Certified Positivity: machine-checked positivity windows for the Suzuki zeta screw kernel"
   description: >-
     This Lean 4 and Mathlib development produces exact, machine-checked
-    positivity and non-positivity certificates for finite matrices built from
-    Suzuki's zeta screw function and from truncated Weil-type quadratic forms.
+    positivity certificates for finite Gram matrices built from Suzuki's zeta
+    screw function, together with an exact prime-side identity for its prime
+    sum.
     Weil's explicit formula recasts the Riemann Hypothesis as positivity of a
     quadratic form assembled from prime powers, and a recent line of work
     truncates that form and studies the resulting finite matrices. The objects
@@ -17,7 +18,7 @@ project:
     definiteness, in the quadratic-form sense, of the finite matrices this
     kernel generates on explicit grids.
 
-    The six compared results are as follows. (1) On the grid (0.2, 0.4, 0.6)
+    The four compared results are as follows. (1) On the grid (0.2, 0.4, 0.6)
     the 3 by 3 Gram matrix M3 of the genuine kernel satisfies an explicit
     Rayleigh floor: for every real vector x, 0.005 times the sum of the x_i
     squared is at most the quadratic form of M3 at x. (2) M3 is positive
@@ -27,14 +28,7 @@ project:
     this matrix. (4) An exact prime-side identity: for t > 0 and every natural
     N with exp t at most N, the sum over 2 <= n <= N of Lambda(n)/sqrt n times
     the even triangle window (t - |x|)/2 on [-t, t], evaluated at x = log n
-    and x = -log n, equals the prime sum appearing in Psi. (5) The 4 by 4
-    symmetric Toeplitz matrix with diagonal 0.789 and off-diagonal entries
-    (log 2)/sqrt 2, (log 3)/sqrt 3 and (log 5)/sqrt 5, the true prime atoms,
-    is not positive definite. In the companion preprint this is the
-    non-positivity half of a horizon-threshold computation for the third
-    window; only non-positivity at the single value 0.789 is compared. (6) For
-    every prime p other than 7, (log p)/sqrt p < (log 7)/sqrt 7, so p = 7 is
-    the strict maximum of this atom weight over all primes.
+    and x = -log n, equals the prime sum appearing in Psi.
 
     The interest is that the surrounding literature (Connes and van Suijlekom;
     Connes, Consani and Moscovici; Suzuki) works either in floating point or at
@@ -60,8 +54,7 @@ classification:
 sources:
   - title: >-
       Explicit machine-checked positivity windows for the genuine Suzuki zeta
-      screw kernel, the exact prime-side identity for its prime sum, and two
-      horizon-window results at the true prime atoms
+      screw kernel and the exact prime-side identity for its prime sum
     authors:
       - "Rohan Badade"
     type: original-proof
@@ -89,10 +82,9 @@ sources:
       repository, and the copy here is one or more revisions behind the
       canonical off-repo version (see papers/PENDING-SYNC.md). It is the
       informal write-up of part of this development rather than a prior source
-      for it, hence background. Supplies all six results in the compared set:
+      for it, hence background. Supplies all four results in the compared set:
       the true-kernel positivity window with margin 0.005, its persistence on
-      the grid (0.4, 0.9), the prime-side identity, and the two horizon-window
-      results G3_cert_neg and G5_c_prime.
+      the grid (0.4, 0.9), and the prime-side identity.
   - title: "Screw functions and the Weil quadratic form"
     authors:
       - "Masatoshi Suzuki"
@@ -139,7 +131,7 @@ sources:
       the structural skeleton of the wider development (finite
       Osterwalder-Schrader reconstruction, the finite KMS identity, the
       Caratheodory-Toeplitz ladder). Context only: none of its results is
-      formalized, and none of the six compared theorems is one of theirs.
+      formalized, and none of the four compared theorems is one of theirs.
   - title: 'Sur les "formules explicites" de la theorie des nombres premiers'
     authors:
       - "Andre Weil"
@@ -150,10 +142,9 @@ sources:
     author_endorsement: "n/a"
     note: >-
       The explicit formula and the positivity criterion that give the whole
-      programme its subject. The prime-side identity and the truncated
-      Weil-type form of G3_cert_neg in the compared set are finite analogues
-      of objects from this source; the source's own results are not
-      formalized here.
+      programme its subject. The prime-side identity in the compared set is a
+      finite analogue of the prime side of the explicit formula; the source's
+      own results are not formalized here.
   - title: "mathlib4: the Lean mathematical library"
     authors:
       - "The Mathlib Community"
@@ -177,12 +168,14 @@ related_formalizations: []
 
 status:
   scope: >-
-    Formalized: exactly the six statements listed in comparator.json and
+    Formalized: exactly the four statements listed in comparator.json and
     stated in Challenge.lean, with sorry-free proofs in RequestProject/, all
     inside the wider 76-module development in that directory. These are
-    positivity and non-positivity certificates about explicit finite objects at
-    explicit rationals. The wider development also contains other material,
-    including the Tier R work written up in the companion preprint
+    positivity certificates about explicit finite matrices at explicit
+    rationals and an exact finite identity. The wider development also
+    contains other material, including the horizon-threshold results of the
+    Certified Positivity preprint (RequestProject/G3.lean, G5.lean and related
+    files) and the Tier R work written up in the companion preprint
     papers/certified-frontiers-paper.pdf; none of it is part of this
     submission or of the compared set.
 
@@ -199,37 +192,33 @@ status:
     Carathéodory-Fejér theorem, via least-singular-block selection, F3R,
     window propagation of the null relation, and Vandermonde interpolation,
     with general-purpose lemmas factored into the new module
-    RequestProject/D4Aux.lean. None of the six compared theorems depended on
+    RequestProject/D4Aux.lean. None of the four compared theorems depended on
     any of them, directly or transitively, either before or after this
     change. There are no sorries in any definition, and none anywhere in the
-    development now. Challenge.lean's own six deliberate sorries are the
+    development now. Challenge.lean's own four deliberate sorries are the
     comparator placeholders and are not counted here.
 
     native_decide. native_decide was formerly used in two files of the wider
     development, both in numeric bound lemmas: RequestProject/E2.lean (six
     uses, underlying E2_log3, E2_log5 and E2_log7) and RequestProject/G4.lean
-    (one use, underlying G4_log11). G5, G6 and G3_cert_neg depended on it
-    transitively via G4 importing E2, and via the E3/G2 atoms G3_cert_neg
-    cites. On 2026-09-14 those four bound lemmas were re-proved by the
+    (one use, underlying G4_log11). Neither file is in the import closure of
+    the four compared theorems. On 2026-09-14 those four bound lemmas were
+    re-proved by the
     Aristotle prover using Mathlib's Real.abs_log_sub_add_sum_range_le
     Mercator-series tail bound together with Real.log_two_gt_d9 and
     Real.log_two_lt_d9, with all arithmetic discharged by norm_num/linarith;
     no statement changed. The whole development is now native_decide-free,
     verified by a full rebuild, #print axioms on the affected theorems, and
-    comparator replay (Lean-kernel and NanoDa) against the updated
-    Challenge.lean and comparator.json. As a consequence the two G-tier
-    statements G3_cert_neg and G5_c_prime depend only on propext,
-    Classical.choice and Quot.sound, like every other compared theorem.
-    RequestProject/G1.lean, which was always native_decide-free, remains
-    unused by the rest of the development and only mentions native_decide in
-    its module docstring, describing what it avoids.
+    comparator replay (Lean-kernel and NanoDa) against the then-current
+    Challenge.lean and comparator.json. RequestProject/G1.lean, which is in
+    the import closure of the compared theorems through V5_2.lean, was always
+    native_decide-free and only mentions native_decide in its module
+    docstring, describing what it avoids.
 
     Not claimed. No statement here is about the Riemann Hypothesis and none
     implies progress on it. Every positivity statement concerns one specified
     finite grid; there is no fine-grid, all-grid, infinite-grid or asymptotic
-    positivity statement. G3_cert_neg certifies non-positivity at the single
-    value 0.789 only; that positivity holds above some threshold is not part
-    of the compared set. The claim that the true kernel's positivity window is
+    positivity statement. The claim that the true kernel's positivity window is
     the first machine-checked instance of its kind is made only to our
     knowledge, on the basis of the literature search reported in the
     preprint. Proof terms were audited at statement level only; see the
@@ -255,16 +244,6 @@ status:
       comparator_config: "comparator.json"
     - declaration: "V5_7.weil_triangle_prime_side"
       file: "RequestProject/V5_7.lean"
-      sorry_count: 0
-      axioms: ["propext", "Quot.sound", "Classical.choice"]
-      comparator_config: "comparator.json"
-    - declaration: "G3.G3_cert_neg"
-      file: "RequestProject/G3.lean"
-      sorry_count: 0
-      axioms: ["propext", "Quot.sound", "Classical.choice"]
-      comparator_config: "comparator.json"
-    - declaration: "G5.G5_c_prime"
-      file: "RequestProject/G5.lean"
       sorry_count: 0
       axioms: ["propext", "Quot.sound", "Classical.choice"]
       comparator_config: "comparator.json"
@@ -335,7 +314,7 @@ automation:
         definitions and statements handed to the prover, and for the
         statement-level audit of prover output against those specifications,
         including the construction and checking of Challenge.lean as the
-        Mathlib-only restatement of the six compared theorems. The prose of
+        Mathlib-only restatement of the four compared theorems. The prose of
         the two preprints and of this metadata record was likewise produced
         with that assistance, as was the mechanical port of every .lean file
         to Lean's module system (a module header, public imports and an
@@ -345,8 +324,8 @@ automation:
         Proof scripts in 29 files of RequestProject/ no longer elaborated (A1,
         A3, A5, B2, B4, C1, C3Gibbs, C3Objective, C3Pos, D4Aux, D6, E5, F1,
         F2, F3R, G5, H3a, H3b, I2, J1, K1, K3, R5Final, R5Prime, R_A5, R_A6,
-        V5_2, V5_4, V5_7); five
-        of them (D6, G5, V5_2, V5_4, V5_7) are in the import closure of the
+        V5_2, V5_4, V5_7); three
+        of them (V5_2, V5_4, V5_7) are in the import closure of the
         compared theorems. Claude agents repaired them, editing proof scripts
         only: no statement, definition or name changed, no sorry or new axiom
         was introduced, and no heartbeat limit was raised. Most repairs close a
@@ -372,7 +351,7 @@ automation:
         the discretization families, designed the certificate schemas and the
         tier architecture, pre-registered the structural hypotheses before the
         batches that decided them, made every mathematical and editorial
-        decision, selected the six theorems for the compared set, and
+        decision, selected the four theorems for the compared set, and
         performed the final review of statements, axiom disclosures and scope.
         The consolidated lake build was re-run independently of the prover's
         environment. The author takes responsibility for all claims.
@@ -399,7 +378,8 @@ automation:
     and Mathlib v4.35.0 (see automation.methods.copilot for the proof repairs
     this required); the consolidated build of all 76 modules was re-run on
     that toolchain with zero errors and no sorry warnings, and the compared
-    set was re-checked with the toolchain's lake comparator. The per-batch
+    set was re-checked in this repository's CI with the toolchain's lake
+    comparator. The per-batch
     compilation reports remain the original provenance record.
 
 fidelity:
@@ -409,10 +389,10 @@ fidelity:
     their restatement in Challenge.lean, which is what Palomar compares.
 
     One systematic transformation: Challenge.lean imports only Mathlib and
-    therefore contains inlined copies of every custom definition the six
+    therefore contains inlined copies of every custom definition the four
     statements need, copied from the named repository files. Because those
     copies all live in the single namespace Challenge, the namespace prefixes
-    of the originals (Horizon., V5_1., V5_5., V5_6., G3.) are necessarily
+    of the originals (Horizon., V5_1., V5_5., V5_6., V5_7.) are necessarily
     dropped. This applies to every inlined definition and statement. There
     are no individual statement deviations.
 
@@ -422,10 +402,11 @@ fidelity:
 
 review:
   status: >-
-    self-assessed; automated mechanical checks (consolidated lake build in CI
-    with sorry census; the toolchain's lake comparator statement match with
-    replay through Lean's kernel and the bundled NanoDa and con-ron kernels,
-    against Challenge.lean for all 6 compared theorems); statement-level audit
+    self-assessed; automated mechanical checks in this repository's CI
+    (consolidated lake build with sorry census; lake comparator from the
+    pinned Lean v4.35.0 toolchain, statement match with replay through Lean's
+    kernel and the NanoDa and con-ron binaries shipped in that toolchain,
+    against Challenge.lean for all 4 compared theorems); statement-level audit
     of prover output was AI-assisted; no line-by-line human review of proof
     terms; no external mathematical peer review yet
   reviewers:
@@ -435,12 +416,20 @@ review:
     pinned toolchain, re-run independently of the prover's environment and
     re-run in CI, with no sorry warnings and no errors (as of the 2026-09-14
     closure of the three previously disclosed sorry sites; see status.scope
-    above); #print axioms on the headline theorems; and the lake comparator
-    bundled with the pinned Lean v4.35.0 toolchain, run against
-    Challenge.lean for the six theorems in comparator.json, covering statement
-    match, byte-identical definition graphs, the axiom allowlist (propext,
-    Quot.sound, Classical.choice only) and replay through Lean's kernel and
-    the toolchain's bundled NanoDa and con-ron kernels.
+    above); #print axioms on the headline theorems; and, in this repository's
+    CI (.github/workflows/build.yml), the lake comparator shipped with the
+    pinned Lean v4.35.0 toolchain, run against Challenge.lean for the four
+    theorems in comparator.json, covering statement match, byte-identical
+    definition graphs, the axiom allowlist (propext, Quot.sound,
+    Classical.choice only) and replay through Lean's kernel and the
+    nanoda_bin and con-ron binaries found in that toolchain's bin directory.
+
+    These repository checks are distinct from Palomar's own mechanical
+    verification of the submission, which Palomar runs separately with
+    checkers it pins itself (its report records, for example, con-ron from a
+    separately pinned Lean release rather than from this repository's
+    toolchain). Palomar's report, not this file, is the record of what
+    Palomar checked.
 
     What was checked by a human: the choice and wording of every statement, the
     scope and non-claim lists, the axiom and sorry disclosures, and the
@@ -497,30 +486,6 @@ alignment:
         proved
         sorry-free as V5_7.weil_triangle_prime_side in
         RequestProject/V5_7.lean.
-    - source: "Certified Positivity, G3 (third-window non-positivity certificate)"
-      lean: "Challenge.G3_cert_neg"
-      module: "Challenge"
-      status: proved
-      note: >-
-        The 4 by 4 symmetric Toeplitz matrix U with diagonal 0.789 and
-        off-diagonal entries (log 2)/sqrt 2, (log 3)/sqrt 3 and
-        (log 5)/sqrt 5, the true prime atoms, is not positive definite. This
-        is the non-positivity half of the preprint's third-window threshold
-        computation; only non-positivity at 0.789 is compared. Proved
-        sorry-free as G3.G3_cert_neg in RequestProject/G3.lean. Its
-        numeric-bound dependencies in RequestProject/E2.lean and
-        RequestProject/G4.lean were re-proved native_decide-free on
-        2026-09-14 (see status.scope).
-    - source: "Certified Positivity, G5 (global maximum of log p/√p at p = 7, prime form)"
-      lean: "Challenge.G5_c_prime"
-      module: "Challenge"
-      status: proved
-      note: >-
-        For every prime p other than 7, (log p)/sqrt p is strictly less than
-        (log 7)/sqrt 7: the atom at p = 7 is the global maximum over all
-        primes; proved sorry-free as G5.G5_c_prime in RequestProject/G5.lean.
-        Depends on RequestProject/G4.lean's log 11 enclosure, re-proved
-        native_decide-free on 2026-09-14 (see status.scope).
 
 acknowledgements: >-
   Mathlib and its community, and the Lean 4 toolchain and the Lean FRO, for
@@ -529,9 +494,10 @@ acknowledgements: >-
   RequestProject/ from the author's specifications. Claude, by Anthropic,
   assisted with specification development, with the statement-level audit of
   prover output against those specifications, with prose, and with the proof
-  repairs required by the move to Lean v4.35.0. The compared set
-  is checked against Challenge.lean with the lake comparator bundled in the
-  pinned Lean toolchain. The
+  repairs required by the move to Lean v4.35.0. In this repository's CI the
+  compared set is checked against Challenge.lean with the lake comparator
+  shipped in the pinned Lean toolchain; Palomar's own verification is
+  separate and uses checkers Palomar pins. The
   author set the problems, made the mathematical and editorial decisions, and
   takes responsibility for all claims; no human has reviewed the proof terms
   line by line, and the trust model is Lean's kernel together with the

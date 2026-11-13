@@ -22,15 +22,21 @@ explicit list of what is not claimed. Read that file to evaluate this
 repository. [`Challenge.lean`](Challenge.lean) — the same claims as a single
 Mathlib-only sorried file, for mechanical comparison against the repo.
 
-Comparator ([leanprover/comparator](https://github.com/leanprover/comparator),
-pinned) accepts this repository against `Challenge.lean` for all 18 headline
-theorems whose permitted axioms are exactly `propext`, `Quot.sound`,
-`Classical.choice` — statement match, byte-identical definition graphs, axiom
-allowlist, and both Lean-kernel replay and NanoDa replay all pass (config
-`comparator.json`, bridge `Solution.lean`, and pins in-repo; re-run in CI).
-The set includes the two G-tier statements `G3_cert_neg` and `G5_c_prime`,
-whose numeric bound dependencies were re-proved `native_decide`-free on
-2026-09-14 (see Provenance below).
+`comparator.json` selects exactly **four** theorems, all from the Certified
+Positivity part of the repository: `true_kernel_grid_margin`,
+`true_kernel_grid_posdef` (the explicit positivity window of the genuine screw
+kernel on the grid (0.2, 0.4, 0.6), with margin 0.005),
+`true_kernel_first_prime_posdef` (positivity on (0.4, 0.9), past the first
+prime) and `weil_triangle_prime_side` (the exact prime-side identity). In this
+repository's CI, the `lake comparator` shipped with the pinned Lean toolchain
+accepts `Solution.lean` against `Challenge.lean` for these four, with permitted
+axioms exactly `propext`, `Quot.sound`, `Classical.choice`: statement match,
+byte-identical definition graphs, axiom allowlist, and replay through Lean's
+kernel and the NanoDa and con-ron binaries in that toolchain. Other results in
+the repository (the horizon-threshold G-tier results, the Tier R frontier
+work, and the rest of the development) are proved in `RequestProject/` but are
+not part of this comparator check. Palomar's own verification of a submission
+is separate from this CI check and uses checkers Palomar pins itself.
 
 ## Provenance (read first)
 
@@ -57,7 +63,7 @@ The development is now `native_decide`-free everywhere; `G1.lean` — which was
 always `native_decide`-free — only mentions `native_decide` in its module
 docstring, describing what it avoids. As a consequence, `G3_cert_neg` and
 `G5_c_prime` now depend only on `propext`, `Classical.choice`, `Quot.sound`
-and have been restored to the comparator surface (see above).
+(they are not part of the current comparator selection; see above).
 The three previously documented `sorry` sites (`D4.lean`, `F3.lean`,
 `F3R.lean`), whose shared cause was unitary diagonalizability being absent
 from Mathlib, were closed on 2026-09-14 by the Aristotle prover in a second
@@ -73,7 +79,7 @@ now sorry-free (and, as above, `native_decide`-free) across all 76 modules,
 with every declaration depending only on `propext`, `Classical.choice` and
 `Quot.sound`; the change was verified by a full rebuild, `#print axioms` on
 the newly closed theorems, and comparator replay (Lean-kernel and NanoDa)
-against `Challenge.lean`/`comparator.json`. The 18 comparator theorems are
+against `Challenge.lean`/`comparator.json`. The comparator theorems were
 unchanged by this. The workflow included
 pre-registered hypotheses; the prover refuted two of them
 (`PsiArch_not_convex` in `R5.lean`; the newest-prime-binds refutation in
@@ -127,9 +133,10 @@ see the provenance note above.
 
 `comparator.json`, [`Challenge.lean`](Challenge.lean),
 [`Solution.lean`](Solution.lean), and `formalization.yaml` together form the
-Palomar submission surface for this repository. The compared set is the 18
-classical-axiom theorems listed in `comparator.json`, each checked against
-`propext`, `Quot.sound`, and `Classical.choice` only.
+Palomar submission surface for this repository. The compared set is the four
+theorems listed in `comparator.json` (named above), each checked against
+`propext`, `Quot.sound`, and `Classical.choice` only. No other result in the
+repository is part of the submission.
 
 ## License
 

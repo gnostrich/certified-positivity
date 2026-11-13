@@ -4,8 +4,6 @@ public import Mathlib
 public import RequestProject.V5_5
 public import RequestProject.V5_6
 public import RequestProject.V5_7
-public import RequestProject.G3
-public import RequestProject.G5
 
 @[expose] public section
 
@@ -89,12 +87,6 @@ noncomputable def M2 : Matrix (Fin 2) (Fin 2) ℝ := fun i j =>
 noncomputable def triangle (t x : ℝ) : ℝ :=
   if |x| ≤ t then (t - |x|) / 2 else 0
 
-/-! ## Definitions — from `RequestProject/G3.lean` (namespace `G3`) -/
-
-/-- The third-window `4 × 4` form. -/
-def U (κ u v w : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
-  !![κ, u, v, w; u, κ, u, v; v, u, κ, u; w, v, u, κ]
-
 /-! ## Headline theorems, proved by bridging to the repository modules. -/
 
 theorem true_kernel_grid_margin (x : Fin 3 → ℝ) :
@@ -113,14 +105,5 @@ theorem weil_triangle_prime_side (t : ℝ) (ht : 0 < t) (N : ℕ)
         (Λ n / Real.sqrt n) *
           (triangle t (Real.log n) + triangle t (-Real.log n)) = primeSum t :=
   V5_7.weil_triangle_prime_side t ht N hN
-
-theorem G3_cert_neg :
-    ¬ IsPDq (U 0.789 (Real.log 2 / Real.sqrt 2) (Real.log 3 / Real.sqrt 3)
-      (Real.log 5 / Real.sqrt 5)) :=
-  G3.G3_cert_neg
-
-theorem G5_c_prime (p : ℕ) (hp : p.Prime) (hp7 : p ≠ 7) :
-    Real.log p / Real.sqrt p < Real.log 7 / Real.sqrt 7 :=
-  G5.G5_c_prime p hp hp7
 
 end Challenge
