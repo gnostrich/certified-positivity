@@ -7,10 +7,10 @@ public import Mathlib
 /-!
 # Challenge.lean — Mathlib-only statements of the headline theorems
 
-This file states, with `sorry` as every proof, the four headline theorems of
+This file states, with `sorry` as every proof, the three headline theorems of
 the Certified Positivity part of this repository: the explicit positivity
-window for the genuine screw kernel (with its margin), its persistence past
-the first prime atom, and the prime-side identity. It imports **only Mathlib** — no repository modules — and inlines
+window for the genuine screw kernel (with its margin) and its persistence past
+the first prime atom. It imports **only Mathlib** — no repository modules — and inlines
 every custom definition the statements need, copied verbatim from the named
 source files (see the `-- from <file>` markers). Its purpose is mechanical:
 the statements here can be compared against the repository modules (e.g. with
@@ -20,19 +20,19 @@ exactly these claims and not something subtly different.
 Toolchain: `leanprover/lean4:v4.35.0`, Mathlib `v4.35.0` (as pinned by
 `lean-toolchain` / `lakefile.toml` / `lake-manifest.json` at the repo root).
 Checked: this file elaborates with no errors under that toolchain
-(`lake env lean Challenge.lean`), emitting exactly the 4 expected
+(`lake env lean Challenge.lean`), emitting exactly the 3 expected
 `declaration uses 'sorry'` warnings.
 
 Because all definitions live here in the single namespace `Challenge`, the
-namespace prefixes of the originals (`Horizon.`, `V5_1.`, `V5_5.`, `V5_6.`,
-`V5_7.`) are necessarily dropped; this is the one systematic transformation
+namespace prefixes of the originals (`Horizon.`, `V5_1.`, `V5_5.`, `V5_6.`)
+are necessarily dropped; this is the one systematic transformation
 applied to every inlined definition and statement. There are no other
 deviations.
 
 This file makes **no axiom claim**: every proof below is `sorry`, so
 `#print axioms` on this file is meaningless by design. Axiom status of the
 real proofs is a property of the repository modules, not of this file. All
-four statements below are proved in the repository on `propext`,
+three statements below are proved in the repository on `propext`,
 `Classical.choice`, `Quot.sound` only, and the whole development is
 `native_decide`-free.
 -/
@@ -87,8 +87,8 @@ noncomputable def Psi (t : ℝ) : ℝ := PsiNonneg |t|
 /-- Krein's Gram kernel. -/
 noncomputable def G (t u : ℝ) : ℝ := Psi t + Psi u - Psi (t - u)
 
-/-! ## Definitions — from `RequestProject/V5_5.lean` / `RequestProject/V5_6.lean` / `RequestProject/V5_7.lean`
-(namespaces `V5_5`, `V5_6`, `V5_7`) -/
+/-! ## Definitions — from `RequestProject/V5_5.lean` / `RequestProject/V5_6.lean`
+(namespaces `V5_5`, `V5_6`) -/
 
 /-- The genuine screw Gram matrix on the grid `(0.2,0.4,0.6)`. -/
 noncomputable def M3 : Matrix (Fin 3) (Fin 3) ℝ := fun i j =>
@@ -98,10 +98,6 @@ noncomputable def M3 : Matrix (Fin 3) (Fin 3) ℝ := fun i j =>
 noncomputable def M2 : Matrix (Fin 2) (Fin 2) ℝ := fun i j =>
   let t : Fin 2 → ℝ := ![0.4, 0.9]
   G (t i) (t j)
-
-/-- The compactly supported triangular window. -/
-noncomputable def triangle (t x : ℝ) : ℝ :=
-  if |x| ≤ t then (t - |x|) / 2 else 0
 
 /-! ## Headline theorems, stated with `sorry`
 Sorry-free proofs live in the named repository modules. -/
@@ -116,12 +112,5 @@ theorem true_kernel_grid_posdef : IsPDq M3 := by sorry
 
 /-- From `RequestProject/V5_6.lean` (`V5_6.true_kernel_first_prime_posdef`). -/
 theorem true_kernel_first_prime_posdef : IsPDq M2 := by sorry
-
-/-- From `RequestProject/V5_7.lean` (`V5_7.weil_triangle_prime_side`). -/
-theorem weil_triangle_prime_side (t : ℝ) (ht : 0 < t) (N : ℕ)
-    (hN : Real.exp t ≤ N) :
-    ∑ n ∈ Finset.Icc 2 N,
-        (Λ n / Real.sqrt n) *
-          (triangle t (Real.log n) + triangle t (-Real.log n)) = primeSum t := by sorry
 
 end Challenge

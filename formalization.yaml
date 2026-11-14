@@ -7,8 +7,7 @@ project:
   description: >-
     This Lean 4 and Mathlib development produces exact, machine-checked
     positivity certificates for finite Gram matrices built from Suzuki's zeta
-    screw function, together with an exact prime-side identity for its prime
-    sum.
+    screw function.
     Weil's explicit formula recasts the Riemann Hypothesis as positivity of a
     quadratic form assembled from prime powers, and a recent line of work
     truncates that form and studies the resulting finite matrices. The objects
@@ -18,17 +17,14 @@ project:
     definiteness, in the quadratic-form sense, of the finite matrices this
     kernel generates on explicit grids.
 
-    The four compared results are as follows. (1) On the grid (0.2, 0.4, 0.6)
+    The three compared results are as follows. (1) On the grid (0.2, 0.4, 0.6)
     the 3 by 3 Gram matrix M3 of the genuine kernel satisfies an explicit
     Rayleigh floor: for every real vector x, 0.005 times the sum of the x_i
     squared is at most the quadratic form of M3 at x. (2) M3 is positive
     definite. (3) On the grid (0.4, 0.9) the 2 by 2 Gram matrix is positive
     definite. The prime sum in Psi vanishes for t below log 2 (about 0.693)
     and the node 0.9 lies above it, so the p = 2 prime term contributes to
-    this matrix. (4) An exact prime-side identity: for t > 0 and every natural
-    N with exp t at most N, the sum over 2 <= n <= N of Lambda(n)/sqrt n times
-    the even triangle window (t - |x|)/2 on [-t, t], evaluated at x = log n
-    and x = -log n, equals the prime sum appearing in Psi.
+    this matrix.
 
     The interest is that the surrounding literature (Connes and van Suijlekom;
     Connes, Consani and Moscovici; Suzuki) works either in floating point or at
@@ -54,7 +50,7 @@ classification:
 sources:
   - title: >-
       Explicit machine-checked positivity windows for the genuine Suzuki zeta
-      screw kernel and the exact prime-side identity for its prime sum
+      screw kernel
     authors:
       - "Rohan Badade"
     type: original-proof
@@ -82,9 +78,9 @@ sources:
       repository, and the copy here is one or more revisions behind the
       canonical off-repo version (see papers/PENDING-SYNC.md). It is the
       informal write-up of part of this development rather than a prior source
-      for it, hence background. Supplies all four results in the compared set:
-      the true-kernel positivity window with margin 0.005, its persistence on
-      the grid (0.4, 0.9), and the prime-side identity.
+      for it, hence background. Supplies all three results in the compared
+      set: the true-kernel positivity window with margin 0.005 and its
+      persistence on the grid (0.4, 0.9).
   - title: "Screw functions and the Weil quadratic form"
     authors:
       - "Masatoshi Suzuki"
@@ -131,7 +127,7 @@ sources:
       the structural skeleton of the wider development (finite
       Osterwalder-Schrader reconstruction, the finite KMS identity, the
       Caratheodory-Toeplitz ladder). Context only: none of its results is
-      formalized, and none of the four compared theorems is one of theirs.
+      formalized, and none of the three compared theorems is one of theirs.
   - title: 'Sur les "formules explicites" de la theorie des nombres premiers'
     authors:
       - "Andre Weil"
@@ -142,9 +138,8 @@ sources:
     author_endorsement: "n/a"
     note: >-
       The explicit formula and the positivity criterion that give the whole
-      programme its subject. The prime-side identity in the compared set is a
-      finite analogue of the prime side of the explicit formula; the source's
-      own results are not formalized here.
+      programme its subject; the source's own results are not formalized
+      here.
   - title: "mathlib4: the Lean mathematical library"
     authors:
       - "The Mathlib Community"
@@ -168,12 +163,13 @@ related_formalizations: []
 
 status:
   scope: >-
-    Formalized: exactly the four statements listed in comparator.json and
+    Formalized: exactly the three statements listed in comparator.json and
     stated in Challenge.lean, with sorry-free proofs in RequestProject/, all
     inside the wider 76-module development in that directory. These are
     positivity certificates about explicit finite matrices at explicit
-    rationals and an exact finite identity. The wider development also
-    contains other material, including the horizon-threshold results of the
+    rationals. The wider development also contains other material, including
+    the prime-side identity V5_7.weil_triangle_prime_side, the
+    horizon-threshold results of the
     Certified Positivity preprint (RequestProject/G3.lean, G5.lean and related
     files) and the Tier R work written up in the companion preprint
     papers/certified-frontiers-paper.pdf; none of it is part of this
@@ -192,17 +188,17 @@ status:
     Carathéodory-Fejér theorem, via least-singular-block selection, F3R,
     window propagation of the null relation, and Vandermonde interpolation,
     with general-purpose lemmas factored into the new module
-    RequestProject/D4Aux.lean. None of the four compared theorems depended on
+    RequestProject/D4Aux.lean. None of the three compared theorems depended on
     any of them, directly or transitively, either before or after this
     change. There are no sorries in any definition, and none anywhere in the
-    development now. Challenge.lean's own four deliberate sorries are the
+    development now. Challenge.lean's own three deliberate sorries are the
     comparator placeholders and are not counted here.
 
     native_decide. native_decide was formerly used in two files of the wider
     development, both in numeric bound lemmas: RequestProject/E2.lean (six
     uses, underlying E2_log3, E2_log5 and E2_log7) and RequestProject/G4.lean
     (one use, underlying G4_log11). Neither file is in the import closure of
-    the four compared theorems. On 2026-09-14 those four bound lemmas were
+    the three compared theorems. On 2026-09-14 those four bound lemmas were
     re-proved by the
     Aristotle prover using Mathlib's Real.abs_log_sub_add_sum_range_le
     Mercator-series tail bound together with Real.log_two_gt_d9 and
@@ -239,11 +235,6 @@ status:
       comparator_config: "comparator.json"
     - declaration: "V5_6.true_kernel_first_prime_posdef"
       file: "RequestProject/V5_6.lean"
-      sorry_count: 0
-      axioms: ["propext", "Quot.sound", "Classical.choice"]
-      comparator_config: "comparator.json"
-    - declaration: "V5_7.weil_triangle_prime_side"
-      file: "RequestProject/V5_7.lean"
       sorry_count: 0
       axioms: ["propext", "Quot.sound", "Classical.choice"]
       comparator_config: "comparator.json"
@@ -314,7 +305,7 @@ automation:
         definitions and statements handed to the prover, and for the
         statement-level audit of prover output against those specifications,
         including the construction and checking of Challenge.lean as the
-        Mathlib-only restatement of the four compared theorems. The prose of
+        Mathlib-only restatement of the three compared theorems. The prose of
         the two preprints and of this metadata record was likewise produced
         with that assistance, as was the mechanical port of every .lean file
         to Lean's module system (a module header, public imports and an
@@ -324,8 +315,8 @@ automation:
         Proof scripts in 29 files of RequestProject/ no longer elaborated (A1,
         A3, A5, B2, B4, C1, C3Gibbs, C3Objective, C3Pos, D4Aux, D6, E5, F1,
         F2, F3R, G5, H3a, H3b, I2, J1, K1, K3, R5Final, R5Prime, R_A5, R_A6,
-        V5_2, V5_4, V5_7); three
-        of them (V5_2, V5_4, V5_7) are in the import closure of the
+        V5_2, V5_4, V5_7); two
+        of them (V5_2, V5_4) are in the import closure of the
         compared theorems. Claude agents repaired them, editing proof scripts
         only: no statement, definition or name changed, no sorry or new axiom
         was introduced, and no heartbeat limit was raised. Most repairs close a
@@ -351,7 +342,7 @@ automation:
         the discretization families, designed the certificate schemas and the
         tier architecture, pre-registered the structural hypotheses before the
         batches that decided them, made every mathematical and editorial
-        decision, selected the four theorems for the compared set, and
+        decision, selected the three theorems for the compared set, and
         performed the final review of statements, axiom disclosures and scope.
         The consolidated lake build was re-run independently of the prover's
         environment. The author takes responsibility for all claims.
@@ -389,10 +380,10 @@ fidelity:
     their restatement in Challenge.lean, which is what Palomar compares.
 
     One systematic transformation: Challenge.lean imports only Mathlib and
-    therefore contains inlined copies of every custom definition the four
+    therefore contains inlined copies of every custom definition the three
     statements need, copied from the named repository files. Because those
     copies all live in the single namespace Challenge, the namespace prefixes
-    of the originals (Horizon., V5_1., V5_5., V5_6., V5_7.) are necessarily
+    of the originals (Horizon., V5_1., V5_5., V5_6.) are necessarily
     dropped. This applies to every inlined definition and statement. There
     are no individual statement deviations.
 
@@ -406,7 +397,7 @@ review:
     (consolidated lake build with sorry census; lake comparator from the
     pinned Lean v4.35.0 toolchain, statement match with replay through Lean's
     kernel and the NanoDa and con-ron binaries shipped in that toolchain,
-    against Challenge.lean for all 4 compared theorems); statement-level audit
+    against Challenge.lean for all 3 compared theorems); statement-level audit
     of prover output was AI-assisted; no line-by-line human review of proof
     terms; no external mathematical peer review yet
   reviewers:
@@ -418,7 +409,7 @@ review:
     closure of the three previously disclosed sorry sites; see status.scope
     above); #print axioms on the headline theorems; and, in this repository's
     CI (.github/workflows/build.yml), the lake comparator shipped with the
-    pinned Lean v4.35.0 toolchain, run against Challenge.lean for the four
+    pinned Lean v4.35.0 toolchain, run against Challenge.lean for the three
     theorems in comparator.json, covering statement match, byte-identical
     definition graphs, the axiom allowlist (propext, Quot.sound,
     Classical.choice only) and replay through Lean's kernel and the
@@ -475,17 +466,6 @@ alignment:
         0.693) and the node 0.9 lies above it, so the p = 2 prime term
         contributes to this matrix; proved sorry-free as
         V5_6.true_kernel_first_prime_posdef in RequestProject/V5_6.lean.
-    - source: "Certified Positivity, headline theorem V5_7 (prime-side identity)"
-      lean: "Challenge.weil_triangle_prime_side"
-      module: "Challenge"
-      status: proved
-      note: >-
-        The exact identity welding the paper's two formal objects: the von
-        Mangoldt weighted triangle-kernel sum over prime powers up to N equals
-        the prime sum of the screw function, for t > 0 and exp t at most N;
-        proved
-        sorry-free as V5_7.weil_triangle_prime_side in
-        RequestProject/V5_7.lean.
 
 acknowledgements: >-
   Mathlib and its community, and the Lean 4 toolchain and the Lean FRO, for

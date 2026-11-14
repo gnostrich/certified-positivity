@@ -4,8 +4,7 @@
   "theorem_names": [
     "Challenge.true_kernel_grid_margin",
     "Challenge.true_kernel_grid_posdef",
-    "Challenge.true_kernel_first_prime_posdef",
-    "Challenge.weil_triangle_prime_side"
+    "Challenge.true_kernel_first_prime_posdef"
   ],
   "definition_names": [],
   "permitted_axioms": [

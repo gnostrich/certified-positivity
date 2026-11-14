@@ -3,7 +3,6 @@ module
 public import Mathlib
 public import RequestProject.V5_5
 public import RequestProject.V5_6
-public import RequestProject.V5_7
 
 @[expose] public section
 
@@ -71,8 +70,8 @@ noncomputable def Psi (t : ℝ) : ℝ := PsiNonneg |t|
 /-- Krein's Gram kernel. -/
 noncomputable def G (t u : ℝ) : ℝ := Psi t + Psi u - Psi (t - u)
 
-/-! ## Definitions — from `RequestProject/V5_5.lean` / `RequestProject/V5_6.lean` / `RequestProject/V5_7.lean`
-(namespaces `V5_5`, `V5_6`, `V5_7`) -/
+/-! ## Definitions — from `RequestProject/V5_5.lean` / `RequestProject/V5_6.lean`
+(namespaces `V5_5`, `V5_6`) -/
 
 /-- The genuine screw Gram matrix on the grid `(0.2,0.4,0.6)`. -/
 noncomputable def M3 : Matrix (Fin 3) (Fin 3) ℝ := fun i j =>
@@ -82,10 +81,6 @@ noncomputable def M3 : Matrix (Fin 3) (Fin 3) ℝ := fun i j =>
 noncomputable def M2 : Matrix (Fin 2) (Fin 2) ℝ := fun i j =>
   let t : Fin 2 → ℝ := ![0.4, 0.9]
   G (t i) (t j)
-
-/-- The compactly supported triangular window. -/
-noncomputable def triangle (t x : ℝ) : ℝ :=
-  if |x| ≤ t then (t - |x|) / 2 else 0
 
 /-! ## Headline theorems, proved by bridging to the repository modules. -/
 
@@ -98,12 +93,5 @@ theorem true_kernel_grid_posdef : IsPDq M3 :=
 
 theorem true_kernel_first_prime_posdef : IsPDq M2 :=
   V5_6.true_kernel_first_prime_posdef
-
-theorem weil_triangle_prime_side (t : ℝ) (ht : 0 < t) (N : ℕ)
-    (hN : Real.exp t ≤ N) :
-    ∑ n ∈ Finset.Icc 2 N,
-        (Λ n / Real.sqrt n) *
-          (triangle t (Real.log n) + triangle t (-Real.log n)) = primeSum t :=
-  V5_7.weil_triangle_prime_side t ht N hN
 
 end Challenge

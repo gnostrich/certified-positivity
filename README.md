@@ -22,18 +22,18 @@ explicit list of what is not claimed. Read that file to evaluate this
 repository. [`Challenge.lean`](Challenge.lean) — the same claims as a single
 Mathlib-only sorried file, for mechanical comparison against the repo.
 
-`comparator.json` selects exactly **four** theorems, all from the Certified
-Positivity part of the repository: `true_kernel_grid_margin`,
+`comparator.json` selects exactly **three** theorems, all from the Certified
+Positivity part of the repository: `true_kernel_grid_margin` and
 `true_kernel_grid_posdef` (the explicit positivity window of the genuine screw
-kernel on the grid (0.2, 0.4, 0.6), with margin 0.005),
+kernel on the grid (0.2, 0.4, 0.6), with margin 0.005), and
 `true_kernel_first_prime_posdef` (positivity on (0.4, 0.9), past the first
-prime) and `weil_triangle_prime_side` (the exact prime-side identity). In this
+prime). In this
 repository's CI, the `lake comparator` shipped with the pinned Lean toolchain
-accepts `Solution.lean` against `Challenge.lean` for these four, with permitted
+accepts `Solution.lean` against `Challenge.lean` for these three, with permitted
 axioms exactly `propext`, `Quot.sound`, `Classical.choice`: statement match,
 byte-identical definition graphs, axiom allowlist, and replay through Lean's
 kernel and the NanoDa and con-ron binaries in that toolchain. Other results in
-the repository (the horizon-threshold G-tier results, the Tier R frontier
+the repository (the prime-side identity, the horizon-threshold G-tier results, the Tier R frontier
 work, and the rest of the development) are proved in `RequestProject/` but are
 not part of this comparator check. Palomar's own verification of a submission
 is separate from this CI check and uses checkers Palomar pins itself.
@@ -133,7 +133,7 @@ see the provenance note above.
 
 `comparator.json`, [`Challenge.lean`](Challenge.lean),
 [`Solution.lean`](Solution.lean), and `formalization.yaml` together form the
-Palomar submission surface for this repository. The compared set is the four
+Palomar submission surface for this repository. The compared set is the three
 theorems listed in `comparator.json` (named above), each checked against
 `propext`, `Quot.sound`, and `Classical.choice` only. No other result in the
 repository is part of the submission.
