@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -29,8 +33,7 @@ theorem H3a_i (a : ℝ) (ha : a ^ 2 ≤ 1) (z₁ z₂ : ℂ) (h1 : ‖z₁‖ < 
       nlinarith [ show 0 ≤ ‖1 + a * z₂‖ by positivity, show 0 ≤ ‖a + z₂‖ by positivity, show 0 ≤ ( 1 - a ^ 2 ) * ( 1 - ‖z₂‖ ^ 2 ) by exact mul_nonneg ( by nlinarith ) ( by nlinarith [ norm_nonneg z₂ ] ) ];
     -- From $1 + a·z₁ + a·z₂ + z₁·z₂ = 0$, we get $z₁·(a + z₂) = -(1 + a·z₂)$, so taking norms $‖z₁‖ * ‖a + z₂‖ = ‖1 + a·z₂‖$.
     have h_norm : ‖z₁‖ * ‖(a : ℂ) + z₂‖ = ‖(1 : ℂ) + a * z₂‖ := by
-      rw [ ← norm_mul ] ; rw [ show z₁ * ( a + z₂ ) = - ( 1 + a * z₂ ) by linear_combination' h ] ; norm_num;
-      rw [ ← norm_neg ] ; ring;
+      rw [ ← norm_mul ] ; rw [ show z₁ * ( a + z₂ ) = - ( 1 + a * z₂ ) by linear_combination h ] ; rw [ norm_neg ];
     nlinarith [ show 0 < ‖ ( a : ℂ ) + z₂‖ from lt_of_le_of_ne ( norm_nonneg _ ) ( Ne.symm hz ) ]
 
 /-

@@ -1,5 +1,9 @@
-import Mathlib
-import RequestProject.Horizon
+module
+
+public import Mathlib
+public import RequestProject.Horizon
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon
@@ -35,11 +39,14 @@ lemma isPDq_iff_posDef (A : Matrix (Fin n) (Fin n) ℝ) (hA : Aᵀ = A) :
   · constructor <;> try assumption;
     intro x hx_ne; specialize h ( fun i => x i ) ; simp_all +decide [ Finsupp.sum_fintype, Matrix.mulVec, dotProduct ] ;
     convert h using 1;
+    rfl;
   · convert h.2;
     simp +decide [ IsPDq, Finsupp.sum_fintype ];
     constructor <;> intro h x hx;
     · convert h x ( by simpa [ Finsupp.ext_iff ] using hx ) using 1;
+      rfl;
     · convert h ( show ( Finsupp.equivFunOnFinite.symm x ) ≠ 0 from by simpa [ Finsupp.ext_iff, funext_iff ] using hx ) using 1
+      rfl
 
 /-
 A leading principal submatrix of a symmetric matrix is symmetric.
@@ -57,16 +64,12 @@ lemma leadingSub_isPDq (A : Matrix (Fin n) (Fin n) ℝ) (hPD : IsPDq A) (k : Fin
     IsPDq (leadingSub A k) := by
   intro y hy;
   convert hPD ( fun i => if h : i.val < ( Fin.val k + 1 ) then y ⟨ i.val, h ⟩ else 0 ) _ using 1;
-  · convert Finset.sum_subset ?_ ?_ using 1;
-    rotate_left;
-    exact Finset.univ;
-    · exact Finset.Subset.refl _;
-    · aesop;
+  · show quadForm (leadingSub A k) y = quadForm A _;
     · unfold quadForm leadingSub;
-      rw [ ← Finset.sum_subset ( Finset.subset_univ ( Finset.image ( fun i : Fin ( k + 1 ) => Fin.castLE ( by linarith [ Fin.is_lt k ] ) i ) Finset.univ ) ) ];
+      rw [ ← Finset.sum_subset ( Finset.subset_univ ( Finset.image ( fun i : Fin ( k + 1 ) => ( Fin.castLE ( by linarith [ Fin.is_lt k ] ) i : Fin n ) ) Finset.univ ) ) ];
       · rw [ Finset.sum_image ] <;> norm_num;
         · refine' Finset.sum_congr rfl fun i hi => _;
-          rw [ ← Finset.sum_subset ( Finset.subset_univ ( Finset.image ( fun x : Fin ( k + 1 ) => Fin.castLE ( by linarith [ Fin.is_lt k ] ) x ) Finset.univ ) ) ];
+          rw [ ← Finset.sum_subset ( Finset.subset_univ ( Finset.image ( fun x : Fin ( k + 1 ) => ( Fin.castLE ( by linarith [ Fin.is_lt k ] ) x : Fin n ) ) Finset.univ ) ) ];
           · rw [ Finset.sum_image ] <;> norm_num;
             · grind +extAll;
             · exact fun x y h => by simpa [ Fin.ext_iff ] using h;
@@ -85,8 +88,7 @@ Forward direction of Sylvester's criterion.
 lemma sylvester_forward (A : Matrix (Fin n) (Fin n) ℝ) (hA : Aᵀ = A) (hPD : IsPDq A) :
     ∀ k : Fin n, 0 < (leadingSub A k).det := by
   intro k;
-  convert Matrix.PosDef.det_pos _;
-  exact isPDq_iff_posDef _ ( leadingSub_transpose _ hA _ ) |>.1 ( leadingSub_isPDq _ hPD _ )
+  exact Matrix.PosDef.det_pos <| isPDq_iff_posDef _ ( leadingSub_transpose _ hA _ ) |>.1 ( leadingSub_isPDq _ hPD _ )
 
 /-
 Reverse direction of Sylvester's criterion (the substantial induction).
@@ -107,6 +109,7 @@ lemma sylvester_reverse : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℝ), Aᵀ =
         exact congr_fun ( congr_fun hA _ ) _;
       · intro k;
         convert h ⟨ k, by linarith [ Fin.is_lt k ] ⟩ using 1;
+        rfl;
     -- By the properties of determinants, we have $\det(A) = \det(B) \cdot (c - b^T B^{-1} b)$.
     have h_det : Matrix.det A = Matrix.det B * (c - dotProduct b (Matrix.mulVec B⁻¹ b)) := by
       have h_det : Matrix.det A = Matrix.det (Matrix.fromBlocks B (Matrix.of (fun i j => b i)) (Matrix.of (fun i j => b j)) (Matrix.of ![![c]])) := by
@@ -118,7 +121,6 @@ lemma sylvester_reverse : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℝ), Aᵀ =
           · rfl;
           · exact congr_fun ( congr_fun hA _ ) _;
           · rfl;
-        · infer_instance;
       have h_det : Matrix.det (Matrix.fromBlocks B (Matrix.of (fun i j => b i)) (Matrix.of (fun i j => b j)) (Matrix.of ![![c]])) = Matrix.det B * Matrix.det (Matrix.of ![![c]] - Matrix.of (fun i j => b j) * B⁻¹ * Matrix.of (fun i j => b i)) := by
         have h_det : Invertible B := by
           convert Matrix.invertibleOfDetInvertible B;
@@ -137,10 +139,11 @@ lemma sylvester_reverse : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℝ), Aᵀ =
     have h_pos : c - dotProduct b (Matrix.mulVec B⁻¹ b) > 0 := by
       have h_det_pos : 0 < Matrix.det A := by
         convert h ⟨ n, Nat.lt_succ_self n ⟩ using 1;
+        rfl;
       contrapose! h_det_pos;
       convert mul_nonpos_of_nonneg_of_nonpos ( show 0 ≤ Matrix.det B from ?_ ) h_det_pos using 1;
       convert Matrix.PosDef.det_pos ( isPDq_iff_posDef B ( show Bᵀ = B from ?_ ) |>.1 hB ) |> le_of_lt using 1;
-      exact Matrix.ext fun i j => by simpa using congr_fun ( congr_fun hA ( Fin.castSucc i ) ) ( Fin.castSucc j ) ;
+      exact Matrix.ext fun i j => by simpa [ B ] using congr_fun ( congr_fun hA ( Fin.castSucc i ) ) ( Fin.castSucc j ) ;
     -- By completing the square, we can rewrite the quadratic form of A as follows:
     have h_complete_square : ∀ x : Fin (n + 1) → ℝ, quadForm A x = quadForm B (fun i => x (Fin.castSucc i)) + 2 * x (Fin.last n) * dotProduct b (fun i => x (Fin.castSucc i)) + c * x (Fin.last n) ^ 2 := by
       intro x; unfold quadForm; simp +decide [ Fin.sum_univ_castSucc, Matrix.mulVec, dotProduct ] ; ring;

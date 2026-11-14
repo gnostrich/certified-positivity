@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.Horizon
-import RequestProject.E3
+module
+
+public import Mathlib
+public import RequestProject.Horizon
+public import RequestProject.E3
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon Real
@@ -48,7 +52,7 @@ theorem E5_a (κ u v : ℝ) :
     -- PD implies det>0; since V is symmetric and PD (in the quadratic-form sense), its determinant is positive.
     have h_det : 0 < (κ - v) * (κ^2 + κ * v - 2 * u^2) := by
       have h_det : Matrix.det (V κ u v) > 0 := by
-        convert Matrix.PosDef.det_pos _;
+        refine Matrix.PosDef.det_pos ?_;
         constructor;
         · ext i j; fin_cases i <;> fin_cases j <;> rfl;
         · intro x hx; convert h ( fun i => x i ) _ using 1; simp +decide [ Finsupp.sum_fintype, hx ] ;

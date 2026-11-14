@@ -1,4 +1,8 @@
-import RequestProject.V5_1
+module
+
+public import RequestProject.V5_1
+
+@[expose] public section
 
 open scoped BigOperators
 

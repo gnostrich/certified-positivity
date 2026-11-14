@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.R_A5
-import RequestProject.V5_5
+module
+
+public import Mathlib
+public import RequestProject.R_A5
+public import RequestProject.V5_5
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon
@@ -20,7 +24,7 @@ noncomputable def gridState1 : GramState :=
   GramState.singleton (V5_5.M3 0 0) M3_first_pos
 
 noncomputable def gridB1 : Fin gridState1.dim → ℝ := fun i =>
-  V5_5.M3 ⟨i.val, by simpa [gridState1] using i.isLt⟩ 1
+  V5_5.M3 ⟨i.val, lt_of_lt_of_le i.isLt (show (1 : ℕ) ≤ 3 by omega)⟩ 1
 noncomputable def gridD1 : ℝ := V5_5.M3 1 1
 
 /-
@@ -28,11 +32,10 @@ First audited Schur gate.
 -/
 theorem gridGate1 : 0 < schur gridState1.M gridB1 gridD1 := by
   convert border_pd_schur_pos gridState1.M gridState1.hsymm gridB1 gridD1 _;
-  intro x hx; simp_all +decide [ IsPDq, border ] ;
+  show IsPDq (border (n := 1) ![![V5_5.M3 0 0]] (fun i => V5_5.M3 ⟨i.val, by omega⟩ 1) (V5_5.M3 1 1))
+  intro x hx
   convert V5_5.true_kernel_grid_posdef ( fun i => if h : i.val < 2 then x ⟨ i.val, h ⟩ else 0 ) _ using 1;
-  · unfold gridState1 gridB1 gridD1 V5_5.M3; simp +decide [ Fin.sum_univ_succ, quadForm ] ;
-    unfold border; simp +decide [ Fin.sum_univ_succ, GramState.singleton ] ;
-    exact Or.inl <| Or.inl <| V5_1.G_symm _ _;
+  · simp [quadForm, Fin.sum_univ_succ, border, V5_5.M3, V5_1.G_symm 0.4 0.2]
   · contrapose! hx; ext i; fin_cases i <;> simp_all +decide [ funext_iff, Fin.forall_fin_succ ] ;
 
 noncomputable def gridState2 : GramState := gridState1.expand gridB1 gridD1 gridGate1
@@ -48,16 +51,16 @@ Second audited Schur gate.
 -/
 theorem gridGate2 : 0 < schur gridState2.M gridB2 gridD2 := by
   convert border_pd_schur_pos gridState2.M gridState2.hsymm gridB2 gridD2 _;
-  intro x hx
-  simp_all +decide [ IsPDq, border ];
-  convert V5_5.true_kernel_grid_posdef ( fun i => if h : i.val < 3 then x ⟨ i.val, h ⟩ else 0 ) _ using 1;
-  · unfold gridState2 gridB2 gridD2 V5_5.M3; simp +decide [ Fin.sum_univ_succ, quadForm ] ;
-    unfold border; simp +decide [ Fin.sum_univ_succ, GramState.expand ] ;
-    unfold gridState1 gridB1 gridD1 border; simp +decide [ Fin.sum_univ_succ, GramState.singleton ] ;
-    unfold V5_5.M3; simp +decide [ Fin.sum_univ_succ, quadForm ] ;
-    unfold V5_1.G; ring;
-    unfold V5_1.Psi; norm_num [ abs_of_nonneg ] ; ring;
-  · contrapose! hx; ext i; fin_cases i <;> simp_all +decide [ funext_iff, Fin.forall_fin_succ ] ;
+  show IsPDq (border (n := 2)
+    (border (n := 1) ![![V5_5.M3 0 0]] (fun i => V5_5.M3 ⟨i.val, by omega⟩ 1) (V5_5.M3 1 1))
+    (fun i => V5_5.M3 ⟨i.val, by omega⟩ 2) (V5_5.M3 2 2))
+  have hM : border (n := 2)
+      (border (n := 1) ![![V5_5.M3 0 0]] (fun i => V5_5.M3 ⟨i.val, by omega⟩ 1) (V5_5.M3 1 1))
+      (fun i => V5_5.M3 ⟨i.val, by omega⟩ 2) (V5_5.M3 2 2) = V5_5.M3 := by
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp [border] <;> exact V5_1.G_symm _ _
+  rw [hM]
+  exact V5_5.true_kernel_grid_posdef
 
 /-- R-A6: the literal singleton/expand/expand reconstruction. -/
 noncomputable def trueKernelGridState : GramState :=

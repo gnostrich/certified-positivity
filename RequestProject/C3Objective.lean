@@ -1,4 +1,8 @@
-import RequestProject.C3Base
+module
+
+public import RequestProject.C3Base
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -38,7 +42,7 @@ lemma F_strictConvexOn (hr : ∀ p, 0 < r p) (hε : 0 < ε) :
               apply strictConvexOn_of_deriv2_pos ( convex_Ici 0 );
               · exact ContinuousOn.sub ( Real.continuous_mul_log.continuousOn ) ( continuousOn_id.mul continuousOn_const );
               · simp +zetaDelta at *;
-                intro x hx; rw [ Filter.EventuallyEq.deriv_eq ( Filter.eventuallyEq_of_mem ( Ioi_mem_nhds hx ) fun u hu => by { exact HasDerivAt.deriv ( by simpa using HasDerivAt.sub ( Real.hasDerivAt_mul_log hu.out.ne' ) ( HasDerivAt.mul ( hasDerivAt_id u ) ( hasDerivAt_const _ _ ) ) ) } ) ] ; norm_num [ hx.ne' ] ; positivity;
+                intro x hx; rw [ Filter.EventuallyEq.deriv_eq ( Filter.eventuallyEq_of_mem ( Ioi_mem_nhds hx ) fun u hu => by { exact HasDerivAt.deriv ( by simpa [Pi.sub_def, Pi.mul_def] using HasDerivAt.sub ( Real.hasDerivAt_mul_log hu.out.ne' ) ( HasDerivAt.mul ( hasDerivAt_id u ) ( hasDerivAt_const _ _ ) ) ) } ) ] ; norm_num [ hx.ne' ] ; positivity;
             refine' h_jensen.congr fun s hs => _;
             by_cases hs' : s = 0 <;> simp +decide [ hs', Real.log_div, ne_of_gt ( hr p ) ] ; ring
           exact Or.inl ( h_strict_convex.2 ( hx p ) ( hy p ) h_eq ha hb hab );

@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -171,7 +175,15 @@ theorem A5_c_group (hi : Function.Injective i)
   refine' ⟨ _ ⟩;
   refine' { Equiv.ofBijective ( fun x => Multiplicative.ofAdd ( f x.val ) ) ⟨ _, _ ⟩ with .. };
   all_goals simp +decide [ Function.Injective, Function.Surjective, h_hom ];
-  · grind +suggestions;
+  · intro a ha b hb hab
+    have h1 := hf₁ a ha
+    have h2 := hf₁ b hb
+    simp only [hab] at h1
+    exact LinearEquiv.toLinearMap_injective (sub_left_injective (h1.trans h2.symm))
   · exact h_surj
+  · intro a ha b hb
+    show Multiplicative.ofAdd (f (a * b)) = Multiplicative.ofAdd (f a) * Multiplicative.ofAdd (f b)
+    rw [ h_hom a b ha hb ]
+    rfl
 
 end A5

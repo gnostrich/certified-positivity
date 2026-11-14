@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.R5
-import RequestProject.R_A3_A4
+module
+
+public import Mathlib
+public import RequestProject.R5
+public import RequestProject.R_A3_A4
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon
@@ -94,9 +98,9 @@ theorem coverage_band :
   obtain ⟨h_t0, h_t1⟩ : t 0 = 1 / 5 ∧ t 1 = 3 / 5 := band_two_endpoints t ht hlo hhi hsep;
   convert endpoint_kernel_pd_lambda using 1;
   · congr! 2;
-    rename_i i; fin_cases i <;> ext j <;> fin_cases j <;> norm_num [ h_t0, h_t1 ] ;
+    rw [ show t = ![1 / 5, 3 / 5] from by funext i; fin_cases i <;> simp [ h_t0, h_t1 ] ];
   · congr! 3;
-    rename_i i; fin_cases i <;> ext j <;> fin_cases j <;> norm_num [ h_t0, h_t1 ] ;
+    rw [ show t = ![1 / 5, 3 / 5] from by funext i; fin_cases i <;> simp [ h_t0, h_t1 ] ];
 
 noncomputable def endpointState1 : TierR.GramState :=
   TierR.GramState.singleton (V5_1.G (1 / 5) (1 / 5)) (by
@@ -111,12 +115,15 @@ noncomputable def endpointD : ℝ := V5_1.G (3 / 5) (3 / 5)
 lemma endpointGate :
     0 < TierR.schur endpointState1.M endpointB endpointD := by
   convert TierR.GramState.expand_gate_iff_pd endpointState1 endpointB endpointD |>.2 _ using 1;
-  convert endpoint_kernel_pd_lambda.1 using 1;
-  ext i j;
-  fin_cases i <;> fin_cases j <;> simp +decide [ endpointState1, endpointB, endpointD, TierR.border ];
-  · norm_num [ TierR.GramState.singleton ];
-    rfl;
-  · exact V5_1.G_symm _ _
+  have hM : TierR.border endpointState1.M endpointB endpointD =
+      fun i j => V5_1.G (![1 / 5, 3 / 5] i) (![1 / 5, 3 / 5] j) := by
+    ext i j;
+    fin_cases i <;> fin_cases j <;>
+      simp +decide [ endpointState1, endpointB, endpointD, TierR.border,
+        TierR.GramState.singleton, Fin.mk_one, Matrix.cons_val_one, Matrix.head_cons ] <;>
+      first | rfl | exact V5_1.G_symm _ _
+  rw [ hM ];
+  exact endpoint_kernel_pd_lambda.1
 
 noncomputable def endpointState2 : TierR.GramState :=
   endpointState1.expand endpointB endpointD endpointGate
@@ -144,6 +151,7 @@ theorem frontier_covers_band :
     band_two_endpoints t ht hlo hhi hsep
   generalize_proofs at *; (
   use endpointState2; simp [endpointState2, endpointState1, endpointB, endpointD, TierR.border, TierR.GramState.expand, TierR.GramState.singleton];
+  apply heq_of_eq;
   ext i j; fin_cases i <;> fin_cases j <;> simp +decide [ h_t0, h_t1, endpointB, endpointD, TierR.border ] ;
   exact V5_1.G_symm _ _)
 

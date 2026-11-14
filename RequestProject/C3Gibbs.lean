@@ -1,4 +1,8 @@
-import RequestProject.C3Base
+module
+
+public import RequestProject.C3Base
+
+@[expose] public section
 
 open scoped BigOperators Classical
 
@@ -19,7 +23,7 @@ lemma perturb_feasible (π : X × Y → ℝ) (hpos : ∀ p, 0 < π p) (hfeas : f
       have hδ : ∃ δ > 0, ∀ p : X × Y, |d p| ≤ δ := by
         exact ⟨ ∑ p, |d p| + 1, add_pos_of_nonneg_of_pos ( Finset.sum_nonneg fun _ _ => abs_nonneg _ ) zero_lt_one, fun p => le_add_of_le_of_nonneg ( Finset.single_le_sum ( fun p _ => abs_nonneg ( d p ) ) ( Finset.mem_univ p ) ) zero_le_one ⟩;
       obtain ⟨ δ, δpos, hδ ⟩ := hδ;
-      exact ⟨ ( Finset.min' ( Finset.univ.image π ) ⟨ _, Finset.mem_image_of_mem _ ( Finset.mem_univ h.some ) ⟩ ) / δ, div_pos ( Finset.min'_mem ( Finset.univ.image π ) ⟨ _, Finset.mem_image_of_mem _ ( Finset.mem_univ h.some ) ⟩ |> fun x => by aesop ) δpos, fun t ht p => by nlinarith [ abs_lt.mp ht, abs_le.mp ( hδ p ), Finset.min'_le _ _ ( Finset.mem_image_of_mem π ( Finset.mem_univ p ) ), mul_div_cancel₀ ( Finset.min' ( Finset.univ.image π ) ⟨ _, Finset.mem_image_of_mem _ ( Finset.mem_univ h.some ) ⟩ ) δpos.ne' ] ⟩;
+      exact ⟨ ( Finset.min' ( Finset.univ.image π ) ⟨ _, Finset.mem_image_of_mem _ ( Finset.mem_univ h.some ) ⟩ ) / δ, div_pos ( Finset.min'_mem ( Finset.univ.image π ) ⟨ _, Finset.mem_image_of_mem _ ( Finset.mem_univ h.some ) ⟩ |> fun x => by obtain ⟨ q, -, hq ⟩ := Finset.mem_image.mp x; rw [ ← hq ]; exact hpos q ) δpos, fun t ht p => by nlinarith [ abs_lt.mp ht, abs_le.mp ( hδ p ), Finset.min'_le _ _ ( Finset.mem_image_of_mem π ( Finset.mem_univ p ) ), mul_div_cancel₀ ( Finset.min' ( Finset.univ.image π ) ⟨ _, Finset.mem_image_of_mem _ ( Finset.mem_univ h.some ) ⟩ ) δpos.ne' ] ⟩;
     refine' ⟨ δ, δpos, fun t ht => ⟨ fun p => hδ t ht p, fun x => _, fun y => _ ⟩ ⟩ <;> simp_all +decide [ Finset.sum_add_distrib, Finset.mul_sum _ _ _ ];
     · simp +decide [ ← Finset.mul_sum _ _ _, hd1, hfeas.2.1 ];
     · simp +decide [ ← Finset.mul_sum _ _ _, hd2, hfeas.2.2 ];
@@ -42,10 +46,13 @@ lemma first_order (hr : ∀ p, 0 < r p) (hε : 0 < ε)
   -- By definition of $F$, we know that its derivative at $t = 0$ is given by the sum of the derivatives of its components.
   have h_deriv : HasDerivAt (fun t : ℝ => F r c ε (fun p => π p + t * d p)) (∑ p, d p * (c p + ε * (Real.log (π p / r p) + 1))) 0 := by
     have h_deriv : ∀ p, HasDerivAt (fun t : ℝ => (π p + t * d p) * c p + ε * (π p + t * d p) * Real.log ((π p + t * d p) / r p)) (d p * (c p + ε * (Real.log (π p / r p) + 1))) 0 := by
-      intro p; convert HasDerivAt.add ( HasDerivAt.mul ( HasDerivAt.add ( hasDerivAt_const _ _ ) ( HasDerivAt.mul ( hasDerivAt_id 0 ) ( hasDerivAt_const _ _ ) ) ) ( hasDerivAt_const _ _ ) ) ( HasDerivAt.mul ( HasDerivAt.mul ( hasDerivAt_const _ _ ) ( HasDerivAt.add ( hasDerivAt_const _ _ ) ( HasDerivAt.mul ( hasDerivAt_id 0 ) ( hasDerivAt_const _ _ ) ) ) ) ( HasDerivAt.log ( HasDerivAt.div_const ( HasDerivAt.add ( hasDerivAt_const _ _ ) ( HasDerivAt.mul ( hasDerivAt_id 0 ) ( hasDerivAt_const _ _ ) ) ) _ ) _ ) ) using 1 <;> norm_num ; ring;
-      · grind;
-      · exact ⟨ ne_of_gt ( hpos p ), ne_of_gt ( hr p ) ⟩;
-    convert HasDerivAt.sum fun p _ => h_deriv p using 1;
+      intro p
+      have h1 : HasDerivAt (fun t : ℝ => π p + t * d p) (d p) 0 := by
+        simpa using ( ( hasDerivAt_id' 0 ).mul_const ( d p ) ).const_add ( π p )
+      convert ( h1.mul_const ( c p ) ).add ( ( h1.const_mul ε ).mul ( ( h1.div_const ( r p ) ).log ( by simp [ ne_of_gt ( hpos p ), ne_of_gt ( hr p ) ] ) ) ) using 1
+      field_simp [ ne_of_gt ( hpos p ), ne_of_gt ( hr p ) ]
+      simp
+    convert HasDerivAt.fun_sum fun p _ => h_deriv p using 1;
     ext t; simp +decide [ F, Finset.sum_add_distrib, mul_assoc, mul_comm, mul_left_comm, Finset.mul_sum _ _ _ ] ;
   exact IsLocalMin.deriv_eq_zero ( Filter.eventually_of_mem ( Metric.ball_mem_nhds _ δpos ) fun t ht => by simpa using hmin _ ( hδ t <| by simpa using ht ) ) |> fun h => h_deriv.deriv.symm.trans h
 
