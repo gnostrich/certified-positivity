@@ -1,0 +1,490 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4. Second Palomar entry from this repository (certified
+# horizon thresholds). Comparator configuration: comparator-thresholds.json.
+version: "v0.4"
+
+project:
+  name: "Certified Positivity: certified horizon thresholds for truncated Weil-type Toeplitz forms at the true prime atoms"
+  description: >-
+    Weil's explicit formula recasts the Riemann Hypothesis as positivity of a
+    quadratic form assembled from prime powers, and a recent computational
+    programme (Connes and van Suijlekom; Connes, Consani and Moscovici)
+    studies truncations of that form numerically, in floating point. This
+    Lean 4 and Mathlib development gives exact, machine-checked data about one
+    explicit discretization family of such truncations. The atom of a prime p
+    is a_p = (log p)/sqrt p, the leading weight the Weil form attaches to the
+    sites plus and minus log p. For window size m + 1 the family is the
+    symmetric Toeplitz matrix with diagonal kappa and, at distance k, the
+    atom of the k-th prime; restricting to a longer window lets one more prime
+    enter. The horizon threshold kappa* of a window is the infimum of the kappa
+    at which this matrix is positive definite (it is positive definite exactly
+    for kappa > kappa*, since raising kappa adds a multiple of the identity):
+    the archimedean mass needed to absorb the primes inside the window.
+
+    The seven compared results bracket the thresholds of windows 2, 3 and 4 and
+    record how they are produced. (1, 2) The 3 by 3 matrix with atoms a_2, a_3
+    is positive definite at kappa = 0.635 and not positive definite at
+    kappa = 0.6. (3, 4) The 4 by 4 matrix with atoms a_2, a_3, a_5 is positive
+    definite at kappa = 0.790 and not positive definite at kappa = 0.789.
+    (5, 6) The 5 by 5 matrix with atoms a_2, a_3, a_5, a_7 is positive definite
+    at kappa = 0.921 and not positive definite at kappa = 0.919. So the
+    thresholds lie in [0.6, 0.635), [0.789, 0.790) and [0.919, 0.921).
+    (7) Joint binding: (log p)/sqrt p < 0.919 for every prime p. The window-4
+    threshold therefore exceeds the atom of every single prime, so it is
+    produced by the atoms jointly and not by any one of them; the proof rests
+    on the atom being strictly decreasing beyond 8, with its maximum over the
+    primes at p = 7.
+
+    The interest is twofold. First, the bracketed chain of thresholds is, to
+    our knowledge, the first formally verified quantitative data about
+    truncations of a Weil-type form, where the literature has floating-point
+    smallest-eigenvalue curves. Second, the data decide a question about how
+    positivity is lost as primes enter: at window 2 the threshold interval
+    contains the newest atom a_3, suggesting that the newest prime always
+    binds; the window-3 bracket lies strictly above a_5 (about 0.7197), which
+    refutes that, and theorem (7) shows that from window 4 no single prime
+    can account for the threshold at all.
+
+    Scope is finite and explicit. These are statements about the stated
+    schematic discretization family (distance-indexed atoms on a Toeplitz
+    window), not about the genuine Weil kernel; whether joint binding persists
+    for the genuine kernel is open. Nothing here bears on the Riemann
+    Hypothesis.
+  authors:
+    - "Rohan Badade"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Rohan Badade"
+
+classification:
+  arxiv: ["math.NT", "math.LO"]
+  msc2020: ["11M26", "15B48", "68V20", "65G20", "15A63", "11M06"]
+
+sources:
+  - title: >-
+      Certified horizon thresholds for windows 2 to 4 of a truncated Weil-type
+      Toeplitz family at the true prime atoms, and the joint-binding theorem
+    authors:
+      - "Rohan Badade"
+    type: original-proof
+    relationship: other
+    author_endorsement: participated
+    note: >-
+      These results are first presented by this formalization and the
+      accompanying preprint Certified Positivity, which is written from it. No
+      earlier source states them. Recorded as type original-proof with
+      relationship other, as the Palomar original-result contract requires;
+      every other source below is contextual background.
+  - title: >-
+      Certified Positivity: Formally Verified Horizon Thresholds for Truncated
+      Weil Quadratic Forms in Lean
+    authors:
+      - "Rohan Badade"
+    type: paper
+    location: "papers/certified-positivity-paper.pdf in this repository, Section 4 and Table 2"
+    relationship: background
+    license: "unknown"
+    author_endorsement: participated
+    note: >-
+      Unsubmitted preprint by the submitter, carried in this repository. It has
+      no arXiv identifier and no DOI, and the copy here is one or more
+      revisions behind the canonical off-repo version (see
+      papers/PENDING-SYNC.md). It is the informal write-up of this development
+      rather than a prior source for it, hence background. Section 4 and
+      Table 2 present the seven compared results.
+  - title: "Quadratic forms, real zeros and echoes of the spectral action"
+    authors:
+      - "Alain Connes"
+      - "Walter D. van Suijlekom"
+    id: "arXiv:2511.23257"
+    type: paper
+    relationship: background
+    license: "unknown"
+    author_endorsement: not-contacted
+    note: >-
+      The floating-point study of truncated Weil quadratic forms whose
+      smallest-eigenvalue behaviour the certified thresholds are compared
+      with. No statement of theirs is formalized here, and none of the
+      compared theorems is theirs.
+  - title: "Zeta spectral triples"
+    authors:
+      - "Alain Connes"
+      - "Caterina Consani"
+      - "Henri Moscovici"
+    id: "arXiv:2511.22755"
+    type: paper
+    relationship: background
+    license: "unknown"
+    author_endorsement: not-contacted
+    note: >-
+      The operator-theoretic reading of truncated Weil forms that motivates the
+      wider development. Context only: none of its results is formalized, and
+      none of the compared theorems is one of theirs.
+  - title: 'Sur les "formules explicites" de la theorie des nombres premiers'
+    authors:
+      - "Andre Weil"
+    type: paper
+    location: "Comm. Sem. Math. Univ. Lund (1952), 252-265"
+    relationship: background
+    license: "unknown"
+    author_endorsement: "n/a"
+    note: >-
+      The explicit formula and the positivity criterion that give the
+      programme its subject, and the source of the atom weights
+      (log p)/sqrt p. The compared statements concern a finite discretization
+      family built from those weights; the source's own results are not
+      formalized here.
+  - title: "mathlib4: the Lean mathematical library"
+    authors:
+      - "The Mathlib Community"
+    id: "https://github.com/leanprover-community/mathlib4"
+    type: other
+    location: "Mathlib v4.35.0, as pinned by lakefile.toml and lake-manifest.json"
+    relationship: background
+    license: "Apache-2.0"
+    author_endorsement: "n/a"
+    note: >-
+      The ambient library. ChallengeThresholds.lean imports only Mathlib.
+      Mathlib supplies the matrix, analytic and logarithm infrastructure used
+      (determinants, Real.log and Real.sqrt, the Mercator-series bound
+      Real.abs_log_sub_add_sum_range_le and the digit bounds on log 2 behind
+      the atom enclosures). It is a Lean dependency, not a mathematical source
+      for any compared statement.
+
+related_formalizations:
+  - id: "PALOMAR-2026-11-14-000017"
+    relationship: other
+    note: >-
+      Companion entry from the same repository and the same preprint (the
+      positivity windows of the genuine Suzuki screw kernel). It shares this
+      repository's infrastructure (Horizon.quadForm and Horizon.IsPDq) but no
+      compared theorem depends on it, and this entry does not depend on any of
+      its theorems; the two entries are mathematically independent parts of
+      one development.
+
+status:
+  scope: >-
+    Formalized: exactly the seven statements listed in
+    comparator-thresholds.json and stated in ChallengeThresholds.lean, with
+    sorry-free proofs in RequestProject/E5.lean, G3.lean and G6.lean, inside
+    the wider 76-module development in that directory. Each threshold
+    statement is about one explicit finite matrix at one explicit rational
+    diagonal value; the atoms enter as exact real numbers, controlled by
+    certified rational enclosures proved in RequestProject/E3.lean, G2.lean
+    and G4.lean. The window-1 exact threshold (RequestProject/E4.lean), the
+    interval-uniform versions of the certificates, and the rest of the wider
+    development, including the content of the companion entry
+    PALOMAR-2026-11-14-000017, are not part of this submission.
+
+    Sorry and native_decide. The development is sorry-free and
+    native_decide-free. The atom enclosures in RequestProject/E2.lean and
+    RequestProject/G4.lean, which are in the import closure of the compared
+    theorems, originally used native_decide; on 2026-09-14 they were re-proved
+    by the Aristotle prover with Mathlib's Real.abs_log_sub_add_sum_range_le
+    Mercator-series tail bound and Real.log_two_gt_d9/Real.log_two_lt_d9,
+    with no statement changed. ChallengeThresholds.lean's own seven
+    deliberate sorries are the comparator placeholders and are not counted.
+
+    Not claimed. No statement here is about the Riemann Hypothesis or about
+    the genuine Weil kernel. The thresholds are bracketed, not computed
+    exactly; the exact value of each threshold is not a compared statement,
+    and neither is the monotonicity in kappa used above to read the
+    certificates as brackets.
+    The claim that these are the first formally verified quantitative data
+    about truncations of a Weil-type form is made only to our knowledge.
+    Proof terms were audited at statement level only; see the review block.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+  main_results:
+    - declaration: "E5.E5_cert_pos"
+      file: "RequestProject/E5.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-thresholds.json"
+    - declaration: "E5.E5_cert_neg"
+      file: "RequestProject/E5.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-thresholds.json"
+    - declaration: "G3.G3_cert_pos"
+      file: "RequestProject/G3.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-thresholds.json"
+    - declaration: "G3.G3_cert_neg"
+      file: "RequestProject/G3.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-thresholds.json"
+    - declaration: "G6.G6_cert_pos"
+      file: "RequestProject/G6.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-thresholds.json"
+    - declaration: "G6.G6_cert_neg"
+      file: "RequestProject/G6.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-thresholds.json"
+    - declaration: "G6.G6_c"
+      file: "RequestProject/G6.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-thresholds.json"
+
+automation:
+  methods:
+    - method: autonomous
+      models: ["Aristotle"]
+      framework: "Aristotle (Harmonic)"
+      tool_setup: >-
+        Every .lean file under RequestProject/ is a per-batch deliverable of the
+        automated theorem prover Aristotle, by Harmonic, apart from the
+        mechanical module-system header and the proof repairs required by the
+        move to Lean v4.35.0, both described under the copilot method.
+        The workflow ran in
+        batches: the human author wrote a specification for a batch of
+        statements (definitions first, then the theorem statements to be
+        proved, with the pinned toolchain fixed at Lean 4 v4.28.0 and Mathlib
+        v4.28.0); the prover produced the Lean sources; and each batch came
+        back with a compilation report that was retained as the primary
+        provenance record. Statements that failed, or that the prover reported
+        as false, were returned to the specification stage and re-posed. In
+        one case the prover corrected a false numerical enclosure in the human
+        specification; in another it discovered that the requested
+        diagonal-dominance bound was exactly tight on the target grid and
+        certified positivity by a different route rather than misattribute the
+        method. No proof search or tactic scripting was done by hand. On
+        2026-09-14, in a single follow-up API job, Aristotle also re-proved
+        the four numeric bound lemmas that had originally used native_decide
+        (E2_log3, E2_log5, E2_log7 in RequestProject/E2.lean and G4_log11 in
+        RequestProject/G4.lean), replacing them with kernel-checkable proofs
+        via Mathlib's Mercator-series tail bound, making the whole development
+        native_decide-free. In a second API job the same day, Aristotle
+        closed the three previously open sorry declarations without changing
+        their statements: F3R.F3R_simple (RequestProject/F3R.lean), by a
+        deeper use of the file's Toeplitz shift identity, avoiding unitary
+        diagonalization, with new supporting lemmas in the same file;
+        F3.F3_roots (RequestProject/F3.lean), obtained by transfer from the
+        completed F3R.F3R_roots, with F3.lean now importing F3R; and
+        D4.D4_caratheodory (RequestProject/D4.lean), the full
+        Carathéodory-Fejér theorem, via least-singular-block selection, F3R,
+        window propagation of the null relation, and Vandermonde
+        interpolation, with general-purpose lemmas in the new module
+        RequestProject/D4Aux.lean. The development is now sorry-free as well
+        as native_decide-free, across all 76 modules, with every declaration
+        depending only on propext, Classical.choice and Quot.sound; the
+        compared theorems are unchanged.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: >-
+        Batches were posed as written mathematical specifications rather than
+        conversational prompts: the exact Lean definitions to be used, the
+        exact statements to be proved, the axiom budget (propext, Quot.sound,
+        Classical.choice only, with native_decide to be avoided wherever
+        possible and disclosed where not), and, for the experimental batches,
+        pre-registered hypotheses stated in advance so that a refutation would
+        count as a result rather than a failure. Certificate schemas
+        were specified so that exact rational verification could compose with
+        analytic error bounds.
+    - method: copilot
+      models: ["Claude (Anthropic)"]
+      framework: "Claude"
+      tool_setup: >-
+        An AI assistant (Claude, Anthropic) was used by the author for
+        specification development, that is drafting and refining the Lean
+        definitions and statements handed to the prover, and for the
+        statement-level audit of prover output against those specifications,
+        including the construction and checking of Challenge.lean as the
+        Mathlib-only restatement of the seven compared theorems (ChallengeThresholds.lean). The prose of
+        the two preprints and of this metadata record was likewise produced
+        with that assistance, as was the mechanical port of every .lean file
+        to Lean's module system (a module header, public imports and an
+        exposed public section, with no statement or proof changed). In
+        November 2026 the development was moved from Lean and Mathlib v4.28.0
+        to v4.35.0, because Palomar now requires Lean v4.35.0-rc2 or later.
+        Proof scripts in 29 files of RequestProject/ no longer elaborated (A1,
+        A3, A5, B2, B4, C1, C3Gibbs, C3Objective, C3Pos, D4Aux, D6, E5, F1,
+        F2, F3R, G5, H3a, H3b, I2, J1, K1, K3, R5Final, R5Prime, R_A5, R_A6,
+        V5_2, V5_4, V5_7); three
+        of them (D6, E5, G5) are in the import closure of the
+        compared theorems, and E5 contains two of them. Claude agents repaired them, editing proof scripts
+        only: no statement, definition or name changed, no sorry or new axiom
+        was introduced, and no heartbeat limit was raised. Most repairs close a
+        side goal true by definition that the old convert or simp had closed
+        implicitly, or adapt to a changed Mathlib lemma signature. Apart from
+        these repairs it produced no proof terms.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: >-
+        Used interactively on specification text and on statement-by-statement
+        comparison of delivered Lean statements against the intended ones. The
+        audit protocol was to read each delivered statement against its
+        specification and record any deviation explicitly; the deviations found
+        are recorded in fidelity.divergences and marked at the theorems in
+        Challenge.lean.
+    - method: manual
+      models: []
+      framework: "n/a"
+      tool_setup: >-
+        The human author set the problems, chose the mathematical objects and
+        the discretization families, designed the certificate schemas and the
+        tier architecture, pre-registered the structural hypotheses before the
+        batches that decided them, made every mathematical and editorial
+        decision, selected the seven theorems for the compared set, and
+        performed the final review of statements, axiom disclosures and scope.
+        The consolidated lake build was re-run independently of the prover's
+        environment. The author takes responsibility for all claims.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: "n/a"
+  spend_usd: "not tracked"
+  notes: >-
+    The division of labour is: human problem-setting, specification design,
+    pre-registration and decisions; AI-assisted specification drafting and
+    statement-level audit; automated proof production by Aristotle
+    (Harmonic). No human has reviewed the proof terms line by line. The trust
+    model is Lean's kernel plus the axiom audit: the consolidated all-files
+    lake build was re-run outside the prover's environment on 2026-07-26 on the
+    pinned toolchain (Lean 4 v4.28.0, Mathlib v4.28.0), building all 75
+    modules then present with zero errors, exactly the three disclosed sorry
+    warnings, and #print axioms output on the headline theorems matching the
+    disclosures here. On 2026-09-14 those three sorry warnings were closed
+    (see automation.methods.autonomous and status.scope above); the
+    consolidated build, now covering 76 modules, emits none, and this is
+    re-run in CI. On 2026-11-13 the development was moved to Lean v4.35.0
+    and Mathlib v4.35.0 (see automation.methods.copilot for the proof repairs
+    this required); the consolidated build of all 76 modules was re-run on
+    that toolchain with zero errors and no sorry warnings, and the compared
+    set was re-checked in this repository's CI with the toolchain's lake
+    comparator. The per-batch
+    compilation reports remain the original provenance record.
+
+fidelity:
+  divergences: >-
+    There is no cited source whose statements this development reproduces, so
+    the fidelity question is between the sorry-free repository modules and
+    their restatement in ChallengeThresholds.lean, which is what Palomar
+    compares.
+
+    One systematic transformation: ChallengeThresholds.lean imports only
+    Mathlib and therefore contains inlined copies of every custom definition
+    the seven statements need (quadForm and IsPDq from Horizon.lean, V from
+    E5.lean, U from G3.lean, U5 from G6.lean). Because those copies all live in
+    the single namespace ChallengeThresholds, the namespace prefixes of the
+    originals (Horizon., E5., G3., G6.) are necessarily dropped. There are no
+    individual statement deviations.
+
+    ChallengeThresholds.lean makes no axiom claim of its own: every proof in
+    it is sorry. Axiom status is a property of the repository modules.
+
+review:
+  status: >-
+    self-assessed; automated mechanical checks in this repository's CI
+    (consolidated lake build with sorry census; lake comparator from the
+    pinned Lean v4.35.0 toolchain, statement match with replay through Lean's
+    kernel and the NanoDa and con-ron binaries shipped in that toolchain,
+    against ChallengeThresholds.lean for all 7 compared theorems);
+    statement-level audit of prover output was AI-assisted; no line-by-line
+    human review of proof terms; no external mathematical peer review yet
+  reviewers:
+    - "Rohan Badade (self)"
+  notes: >-
+    What was checked mechanically: the consolidated all-files lake build on the
+    pinned toolchain, re-run in CI, with no sorry warnings and no errors;
+    #print axioms on the compared theorems; and, in this repository's CI
+    (.github/workflows/build.yml), the lake comparator shipped with the
+    pinned Lean v4.35.0 toolchain, run with comparator-thresholds.json against
+    ChallengeThresholds.lean for the seven compared theorems, covering
+    statement match, byte-identical definition graphs, the axiom allowlist
+    (propext, Quot.sound, Classical.choice only) and replay through Lean's
+    kernel and the nanoda_bin and con-ron binaries found in that toolchain's
+    bin directory.
+
+    These repository checks are distinct from Palomar's own mechanical
+    verification of the submission, which Palomar runs separately with
+    checkers it pins itself. Palomar's report, not this file, is the record of
+    what Palomar checked.
+
+    What was checked by a human: the choice and wording of every statement, the
+    scope and non-claim lists, the axiom and sorry disclosures, and the
+    contents of this file.
+
+    What was not done: no human has read the proof terms line by line,
+    including the AI-made repairs for the Lean v4.35.0 move; the
+    statement-level audit of prover output against the specifications was
+    AI-assisted rather than independently human-verified; and the preprint
+    has not been submitted or peer-reviewed. Scrutiny is invited through the
+    repository's issues and pull requests.
+
+alignment:
+  namespace: "ChallengeThresholds"
+  statements:
+    - source: "Certified Positivity, Table 2, window 2 (positive side)"
+      lean: "ChallengeThresholds.E5_cert_pos"
+      module: "ChallengeThresholds"
+      status: proved
+      note: >-
+        The 3 by 3 Toeplitz matrix V(0.635, a_2, a_3) is positive definite. Proved sorry-free as E5.E5_cert_pos in RequestProject/E5.lean.
+    - source: "Certified Positivity, Table 2, window 2 (negative side)"
+      lean: "ChallengeThresholds.E5_cert_neg"
+      module: "ChallengeThresholds"
+      status: proved
+      note: >-
+        V(0.6, a_2, a_3) is not positive definite, so the window-2 threshold lies in [0.6, 0.635). Proved sorry-free as E5.E5_cert_neg in RequestProject/E5.lean.
+    - source: "Certified Positivity, Table 2, window 3 (positive side)"
+      lean: "ChallengeThresholds.G3_cert_pos"
+      module: "ChallengeThresholds"
+      status: proved
+      note: >-
+        The 4 by 4 Toeplitz matrix U(0.790, a_2, a_3, a_5) is positive definite. Proved sorry-free as G3.G3_cert_pos in RequestProject/G3.lean.
+    - source: "Certified Positivity, Table 2, window 3 (negative side)"
+      lean: "ChallengeThresholds.G3_cert_neg"
+      module: "ChallengeThresholds"
+      status: proved
+      note: >-
+        U(0.789, a_2, a_3, a_5) is not positive definite, so the window-3 threshold lies in [0.789, 0.790); since a_5 < 0.7198, the newest atom does not bind it. Proved sorry-free as G3.G3_cert_neg in RequestProject/G3.lean.
+    - source: "Certified Positivity, Table 2, window 4 (positive side)"
+      lean: "ChallengeThresholds.G6_cert_pos"
+      module: "ChallengeThresholds"
+      status: proved
+      note: >-
+        The 5 by 5 Toeplitz matrix U5(0.921, a_2, a_3, a_5, a_7) is positive definite. Proved sorry-free as G6.G6_cert_pos in RequestProject/G6.lean.
+    - source: "Certified Positivity, Table 2, window 4 (negative side)"
+      lean: "ChallengeThresholds.G6_cert_neg"
+      module: "ChallengeThresholds"
+      status: proved
+      note: >-
+        U5(0.919, a_2, a_3, a_5, a_7) is not positive definite, so the window-4 threshold lies in [0.919, 0.921). Proved sorry-free as G6.G6_cert_neg in RequestProject/G6.lean.
+    - source: "Certified Positivity, Section 4.5 (joint-binding theorem)"
+      lean: "ChallengeThresholds.G6_c"
+      module: "ChallengeThresholds"
+      status: proved
+      note: >-
+        For every prime p, (log p)/sqrt p < 0.919: the window-4 failure value exceeds every single prime atom. Proved sorry-free as G6.G6_c in RequestProject/G6.lean.
+
+acknowledgements: >-
+  Mathlib and its community, and the Lean 4 toolchain and the Lean FRO, for
+  the library and the kernel that this development rests on. Aristotle, the
+  automated theorem prover by Harmonic, produced the Lean proofs in
+  RequestProject/ from the author's specifications. Claude, by Anthropic,
+  assisted with specification development, with the statement-level audit of
+  prover output against those specifications, with prose, and with the proof
+  repairs required by the move to Lean v4.35.0. In this repository's CI the
+  compared set is checked against ChallengeThresholds.lean with the lake comparator
+  shipped in the pinned Lean toolchain; Palomar's own verification is
+  separate and uses checkers Palomar pins. The
+  author set the problems, made the mathematical and editorial decisions, and
+  takes responsibility for all claims; no human has reviewed the proof terms
+  line by line, and the trust model is Lean's kernel together with the
+  per-theorem axiom audit. The acknowledgments printed in the two preprint
+  PDFs in papers/ are the corresponding statement there; papers/PENDING-SYNC.md
+  records that the canonical off-repo versions extend them with the comparator
+  result, wording not yet reflected in the PDFs carried here.

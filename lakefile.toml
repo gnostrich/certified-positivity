@@ -15,3 +15,9 @@ name = "Challenge"
 
 [[lean_lib]]
 name = "Solution"
+
+[[lean_lib]]
+name = "ChallengeThresholds"
+
+[[lean_lib]]
+name = "SolutionThresholds"

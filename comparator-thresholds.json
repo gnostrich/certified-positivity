@@ -1,0 +1,19 @@
+{
+  "challenge_module": "ChallengeThresholds",
+  "solution_module": "SolutionThresholds",
+  "theorem_names": [
+    "ChallengeThresholds.E5_cert_pos",
+    "ChallengeThresholds.E5_cert_neg",
+    "ChallengeThresholds.G3_cert_pos",
+    "ChallengeThresholds.G3_cert_neg",
+    "ChallengeThresholds.G6_cert_pos",
+    "ChallengeThresholds.G6_cert_neg",
+    "ChallengeThresholds.G6_c"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}
