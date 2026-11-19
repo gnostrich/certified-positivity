@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.E1
-import RequestProject.E2
+module
+
+public import Mathlib
+public import RequestProject.E1
+public import RequestProject.E2
+
+@[expose] public section
 
 open scoped BigOperators
 open Real

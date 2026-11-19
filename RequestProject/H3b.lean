@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -24,7 +28,7 @@ theorem H3b_asano (A B C D : ℂ) (hD : D ≠ 0)
     exact fun w hw => by convert hP w w hw hw using 1; ring;
   have h_quad_roots : ∃ r₁ r₂ : ℂ, r₁ * r₂ = A / D ∧ ∀ w : ℂ, A + (B + C) * w + D * w ^ 2 = 0 ↔ w = r₁ ∨ w = r₂ := by
     obtain ⟨r₁, r₂, hr⟩ : ∃ r₁ r₂ : ℂ, r₁ + r₂ = -(B + C) / D ∧ r₁ * r₂ = A / D := by
-      exact ⟨ ( - ( B + C ) / D ) / 2 - ( ( - ( B + C ) / D ) ^ 2 / 4 - A / D ) ^ ( 1/2 : ℂ ), ( - ( B + C ) / D ) / 2 + ( ( - ( B + C ) / D ) ^ 2 / 4 - A / D ) ^ ( 1/2 : ℂ ), by ring, by ring; rw [ ← Complex.cpow_nat_mul ] ; norm_num; ring ⟩;
+      exact ⟨ ( - ( B + C ) / D ) / 2 - ( ( - ( B + C ) / D ) ^ 2 / 4 - A / D ) ^ ( 1/2 : ℂ ), ( - ( B + C ) / D ) / 2 + ( ( - ( B + C ) / D ) ^ 2 / 4 - A / D ) ^ ( 1/2 : ℂ ), by ring, by ring; rw [ ← Complex.cpow_nat_mul ] ; norm_num ⟩;
     refine' ⟨ r₁, r₂, hr.2, fun w => ⟨ fun hw => _, fun hw => _ ⟩ ⟩ <;> simp_all +decide [ mul_comm, mul_assoc, mul_left_comm, div_eq_mul_inv ]; all_goals grind
   obtain ⟨r₁, r₂, hr⟩ := h_quad_roots
   have h_abs : ‖r₁‖ ≥ 1 ∧ ‖r₂‖ ≥ 1 := by

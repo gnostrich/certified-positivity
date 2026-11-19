@@ -1,4 +1,8 @@
-import RequestProject.C3Base
+module
+
+public import RequestProject.C3Base
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -26,7 +30,9 @@ lemma slope_pos_tendsto (rz ε πz qz : ℝ) (hrz : 0 < rz) (hπz : 0 < πz) :
           - πz * Real.log (πz / rz)) / s)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds ((qz - πz) * (Real.log (πz / rz) + 1))) := by
   have h_deriv : HasDerivAt (fun s : ℝ => ((1 - s) * πz + s * qz) * Real.log (((1 - s) * πz + s * qz) / rz)) ((qz - πz) * (Real.log (πz / rz) + 1)) 0 := by
-    convert HasDerivAt.mul ( HasDerivAt.add ( HasDerivAt.mul ( hasDerivAt_id 0 |> HasDerivAt.const_sub 1 ) ( hasDerivAt_const _ _ ) ) ( HasDerivAt.mul ( hasDerivAt_id 0 ) ( hasDerivAt_const _ _ ) ) ) ( HasDerivAt.log ( HasDerivAt.div_const ( HasDerivAt.add ( HasDerivAt.mul ( hasDerivAt_id 0 |> HasDerivAt.const_sub 1 ) ( hasDerivAt_const _ _ ) ) ( HasDerivAt.mul ( hasDerivAt_id 0 ) ( hasDerivAt_const _ _ ) ) ) _ ) _ ) using 1 <;> norm_num [ hrz.ne', hπz.ne' ];
+    have h1 : HasDerivAt (fun s : ℝ => (1 - s) * πz + s * qz) (qz - πz) 0 := by
+      convert ( ( hasDerivAt_id' 0 |> HasDerivAt.const_sub 1 ).mul_const πz ).add ( ( hasDerivAt_id' 0 ).mul_const qz ) using 1; ring
+    convert HasDerivAt.mul h1 ( HasDerivAt.log ( HasDerivAt.div_const h1 rz ) ( by norm_num [ hπz.ne', hrz.ne' ] ) ) using 1 <;> norm_num [ hrz.ne', hπz.ne' ];
     grind;
   simpa [ div_eq_inv_mul ] using h_deriv.tendsto_slope_zero_right
 
@@ -80,7 +86,7 @@ lemma C3_pos (hr : ∀ p, 0 < r p) (hε : 0 < ε) (hμ : ∀ x, 0 < μ x) (hν :
     simp +decide [ F, Finset.sum_div _ _ _, Finset.sum_add_distrib, Finset.mul_sum _ _ _, Finset.sum_mul _ _ _, div_eq_inv_mul, mul_assoc, mul_left_comm, mul_comm, hs.out.ne' ];
     simp +decide [ Finset.sum_filter, Finset.mul_sum _ _ _, Finset.sum_add_distrib, mul_add, add_mul, mul_sub, sub_mul, mul_assoc, mul_comm, mul_left_comm, hs.out.ne' ];
     simp +decide [ ← mul_assoc, ← Finset.sum_mul _ _ _, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, hs.out.ne' ] ; ring;
-    rw [ ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib ] ; rw [ ← Finset.sum_add_distrib ] ; congr ; ext x ; split_ifs <;> ring ; linarith;
+    rw [ ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib ] ; congr ; ext x ; split_ifs <;> ring ; linarith;
     · simp +decide [ show π x = 0 by linarith [ hfeas.1 x ] ];
     · grind;
   -- Extract witness: (slope → atBot).eventually (Filter.eventually_lt_atBot 0) gives eventually slope < 0; intersect with `Ioo_mem_nhdsGT_of_mem ⟨le_rfl, one_pos⟩` (a right-nbhd of 0 inside Ioo 0 1) and take `.exists` to get s ∈ Ioo 0 1 with (F(π_s s) - F π)/s < 0.

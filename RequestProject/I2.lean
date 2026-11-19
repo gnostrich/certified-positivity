@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 
@@ -24,8 +28,7 @@ theorem I2_iff (M : Matrix (Fin m) (Fin n) ℝ) :
     set U : Matrix (Fin m) (Fin 1) ℝ := fun i j => u i
     set W : Matrix (Fin 1) (Fin n) ℝ := fun i j => w j
     have h_prod : M = U * W := by
-      ext i j; simp [U, W, h];
-      simp +decide [ Matrix.mul_apply ];
+      ext i j; rw [ Matrix.mul_apply ]; simp [U, W, h];
     exact h_prod ▸ Matrix.rank_mul_le _ _ |> le_trans <| min_le_of_left_le ( Matrix.rank_le_card_width _ );
   · interval_cases _ : Matrix.rank M;
     · simp_all +decide [ Matrix.rank, Submodule.eq_bot_iff ];

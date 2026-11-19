@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.Horizon
-import RequestProject.K1
+module
+
+public import Mathlib
+public import RequestProject.Horizon
+public import RequestProject.K1
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon

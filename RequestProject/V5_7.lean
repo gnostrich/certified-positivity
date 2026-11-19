@@ -1,5 +1,9 @@
-import RequestProject.V5_1
-import RequestProject.GW1
+module
+
+public import RequestProject.V5_1
+public import RequestProject.GW1
+
+@[expose] public section
 
 open scoped BigOperators
 open ArithmeticFunction
@@ -37,6 +41,6 @@ theorem weil_triangle_prime_side (t : ℝ) (ht : 0 < t) (N : ℕ)
     ∑ n ∈ Finset.Icc 2 N,
         (Λ n / Real.sqrt n) *
           (triangle t (Real.log n) + triangle t (-Real.log n)) = V5_1.primeSum t := by
-  convert triangular_prime_sum t ht N hN using 1
+  exact triangular_prime_sum t ht N hN
 
 end V5_7

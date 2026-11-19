@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 
@@ -23,9 +27,9 @@ theorem B4_resolvent (hA : A.IsHermitian) :
   obtain ⟨U, D, hU⟩ : ∃ U : Matrix (Fin n) (Fin n) ℝ, ∃ D : Fin n → ℝ, U * Uᵀ = 1 ∧ Uᵀ * U = 1 ∧ A = U * Matrix.diagonal D * Uᵀ := by
     have := Matrix.IsHermitian.spectral_theorem hA;
     refine' ⟨ hA.eigenvectorUnitary, fun i => hA.eigenvalues i, _, _, _ ⟩;
-    · convert hA.eigenvectorUnitary.2.2 using 1;
-    · convert hA.eigenvectorUnitary.2.1 using 1;
-    · convert this using 1;
+    · convert hA.eigenvectorUnitary.2.2 using 1; simp [Matrix.star_eq_conjTranspose]
+    · convert hA.eigenvectorUnitary.2.1 using 1; simp [Matrix.star_eq_conjTranspose]
+    · convert this using 1; simp [Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose]
   -- For $z$ that is not an eigenvalue of $A$, we have $(z • 1 - A)⁻¹ = U (diagonal (fun i => (z - D i)⁻¹)) Uᵀ$.
   have h_inv : ∀ z : ℝ, (∀ i, z ≠ D i) → (z • 1 - A)⁻¹ = U * Matrix.diagonal (fun i => (z - D i)⁻¹) * Uᵀ := by
     intro z hz

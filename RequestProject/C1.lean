@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 
@@ -35,6 +39,8 @@ theorem C1_kolmogorov
     · exact fun i => div_pos ( div_pos ( hpos _ _ ) ( hpos _ _ ) ) ( Finset.sum_pos ( fun _ _ => div_pos ( hpos _ _ ) ( hpos _ _ ) ) Finset.univ_nonempty );
     · rw [ ← Finset.sum_div, div_self <| ne_of_gt <| Finset.sum_pos ( fun _ _ => div_pos ( hpos _ _ ) ( hpos _ _ ) ) Finset.univ_nonempty ];
     · intro i j; specialize h 3 ( fun k => if k = 0 then ⟨ 0, NeZero.pos n ⟩ else if k = 1 then i else j ) ; simp_all +decide [ Fin.prod_univ_succ ] ;
+      have h0 : (⟨0, NeZero.pos n⟩ : Fin n) = 0 := Fin.ext (by simp)
+      simp only [π, c, h0]
       grind +locals
 
 end C1

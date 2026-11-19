@@ -1,7 +1,11 @@
-import Mathlib
-import RequestProject.Horizon
-import RequestProject.K1
-import RequestProject.D5
+module
+
+public import Mathlib
+public import RequestProject.Horizon
+public import RequestProject.K1
+public import RequestProject.D5
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon
@@ -40,7 +44,6 @@ theorem K3_operator_bound (R : Matrix (Fin n) (Fin n) ℝ) (δ : ℝ)
   have h2 : (∑ i, |x i|)^2 ≤ n * (∑ i, |x i|^2) := by
     have := ( Finset.univ.sum_le_sum fun i _ => mul_self_nonneg ( |x i| - ( ∑ i : Fin n, |x i| ) / n ) );
     by_cases hn : n = 0 <;> simp_all +decide [ sub_mul, mul_sub ];
-    · aesop;
     · simp_all +decide [ ← sq, ← Finset.mul_sum _ _ _, ← Finset.sum_mul ];
       nlinarith [ mul_div_cancel₀ ( ∑ i, |x i| ) ( by positivity : ( n : ℝ ) ≠ 0 ) ];
   simp_all +decide [ mul_comm, sq_abs ];

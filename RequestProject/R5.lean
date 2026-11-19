@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.V5_5
-import RequestProject.R_A6
+module
+
+public import Mathlib
+public import RequestProject.V5_5
+public import RequestProject.R_A6
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon

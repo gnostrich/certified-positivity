@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -60,6 +64,6 @@ theorem A1_b (halt : ∀ x, ω x x = 0) :
 theorem A1_c (halt : ∀ x, ω x x = 0) (x y : V) :
     ω (T ω δ x) (T ω δ y) = ω x y := by
   have := halt ( δ + y ) ; simp_all +decide [ add_smul, smul_add ] ;
-  linear_combination' this * ( ω x ) δ
+  linear_combination this * ( ω x ) δ
 
 end A1

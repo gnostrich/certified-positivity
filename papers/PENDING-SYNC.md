@@ -8,11 +8,14 @@ replaced with the submitted versions in a single final sync.
 
 ## Pending items
 
-1. Acknowledgments in both papers extended with the comparator result —
-   eighteen classical-axiom theorems certified against Challenge.lean,
-   re-run in CI (Lean kernel and NanoDa replay); wording finalized off-repo.
-   The compared set now includes the two G-tier theorems `G3_cert_neg` and
-   `G5_c_prime` (see item 2 below).
+1. Acknowledgments in both papers extended with the comparator result;
+   wording finalized off-repo. That wording describes an earlier selection of
+   eighteen classical-axiom theorems (sixteen in the `V5` and `R` tiers, plus
+   `G3_cert_neg` and `G5_c_prime`). The current `comparator.json` selects
+   only three theorems: `true_kernel_grid_margin`, `true_kernel_grid_posdef`
+   and `true_kernel_first_prime_posdef`, re-run in CI (Lean kernel, NanoDa
+   and con-ron replay). The canonical wording should be updated to match the
+   current selection.
 
 ## Errata (found in a 2026-09-14 audit of the PDFs against the repository)
 
@@ -72,13 +75,11 @@ corrected in the canonical versions before arXiv submission.
    relation, and Vandermonde interpolation, with general-purpose lemmas
    factored into the new module `RequestProject/D4Aux.lean`. The development
    is now sorry-free (and remains `native_decide`-free) across all 76
-   modules; the eighteen comparator theorems are unchanged. The canonical
+   modules; the theorems then in the comparator selection were unchanged. The canonical
    versions should update Table 1 and the trust-table prose to drop the
    three-sorry-site caveat and record the closure.
 
-None of the above touches the eighteen comparator-certified theorems. Sixteen
-of them are in the `V5` and `R` tiers and were already `native_decide`-free
-transitively; the compared set now also includes the two G-tier theorems
-`G3_cert_neg` and `G5_c_prime`, which became `native_decide`-free on
-2026-09-14 and were restored to `Challenge.lean`, `Solution.lean` and
-`comparator.json` accordingly.
+None of the above touches the three theorems in the current comparator
+selection (`true_kernel_grid_margin`, `true_kernel_grid_posdef`,
+`true_kernel_first_prime_posdef`), which were already `native_decide`-free
+transitively. The earlier eighteen-theorem selection is described in item 1.

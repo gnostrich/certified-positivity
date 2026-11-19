@@ -1,5 +1,9 @@
-import Mathlib
-import RequestProject.D6
+module
+
+public import Mathlib
+public import RequestProject.D6
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon

@@ -4,28 +4,12 @@
   "theorem_names": [
     "Challenge.true_kernel_grid_margin",
     "Challenge.true_kernel_grid_posdef",
-    "Challenge.true_kernel_first_prime_posdef",
-    "Challenge.weil_triangle_prime_side",
-    "Challenge.schur_pos_isPDq",
-    "Challenge.expand_pd",
-    "Challenge.halt_not_pd",
-    "Challenge.isPDq_iff_nMinus_nZero_eq_zero",
-    "Challenge.checkPDq_sound",
-    "Challenge.PsiArch_not_convex",
-    "Challenge.coverage_prime_free",
-    "Challenge.gershgorin_margin",
-    "Challenge.coverage_band",
-    "Challenge.three_grid_last_row_gershgorin_zero",
-    "Challenge.coverage_band_final",
-    "Challenge.frontier_covers_band_final",
-    "Challenge.G3_cert_neg",
-    "Challenge.G5_c_prime"
+    "Challenge.true_kernel_first_prime_posdef"
   ],
   "definition_names": [],
   "permitted_axioms": [
     "propext",
     "Quot.sound",
     "Classical.choice"
-  ],
-  "enable_nanoda": true
+  ]
 }

@@ -1,5 +1,9 @@
-import Mathlib
-import RequestProject.Horizon
+module
+
+public import Mathlib
+public import RequestProject.Horizon
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon
@@ -37,7 +41,7 @@ theorem K1_posdef {n : ℕ} (t : Fin n → ℝ) (hmono : StrictMono t)
         · rw [ show ( Finset.filter ( fun x => x ≤ Fin.succ k ) Finset.univ : Finset ( Fin ( n + 1 ) ) ) = Finset.filter ( fun x => x ≤ Fin.castSucc k ) Finset.univ ∪ { Fin.succ k } from ?_, Finset.sum_union ] <;> norm_num [ ih ];
           · simp +zetaDelta at *;
             rw [ show ( Fin.succ k - 1 : Fin ( n + 1 ) ) = Fin.castSucc k from by simp +decide [ sub_eq_iff_eq_add ] ] ; ring;
-          · grind +suggestions;
+          · ext x; simp [ Fin.le_def, Fin.ext_iff ]; omega;
       cases le_total i j <;> simp_all +decide [ StrictMono.le_iff_le ]; all_goals exact monotone_iff_forall_lt.mpr ( fun a b hab => le_of_lt ( hmono hab ) ) ‹_›;
     -- Substitute $min (t i) (t j)$ with $\sum_{k \leq min(i, j)} d k$ in the quadratic form.
     have h_quadForm : ∀ x : Fin (n + 1) → ℝ, quadForm (minMat t) x = ∑ k, d k * (∑ i ∈ Finset.univ.filter (fun i => k ≤ i), x i) ^ 2 := by

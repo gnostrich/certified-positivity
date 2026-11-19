@@ -1,6 +1,10 @@
-import Mathlib
-import RequestProject.R5Prime
-import RequestProject.R_A6
+module
+
+public import Mathlib
+public import RequestProject.R5Prime
+public import RequestProject.R_A6
+
+@[expose] public section
 
 open scoped BigOperators Matrix
 open Horizon
@@ -35,10 +39,7 @@ lemma three_grid_last_row_gershgorin_zero :
     let t : Fin 3 → ℝ := ![1 / 5, 2 / 5, 3 / 5]
     V5_1.G (t 2) (t 2) = V5_1.G (t 2) (t 0) + V5_1.G (t 2) (t 1) := by
   unfold V5_1.G; norm_num; ring;
-  erw [ show ( ![1 / 5, 2 / 5, 3 / 5] : Fin 3 → ℝ ) 2 = 3 / 5 by rfl ] ; norm_num [ V5_1.Psi, V5_1.PsiArch ] ; ring;
-  unfold V5_1.PsiNonneg; norm_num [ V5_1.Psi_zero ] ;
-  rw [ V5_1.PsiArch_zero, V5_1.primeSum_eq_zero ] <;> norm_num;
-  positivity
+  rw [ V5_1.Psi_zero ]; ring
 
 /-
 Final certified three-site coverage theorem on the full band.  Every
@@ -60,14 +61,12 @@ theorem coverage_band_k :
   intro t ht hlo hhi hsep
   have ht_eq : t = ![1 / 5, 2 / 5, 3 / 5] :=
     band_three_grid t ht hlo hhi hsep
-  refine' ⟨ _, _ ⟩;
-  · convert V5_5.true_kernel_grid_posdef;
-    rename_i i j; fin_cases i <;> fin_cases j <;> norm_num [ ht_eq, V5_5.M3 ] ;
-  · convert le_lambdaMin _ _;
-    · infer_instance;
-    · intro x hx; convert V5_5.true_kernel_grid_margin x |> le_trans _ using 1 ;
-      · unfold V5_5.M3; norm_num [ Fin.sum_univ_succ, ht_eq ] ;
-      · norm_num [ hx ]
+  have hM : (fun i j => V5_1.G (t i) (t j)) = V5_5.M3 := by
+    ext i j; fin_cases i <;> fin_cases j <;> norm_num [ ht_eq, V5_5.M3 ]
+  rw [ hM ];
+  refine ⟨ V5_5.true_kernel_grid_posdef, le_lambdaMin _ fun x hx => ?_ ⟩;
+  have := V5_5.true_kernel_grid_margin x;
+  rw [ hx ] at this; norm_num at this ⊢; linarith
 
 /-- The strongest final coverage rung obtained in Tier R: the explicit
 three-site coarse-mesh theorem `coverage_band_k`. -/
@@ -94,8 +93,8 @@ theorem frontier_covers_band_final :
         G.dim = 3 ∧ HEq G.M (fun i j => V5_1.G (t i) (t j)) := by
   intro t ht hlo hhi hsep;
   have := band_three_grid t ht hlo hhi hsep;
-  convert TierR.exists_expanded_true_kernel_state using 1;
-  ext; simp [this];
-  unfold V5_5.M3; norm_num [ Fin.forall_fin_succ ] ;
+  obtain ⟨ S, hdim, hS ⟩ := TierR.exists_expanded_true_kernel_state;
+  refine ⟨ S, hdim, hS.trans (heq_of_eq ?_) ⟩;
+  subst this; ext i j; fin_cases i <;> fin_cases j <;> norm_num [ V5_5.M3 ]
 
 end R5

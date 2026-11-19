@@ -36,12 +36,12 @@ jobs:
           fi
           echo "sorry census OK: no sorry anywhere in the development"
 
-  # Comparator verification (leanprover/comparator): checks that the repo
-  # proves exactly the statements in Challenge.lean, for the 16 headline
-  # theorems whose axioms are propext/Quot.sound/Classical.choice only.
-  # Pins follow leanprover/lean-eval's SECURITY.md (NanoDa pin from
-  # PalomarRegistry/PalomarTemplate); lean4export uses the
-  # v4.28.0 tag to match this repo's toolchain.
+  # Comparator verification the way Palomar runs it: with the `lake comparator`
+  # bundled in the toolchain named by lean-toolchain (v4.35.0-rc2 or later),
+  # replaying the solution through Lean's kernel and the toolchain's bundled
+  # independent kernels, NanoDa and con-ron. Nothing that judges is built from
+  # a separate pin. Palomar registers those kernels itself, so the submitted
+  # comparator.json carries none; this job adds them to a generated copy.
   comparator:
     needs: build
     runs-on: ubuntu-latest
@@ -54,41 +54,28 @@ jobs:
             | sh -s -- -y --default-toolchain "$(cat lean-toolchain)"
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.0'
-
-      - name: Install landrun (pinned)
+      - name: Install bubblewrap for lake comparator's sandbox
+        # Ubuntu 24.04 restricts unprivileged user namespaces through AppArmor,
+        # which bwrap needs; the runner is disposable.
         run: |
-          go install github.com/zouuup/landrun/cmd/landrun@5ed4a3db3a4ad930d577215c6b9abaa19df7f99f
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-
-      - name: Build lean4export (v4.28.0 tag, matches repo toolchain)
-        run: |
-          git clone https://github.com/leanprover/lean4export .ci/lean4export
-          cd .ci/lean4export
-          git checkout d065b0009aed0520e9e99752847a33b337661690
-          lake build lean4export
-          echo "$PWD/.lake/build/bin" >> "$GITHUB_PATH"
-
-      - name: Build comparator (pinned)
-        run: |
-          git clone https://github.com/leanprover/comparator .ci/comparator
-          cd .ci/comparator
-          git checkout 71b52ec29e06d4b7d882726553b1ceb99a2499e0
-          lake build comparator
-          echo "$PWD/.lake/build/bin" >> "$GITHUB_PATH"
-
-      - name: Build NanoDa kernel (pinned; comparator.json enables the NanoDa replay)
-        run: |
-          git clone https://github.com/robsimmons/nanoda_lib .ci/nanoda_lib
-          cd .ci/nanoda_lib
-          git checkout 68d5ca9db226849b41a6fff59d796ff19d0a8840
-          cargo build --release --locked
-          echo "$PWD/target/release" >> "$GITHUB_PATH"
+          sudo apt-get update -qq >/dev/null
+          sudo apt-get install -y -qq bubblewrap >/dev/null
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 
       - name: Get Mathlib olean cache
         run: lake exe cache get
 
-      - name: Run comparator (Palomar submission surface, classical axioms only, Lean + NanoDa replay)
-        run: lake env comparator comparator.json
+      - name: Run lake comparator (classical axioms only; Lean, NanoDa and con-ron kernels)
+        run: |
+          prefix=$(lean --print-prefix)
+          python3 - "$prefix" > "$RUNNER_TEMP/comparator.json" <<'PY'
+          import json, sys
+          prefix = sys.argv[1]
+          config = json.load(open("comparator.json"))
+          config["external_kernels"] = {
+              "nanoda": [f"{prefix}/bin/nanoda_bin"],
+              "con-ron": [f"{prefix}/bin/con-ron"],
+          }
+          print(json.dumps(config, indent=2))
+          PY
+          lake comparator --config "$RUNNER_TEMP/comparator.json"
