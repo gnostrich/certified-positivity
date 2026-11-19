@@ -32,10 +32,12 @@ repository's CI, the `lake comparator` shipped with the pinned Lean toolchain
 accepts `Solution.lean` against `Challenge.lean` for these three, with permitted
 axioms exactly `propext`, `Quot.sound`, `Classical.choice`: statement match,
 byte-identical definition graphs, axiom allowlist, and replay through Lean's
-kernel and the NanoDa and con-ron binaries in that toolchain. Other results in
-the repository (the prime-side identity, the horizon-threshold G-tier results, the Tier R frontier
-work, and the rest of the development) are proved in `RequestProject/` but are
-not part of this comparator check. Palomar's own verification of a submission
+kernel and the NanoDa and con-ron binaries in that toolchain. The
+horizon-threshold results are checked the same way under
+`comparator-thresholds.json` (see Palomar entries below). Other results in the
+repository (the prime-side identity, the Tier R frontier work, and the rest of
+the development) are proved in `RequestProject/` but are not part of either
+comparator check. Palomar's own verification of a submission
 is separate from this CI check and uses checkers Palomar pins itself.
 
 ## Provenance (read first)
@@ -129,14 +131,28 @@ committed under `RequestProject/` and import each other under the
 placement step. This consolidated build has been reproduced independently;
 see the provenance note above.
 
-## Palomar submission
+## Palomar entries
 
-`comparator.json`, [`Challenge.lean`](Challenge.lean),
-[`Solution.lean`](Solution.lean), and `formalization.yaml` together form the
-Palomar submission surface for this repository. The compared set is the three
-theorems listed in `comparator.json` (named above), each checked against
-`propext`, `Quot.sound`, and `Classical.choice` only. No other result in the
-repository is part of the submission.
+This repository carries two separate Palomar entries, each with its own
+Comparator configuration, Challenge/Solution pair and metadata file. Each is
+checked against `propext`, `Quot.sound`, and `Classical.choice` only.
+
+1. **Positivity windows of the genuine screw kernel**, registered as
+   [PALOMAR-2026-11-14-000017](https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-14-000017&version=1):
+   `comparator.json`, [`Challenge.lean`](Challenge.lean),
+   [`Solution.lean`](Solution.lean), `formalization.yaml`. The three
+   theorems named above.
+2. **Certified horizon thresholds** (prepared for submission):
+   `comparator-thresholds.json`,
+   [`ChallengeThresholds.lean`](ChallengeThresholds.lean),
+   [`SolutionThresholds.lean`](SolutionThresholds.lean),
+   `thresholds/formalization.yaml`. Seven theorems: the positive and
+   negative certificates bracketing the thresholds of windows 2, 3 and 4 of
+   the truncated Toeplitz family at the true prime atoms (`E5_cert_pos`,
+   `E5_cert_neg`, `G3_cert_pos`, `G3_cert_neg`, `G6_cert_pos`,
+   `G6_cert_neg`), and the joint-binding theorem `G6_c`.
+
+No other result in the repository is part of either entry.
 
 ## License
 
