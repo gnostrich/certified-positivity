@@ -146,7 +146,7 @@ checked against `propext`, `Quot.sound`, and `Classical.choice` only.
    `comparator-thresholds.json`,
    [`ChallengeThresholds.lean`](ChallengeThresholds.lean),
    [`SolutionThresholds.lean`](SolutionThresholds.lean),
-   `formalization-thresholds.yaml`. Seven theorems: the positive and
+   `thresholds/formalization.yaml`. Seven theorems: the positive and
    negative certificates bracketing the thresholds of windows 2, 3 and 4 of
    the truncated Toeplitz family at the true prime atoms (`E5_cert_pos`,
    `E5_cert_neg`, `G3_cert_pos`, `G3_cert_neg`, `G6_cert_pos`,

@@ -36,4 +36,4 @@ jobs:
       request_id: preflight002
       mode: full
       execution_profile: palomar-standard-v1
-      options: '{"comparator_config_path":"comparator-thresholds.json","formalization_metadata_path":"formalization-thresholds.yaml","authorization_relationship":"I am a responsible author or maintainer"}'
+      options: '{"comparator_config_path":"comparator-thresholds.json","formalization_metadata_path":"thresholds/formalization.yaml","authorization_relationship":"I am a responsible author or maintainer"}'
