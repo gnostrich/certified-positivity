@@ -3,13 +3,14 @@ module
 public import Mathlib
 public import RequestProject.V5_1
 public import RequestProject.ScrewRH.ZetaHalf
+public import RequestProject.ScrewRH.Defs
 
 @[expose] public section
 
 /-!
 # ScrewRH.LogDerivHalf: `F(0) = (A - log π)/2` (blueprint lemma 3)
 
-With `F z = -(ζ'/ζ)(1/2 + z)`, the log-derivative form of the functional equation at the fixed
+With `F z = -(ζ'/ζ)(1/2 + z)` (`ScrewRH.F`, from `ScrewRH.Defs`), the log-derivative form of the functional equation at the fixed
 point `s = 1/2` gives `2 ζ'/ζ(1/2) = log (2π) - ψ(1/2) + (π/2) tan (π/4) = log π - A`, where
 `A = -γ - π/2 - 3 log 2 = ψ(1/4)` (`V5_1.A`). This needs `ζ(1/2) ≠ 0` (`ScrewRH.ZetaHalf`).
 -/
@@ -17,9 +18,6 @@ point `s = 1/2` gives `2 ζ'/ζ(1/2) = log (2π) - ψ(1/2) + (π/2) tan (π/4) =
 open Complex
 
 namespace ScrewRH
-
-/-- The shifted negative log-derivative `F(z) = -(ζ'/ζ)(1/2 + z)`. -/
-noncomputable def F (z : ℂ) : ℂ := -(deriv riemannZeta / riemannZeta) (1 / 2 + z)
 
 lemma half_ne_int : ∀ n : ℤ, (1 / 2 : ℂ) ≠ n := by
   intro n h
@@ -52,7 +50,7 @@ theorem logDeriv_riemannZeta_half :
 theorem F_zero : F 0 = ((V5_1.A - Real.log Real.pi) / 2 : ℝ) := by
   have h := logDeriv_riemannZeta_half
   rw [logDeriv_apply] at h
-  simp only [F, add_zero, Pi.div_apply]
+  simp only [F, add_zero]
   rw [h]
   push_cast
   ring
