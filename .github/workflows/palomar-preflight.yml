@@ -37,3 +37,17 @@ jobs:
       mode: full
       execution_profile: palomar-standard-v1
       options: '{"comparator_config_path":"comparator-thresholds.json","formalization_metadata_path":"thresholds/formalization.yaml","authorization_relationship":"I am a responsible author or maintainer"}'
+
+  # The third entry from this repository (explicit formula for the screw
+  # function; RH implies Gram positivity on every grid), which has its own
+  # Comparator configuration and metadata file.
+  palomar-preflight-screwrh:
+    uses: PalomarRegistry/PalomarSubmission/.github/workflows/submission.yml@14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+    with:
+      repository: ${{ github.repository }}
+      commit: ${{ github.sha }}
+      pipeline_commit: 14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+      request_id: preflight003
+      mode: full
+      execution_profile: palomar-standard-v1
+      options: '{"comparator_config_path":"comparator-screwrh.json","formalization_metadata_path":"screwrh/formalization.yaml","authorization_relationship":"I am a responsible author or maintainer"}'

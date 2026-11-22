@@ -34,9 +34,11 @@ axioms exactly `propext`, `Quot.sound`, `Classical.choice`: statement match,
 byte-identical definition graphs, axiom allowlist, and replay through Lean's
 kernel and the NanoDa and con-ron binaries in that toolchain. The
 horizon-threshold results are checked the same way under
-`comparator-thresholds.json` (see Palomar entries below). Other results in the
+`comparator-thresholds.json`, and the screw-function explicit formula and the
+RH ⇒ Gram-positivity theorem under `comparator-screwrh.json` (see Palomar
+entries below). Other results in the
 repository (the prime-side identity, the Tier R frontier work, and the rest of
-the development) are proved in `RequestProject/` but are not part of either
+the development) are proved in `RequestProject/` but are not part of any
 comparator check. Palomar's own verification of a submission
 is separate from this CI check and uses checkers Palomar pins itself.
 
@@ -133,7 +135,7 @@ see the provenance note above.
 
 ## Palomar entries
 
-This repository carries two separate Palomar entries, each with its own
+This repository carries three separate Palomar entries, each with its own
 Comparator configuration, Challenge/Solution pair and metadata file. Each is
 checked against `propext`, `Quot.sound`, and `Classical.choice` only.
 
@@ -151,8 +153,22 @@ checked against `propext`, `Quot.sound`, and `Classical.choice` only.
    the truncated Toeplitz family at the true prime atoms (`E5_cert_pos`,
    `E5_cert_neg`, `G3_cert_pos`, `G3_cert_neg`, `G6_cert_pos`,
    `G6_cert_neg`), and the joint-binding theorem `G6_c`.
+3. **Explicit formula for the screw function; RH implies Gram positivity on
+   every grid** (prepared for submission): `comparator-screwrh.json`,
+   [`ChallengeScrewRH.lean`](ChallengeScrewRH.lean),
+   [`SolutionScrewRH.lean`](SolutionScrewRH.lean),
+   `screwrh/formalization.yaml`. Two theorems, proved in
+   `RequestProject/ScrewRH/`: `Psi_eq_tsum_zeros` (unconditional: for
+   `t ≥ 0`, `Psi t` is the sum over the nontrivial zeros `ρ` of `ζ`, with
+   multiplicity, of `(e^{(ρ-½)t} - 1)/(ρ-½)²`; Suzuki, arXiv:2206.03682,
+   eq. (1.3)) and `screw_gram_psd_of_RH` (assuming Mathlib's
+   `RiemannHypothesis`, the Gram matrix `(G (t i) (t j))` is positive
+   semidefinite on every finite grid). The second is an implication only; no
+   proof of `RiemannHypothesis` is imported. The proofs use a slice of Levent
+   Alpöge's Lean RH development, ported to v4.35.0 under `AlpogeRH/` and used
+   with the author's permission (its RH proof itself is not imported).
 
-No other result in the repository is part of either entry.
+No other result in the repository is part of any of these entries.
 
 ## License
 

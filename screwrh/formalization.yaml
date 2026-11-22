@@ -1,0 +1,365 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4. Third Palomar entry from this repository (explicit
+# formula for the screw function; RH implies Gram positivity on every grid).
+# Comparator configuration: comparator-screwrh.json.
+version: "v0.4"
+
+project:
+  name: "Certified Positivity: the explicit formula for Suzuki's zeta screw function, and positive semidefiniteness of its Gram kernel on every finite grid under the Riemann Hypothesis"
+  description: >-
+    Suzuki's screw function of the Riemann zeta function is the even function
+    Psi defined, for t >= 0, as an archimedean profile minus the von Mangoldt
+    weighted prime sum over n <= e^t of Lambda(n)/sqrt(n) times (t - log n);
+    its Krein Gram kernel is G(t,u) = Psi(t) + Psi(u) - Psi(t-u). This entry
+    uses exactly the Lean definitions of Psi and G from the registered entry
+    PALOMAR-2026-11-14-000017 (RequestProject/V5_1.lean) and proves two
+    results about them in Lean 4 and Mathlib.
+
+    (1) Explicit formula, unconditional. For every real t >= 0, Psi(t), viewed
+    as a complex number, equals the unconditionally convergent sum (a tsum over
+    the subtype of zeros) over the nontrivial zeros rho of riemannZeta, that is
+    the zeros with 0 < Re rho < 1, of m(rho) (exp((rho - 1/2) t) - 1) /
+    (rho - 1/2)^2, where m(rho) is the analytic order of riemannZeta at rho.
+    This is Suzuki's zero-sum representation of the screw function
+    (arXiv:2206.03682, Theorem 1.1(2), eq. (1.3)). In Lean:
+    ScrewRH.Psi_eq_tsum_zeros (t : R) (ht : 0 <= t) :
+    ((V5_1.Psi t : R) : C) = tsum over rho in Z of zeroTerm t rho.
+
+    (2) Gram positivity, conditional on the Riemann Hypothesis. Assuming
+    Mathlib's RiemannHypothesis (as a hypothesis), for every N and every grid
+    t : Fin N -> R, the N by N matrix (G(t_i, t_j)) is positive semidefinite
+    in the quadratic-form sense: x^T M x >= 0 for every real vector x. In
+    Lean: ScrewRH.screw_gram_psd_of_RH : RiemannHypothesis -> for all
+    (N : Nat) (t : Fin N -> R), Horizon.IsPSDq (Matrix.of fun i j =>
+    V5_1.G (t i) (t j)). This is the direction RH implies positivity of
+    Suzuki's Theorem 1.2 (that -Psi is a screw function in Krein's sense),
+    restricted to finite grids. Both compared results use only propext,
+    Quot.sound and Classical.choice.
+
+    Combined with a Lean proof of RiemannHypothesis, (2) becomes the
+    unconditional statement that the Gram matrix of G is positive
+    semidefinite on every finite grid. Such a proof was announced by Levent
+    Alpöge in November 2026 and has been reported compiled and kernel-checked
+    by several independent parties, on Lean v4.33.1. This entry does not
+    import that proof and makes no claim about it; result (2) is compared and
+    verified here only as the implication from Mathlib's RiemannHypothesis.
+
+    Significance. The registered entry certifies positivity of the genuine
+    screw kernel on explicit grids (three Gram matrices at fixed rational
+    nodes); this entry upgrades that, conditionally on RiemannHypothesis, to
+    every finite grid. It is to our knowledge the first Lean formalization of
+    Suzuki's zero-sum representation of the screw function and of the
+    direction RH implies screw-function positivity. Scope: positive
+    semidefinite, not strictly positive definite; real test vectors (for this
+    real symmetric kernel equivalent to Suzuki's complex condition (1.5), but
+    the complex form is not stated); the converse direction (positivity
+    implies RH) is not formalized; and nothing is claimed about the Riemann
+    Hypothesis itself.
+  authors:
+    - "Rohan Badade"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Rohan Badade"
+
+classification:
+  arxiv: ["math.NT", "math.LO"]
+  msc2020: ["11M26", "11M06", "42A82", "68V20", "15B48"]
+
+sources:
+  - title: "Aspects of the screw function corresponding to the Riemann zeta-function"
+    authors:
+      - "Masatoshi Suzuki"
+    id: "arXiv:2206.03682"
+    type: paper
+    location: "Theorem 1.1(2), eq. (1.3) (zero-sum representation of Psi); Theorem 1.2 and eq. (1.9) (RH implies that g = -Psi is a screw function, i.e. the kernel G is non-negative definite); checked against arXiv v4 (30 May 2023)"
+    relationship: formalizes
+    license: "unknown"
+    author_endorsement: not-contacted
+    note: >-
+      Source of the screw function Psi (eq. (1.1)), whose Lean transcription
+      V5_1.Psi is shared with entry PALOMAR-2026-11-14-000017, and of both
+      formalized statements. Compared result (1) is eq. (1.3) in the form
+      Psi(t) = sum over zeros of (1 - e^{i gamma t})/gamma^2, written in Lean
+      with rho = 1/2 + i gamma ranging over the nontrivial zeros of
+      riemannZeta counted with multiplicity, as an unconditional tsum, for
+      t >= 0. Compared result (2) is the direction RH implies non-negative
+      definiteness of the kernel G_g(t,u) = g(t-u) - g(t) - g(-u) + g(0)
+      with g = -Psi, which equals Psi(t) + Psi(u) - Psi(t-u) since Psi(0) = 0
+      and Psi is even, on finite grids with real coefficients. The Lean proofs
+      do not follow Suzuki's route through the Krein-Langer correspondence:
+      they derive (1) by a Perron-integral contour shift and (2) from (1) via
+      the cosine series that (1) becomes under RH. The
+      converse direction of Theorem 1.2 is not formalized.
+  - title: 'Sur les "formules explicites" de la theorie des nombres premiers'
+    authors:
+      - "Andre Weil"
+    type: paper
+    location: "Comm. Sem. Math. Univ. Lund (1952), 252-265"
+    relationship: background
+    license: "unknown"
+    author_endorsement: "n/a"
+    note: >-
+      The explicit formula relating primes and zeros, and the positivity
+      criterion for the Riemann Hypothesis, of which result (1) is an instance
+      for one specific test kernel and result (2) a finite-grid analogue. The
+      source's own results are not formalized here.
+  - title: "mathlib4: the Lean mathematical library"
+    authors:
+      - "The Mathlib Community"
+    id: "https://github.com/leanprover-community/mathlib4"
+    type: other
+    location: "Mathlib v4.35.0, as pinned by lakefile.toml and lake-manifest.json"
+    relationship: background
+    license: "Apache-2.0"
+    author_endorsement: "n/a"
+    note: >-
+      The ambient library. ChallengeScrewRH.lean imports only Mathlib.
+      Mathlib supplies riemannZeta, its functional equation and nonvanishing
+      on Re s >= 1, the definition RiemannHypothesis used as the hypothesis of
+      result (2), analytic orders, Mellin and Perron-type integrals, and the
+      von Mangoldt function. It is a Lean dependency, not a mathematical
+      source for any compared statement.
+  - title: >-
+      Certified Positivity: Formally Verified Horizon Thresholds for Truncated
+      Weil Quadratic Forms in Lean
+    authors:
+      - "Rohan Badade"
+    type: paper
+    location: "papers/certified-positivity-paper.pdf in this repository"
+    relationship: background
+    license: "unknown"
+    author_endorsement: participated
+    note: >-
+      Unsubmitted preprint by the submitter, carried in this repository, with
+      no arXiv identifier and no DOI. It presents the explicit-grid positivity
+      results of the registered entry, which this entry extends; it does not
+      yet present the two results compared here.
+
+related_formalizations:
+  - id: "PALOMAR-2026-11-14-000017"
+    relationship: builds-on
+    note: >-
+      The registered entry from the same repository. This entry uses its
+      definitions of the screw function and Gram kernel unchanged (V5_1.Psi,
+      V5_1.G and their constituents, copied verbatim into both Challenge
+      files), together with Horizon.quadForm from the same Horizon.lean. The
+      registered entry certifies positive definiteness of the Gram matrix on
+      three explicit grids, unconditionally; result (2) here generalizes this
+      to positive semidefiniteness on every finite grid, conditionally on
+      RiemannHypothesis. No compared theorem of either entry depends on a
+      compared theorem of the other.
+  - id: "https://github.com/CocoSgt/riemann-hypothesis-lean"
+    relationship: adapts
+    note: >-
+      Levent Alpöge's Lean development of the Riemann Hypothesis (announced at
+      https://alpo.ge/remark.pdf; mirror at the URL given as id, commit
+      7cbf7a0), written for Lean v4.33.1. A slice of it, 23 files and about
+      3.8k lines (residue_rectangle, exists_height, count_zeros_window,
+      logDeriv_pole, logDeriv_one, analyticAt_dslope, a digamma bound,
+      LFunction_zero_of_re_nonpos, and supporting Mellin, strip and Perron
+      files), was ported to Lean v4.35.0 and the Lean module system, with two
+      renames, and lives under AlpogeRH/ in this repository; each file
+      credits the source. It is used with the author's permission and is in
+      the import closure of both compared theorems. Its proof of
+      RiemannHypothesis itself is not imported, and neither compared theorem
+      depends on it.
+
+status:
+  scope: >-
+    Formalized: exactly the two statements listed in comparator-screwrh.json
+    and stated in ChallengeScrewRH.lean, with sorry-free proofs in
+    RequestProject/ScrewRH/ (13 files, about 2.7k lines; the compared
+    declarations are in ExplicitFormula.lean and MainRH.lean), building on
+    RequestProject/V5_1.lean and RequestProject/Horizon.lean from the
+    registered entry and on the ported slice of Alpöge's development under
+    AlpogeRH/ (23 files). Result (1) is unconditional. Result (2) takes
+    Mathlib's RiemannHypothesis as an explicit hypothesis.
+
+    Sorry and native_decide. The proofs of both compared theorems and their
+    whole import closure in this repository are sorry-free and
+    native_decide-free, and depend only on propext, Classical.choice and
+    Quot.sound. ChallengeScrewRH.lean's own two deliberate sorries are the
+    comparator placeholders and are not counted.
+
+    Not claimed. Nothing is claimed about the truth of the Riemann Hypothesis;
+    result (2) is an implication. It asserts positive semidefiniteness, not
+    strict positive definiteness, and is stated for real test vectors only.
+    The converse direction (Gram positivity on every grid implies RH) is not
+    formalized. No Lean proof of RiemannHypothesis is imported or relied on,
+    including Alpöge's. The claims of being the first Lean formalization of
+    Suzuki's zero-sum representation and of this direction are made only to
+    our knowledge. Proof terms were not reviewed line by line by a human; see
+    the review block.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+  main_results:
+    - declaration: "ScrewRH.Psi_eq_tsum_zeros"
+      file: "RequestProject/ScrewRH/ExplicitFormula.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-screwrh.json"
+    - declaration: "ScrewRH.screw_gram_psd_of_RH"
+      file: "RequestProject/ScrewRH/MainRH.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound", "Classical.choice"]
+      comparator_config: "comparator-screwrh.json"
+
+automation:
+  methods:
+    - method: agent
+      models: ["Claude (Anthropic)"]
+      framework: "Claude"
+      tool_setup: >-
+        Claude (Anthropic) wrote a mathematical blueprint for both results (a
+        Perron-integral contour shift for the explicit formula, then the
+        cosine series under RH and an elementary cosine identity giving
+        positivity on finite grids), and Claude agents wrote the new Lean proofs in
+        RequestProject/ScrewRH/ (13 files, about 2.7k lines) from that
+        blueprint, iterating against the Lean compiler on the pinned
+        toolchain. A Claude agent also ported the slice of Alpöge's
+        development under AlpogeRH/ from Lean v4.33.1 to v4.35.0 and the
+        module system, and constructed ChallengeScrewRH.lean,
+        SolutionScrewRH.lean, comparator-screwrh.json and this metadata file.
+        No statement of the registered entry was changed: V5_1 and Horizon are
+        used as they are.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: >-
+        Work was posed as written targets: the exact Lean statements to be
+        proved (with Mathlib's RiemannHypothesis as the only hypothesis of the
+        conditional result), the axiom budget (propext, Quot.sound,
+        Classical.choice only, no sorry, no native_decide), and the
+        constraint that the registered entry's definitions be reused
+        unchanged.
+    - method: other
+      models: ["Claude (Anthropic)"]
+      framework: "upstream development (Levent Alpöge)"
+      tool_setup: >-
+        Upstream provenance of the ported files: the source files of the slice
+        under AlpogeRH/ were produced by Levent Alpöge working with Claude, as
+        part of his Lean development of the Riemann Hypothesis. Their
+        mathematical content was not changed by the port, which adapted them
+        to Lean v4.35.0, current Mathlib and the module system.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: "n/a"
+    - method: manual
+      models: []
+      framework: "n/a"
+      tool_setup: >-
+        The human author chose the problem (the explicit formula for the screw
+        function and the RH implies positivity direction on every grid),
+        approved the plan and the statements, obtained the permission to use
+        Alpöge's files, and takes responsibility for all claims.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "not tracked"
+      prompting_notes: "n/a"
+  spend_usd: "not tracked"
+  notes: >-
+    The division of labour is: human problem choice and approval; AI-written
+    blueprint and Lean proofs (Claude); upstream files by Alpöge with Claude,
+    ported by a Claude agent. No human has reviewed the proof terms line by
+    line. The trust model is Lean's kernel plus the axiom audit and the
+    comparator check described under review.
+
+fidelity:
+  divergences: >-
+    The fidelity question has two parts. Between the repository modules and
+    ChallengeScrewRH.lean, which is what Palomar compares, there is one
+    systematic transformation: ChallengeScrewRH.lean imports only Mathlib and
+    therefore contains inlined verbatim copies of every custom definition the
+    two statements need (quadForm and IsPSDq from Horizon.lean; C, L, A,
+    PsiArch, primeSum, PsiNonneg, Psi and G from V5_1.lean; Z and mult from
+    ScrewRH/Defs.lean; zeroTerm from ScrewRH/SummableZeros.lean). Because
+    those copies all live in the single namespace ChallengeScrewRH, the
+    namespace prefixes of the originals (Horizon., V5_1., ScrewRH.) are
+    dropped. There are no individual statement deviations.
+
+    Against Suzuki's statements: result (1) is stated for t >= 0 (Suzuki's
+    range; Psi is even), over the zeros of riemannZeta in the open critical
+    strip with analytic-order multiplicities (these are the zeros of xi), as
+    a tsum over the subtype Z, which is unconditionally summable. Result (2)
+    is the RH implies positivity direction of Theorem 1.2 restricted to
+    finite grids and real test vectors, with the kernel written as
+    Psi(t) + Psi(u) - Psi(t-u), and RH in Mathlib's formulation.
+
+    ChallengeScrewRH.lean makes no axiom claim of its own: every proof in it
+    is sorry. Axiom status is a property of the repository modules.
+
+review:
+  status: >-
+    self-assessed; automated mechanical checks in this repository's CI
+    (consolidated lake build with sorry census; lake comparator from the
+    pinned Lean v4.35.0 toolchain, statement match with replay through Lean's
+    kernel and the NanoDa and con-ron binaries shipped in that toolchain,
+    against ChallengeScrewRH.lean for both compared theorems); no line-by-line
+    human review of proof terms; no external mathematical peer review
+  reviewers:
+    - "Rohan Badade (self)"
+  notes: >-
+    What was checked mechanically: the consolidated all-files lake build on the
+    pinned toolchain, re-run in CI, with no sorry warnings and no errors;
+    #print axioms on the compared theorems (propext, Classical.choice,
+    Quot.sound); and, in this repository's CI (.github/workflows/build.yml),
+    the lake comparator shipped with the pinned Lean v4.35.0 toolchain, run
+    with comparator-screwrh.json against ChallengeScrewRH.lean for the two
+    compared theorems, covering statement match, byte-identical definition
+    graphs, the axiom allowlist (propext, Quot.sound, Classical.choice only)
+    and replay through Lean's kernel and the nanoda_bin and con-ron binaries
+    found in that toolchain's bin directory.
+
+    These repository checks are distinct from Palomar's own mechanical
+    verification of the submission, which Palomar runs separately with
+    checkers it pins itself. Palomar's report, not this file, is the record of
+    what Palomar checked.
+
+    What was checked by a human: the choice of the two statements and the
+    contents of this file.
+
+    What was not done: no human has read the proof terms line by line,
+    neither the new ScrewRH proofs nor the ported AlpogeRH files; and there
+    has been no external mathematical review. Scrutiny is invited through the
+    repository's issues and pull requests.
+
+alignment:
+  namespace: "ChallengeScrewRH"
+  statements:
+    - source: "Suzuki, arXiv:2206.03682, Theorem 1.1(2), eq. (1.3)"
+      lean: "ChallengeScrewRH.Psi_eq_tsum_zeros"
+      module: "ChallengeScrewRH"
+      status: proved
+      note: >-
+        For t >= 0, Psi t equals the tsum over the nontrivial zeros rho of
+        riemannZeta of m(rho) (exp((rho - 1/2) t) - 1)/(rho - 1/2)^2.
+        Unconditional. Proved sorry-free as ScrewRH.Psi_eq_tsum_zeros in
+        RequestProject/ScrewRH/ExplicitFormula.lean.
+    - source: "Suzuki, arXiv:2206.03682, Theorem 1.2 (direction RH implies -Psi is a screw function), on finite grids"
+      lean: "ChallengeScrewRH.screw_gram_psd_of_RH"
+      module: "ChallengeScrewRH"
+      status: proved
+      note: >-
+        Under Mathlib's RiemannHypothesis, for every N and every grid
+        t : Fin N -> R, the Gram matrix (G (t i) (t j)) is positive
+        semidefinite in the quadratic-form sense. Conditional on
+        RiemannHypothesis. Proved sorry-free as ScrewRH.screw_gram_psd_of_RH
+        in RequestProject/ScrewRH/MainRH.lean.
+
+acknowledgements: >-
+  Levent Alpöge, whose Lean development of the Riemann Hypothesis supplied the
+  ported files under AlpogeRH/ (used with his permission; each file credits
+  the source). Masatoshi Suzuki, whose paper introduced the screw function of
+  the Riemann zeta function and the two statements formalized here. Mathlib
+  and its community, and the Lean 4 toolchain and the Lean FRO, for the
+  library and the kernel that this development rests on. Claude, by
+  Anthropic, wrote the blueprint and the new Lean proofs and carried out the
+  port. The author chose the problem, approved the plan, and takes
+  responsibility for all claims; no human has reviewed the proof terms line
+  by line, and the trust model is Lean's kernel together with the
+  per-theorem axiom audit and the comparator check.
