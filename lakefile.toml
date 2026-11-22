@@ -22,6 +22,12 @@ name = "ChallengeThresholds"
 [[lean_lib]]
 name = "SolutionThresholds"
 
+[[lean_lib]]
+name = "ChallengeScrewRH"
+
+[[lean_lib]]
+name = "SolutionScrewRH"
+
 # Slice ported from Levent Alpöge's Lean RH development (mirror CocoSgt @7cbf7a0),
 # used with the author's permission; options match the upstream project.
 [[lean_lib]]
