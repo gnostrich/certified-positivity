@@ -40,7 +40,7 @@ theorem norm_GammaSeq_le {w : ℂ} (hw : 0 < w.re) {n : ℕ} (hn : n ≠ 0) :
   rw [GammaSeq, norm_div, norm_mul, Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hn),
     norm_prod, Complex.norm_natCast]
   apply div_le_div_of_nonneg_left (by positivity) (Finset.prod_pos fun j _ => by positivity)
-  apply Finset.prod_le_prod (fun j _ => by positivity)
+  apply Finset.prod_le_prod₀ (fun j _ => by positivity)
   intro j _
   have := Complex.abs_re_le_norm (w + j)
   simp only [add_re, natCast_re] at this
@@ -86,13 +86,13 @@ theorem logDeriv_GammaSeq {z : ℂ} (hz : 0 < z.re) {n : ℕ} (hn : n ≠ 0) :
     intro j
     rw [logDeriv_apply]
     simp
-  rw [e1, logDeriv_div (f := fun w : ℂ => (n : ℂ) ^ w * (n ! : ℂ))
+  rw [e1, logDeriv_fun_div (f := fun w : ℂ => (n : ℂ) ^ w * (n ! : ℂ))
       (g := fun w : ℂ => ∏ j ∈ Finset.range (n + 1), (w + (j : ℂ))) z
       (mul_ne_zero hcp hfac) (Finset.prod_ne_zero_iff.2 hP)
       (hd1.differentiableAt.mul_const _) hd2,
-    logDeriv_mul (f := fun w : ℂ => (n : ℂ) ^ w) (g := fun _ : ℂ => (n ! : ℂ)) z hcp hfac
+    logDeriv_fun_mul (f := fun w : ℂ => (n : ℂ) ^ w) (g := fun _ : ℂ => (n ! : ℂ)) z hcp hfac
       hd1.differentiableAt (differentiableAt_const _),
-    logDeriv_prod (f := fun (j : ℕ) (w : ℂ) => w + (j : ℂ)) hP (fun j _ => by fun_prop),
+    logDeriv_fun_prod (f := fun (j : ℕ) (w : ℂ) => w + (j : ℂ)) hP (fun j _ => by fun_prop),
     l1, logDeriv_const, Pi.zero_apply, add_zero, Complex.natCast_log]
   simp only [l2]
 
