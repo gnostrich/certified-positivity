@@ -227,11 +227,11 @@ theorem main : ∀ r R : ℝ, 0 < r → r < R → R < 1 → ∃ C : ℝ, 0 < C �
       have e : f = fun z => (∏ w ∈ S, (z - w) ^ m w) * g z := funext hfg
       rw [← logDeriv_apply, ← logDeriv_apply]
       conv_lhs => rw [e]
-      rw [logDeriv_mul (f := fun z => ∏ w ∈ S, (z - w) ^ m w) z
+      rw [logDeriv_fun_mul (f := fun z => ∏ w ∈ S, (z - w) ^ m w) z
         (Finset.prod_ne_zero_iff.2 fun w hw => pow_ne_zero _ (hzw w hw)) (hgne z hzb)
         (by fun_prop) (hg z (hsub hzb)).differentiableAt]
       congr 1
-      rw [logDeriv_prod (f := fun w z => (z - w) ^ m w) (fun w hw => pow_ne_zero _ (hzw w hw))
+      rw [logDeriv_fun_prod (f := fun w z => (z - w) ^ m w) (fun w hw => pow_ne_zero _ (hzw w hw))
         (fun w hw => by fun_prop)]
       refine Finset.sum_congr rfl fun w hw => ?_
       rw [logDeriv_fun_pow (by fun_prop), logDeriv_apply]
