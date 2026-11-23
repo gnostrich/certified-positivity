@@ -44,7 +44,17 @@ is separate from this CI check and uses checkers Palomar pins itself.
 
 ## Provenance (read first)
 
-The `.lean` files are per-batch deliverables of an automated theorem prover
+This section's account of Aristotle applies to the original development:
+the `RequestProject/` modules outside `RequestProject/ScrewRH/`, and the
+first two Palomar entries. The third entry's files have a different
+provenance. Claude agents (Anthropic) wrote the new proofs in
+`RequestProject/ScrewRH/` from a Claude-written blueprint. The files under
+`AlpogeRH/` are a slice of Levent Alpöge's Lean development of the Riemann
+Hypothesis, which he produced working with Claude; a Claude agent ported
+them to Lean v4.35.0 and the module system without changing their
+mathematical content. `screwrh/formalization.yaml` records the details.
+
+The original development's `.lean` files are per-batch deliverables of an automated theorem prover
 (Aristotle, by Harmonic). The author set the problems and made the
 decisions; the specifications were developed in collaboration with an AI
 assistant (Claude, Anthropic), and the statement-level audit of prover
