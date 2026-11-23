@@ -15,3 +15,23 @@ name = "Challenge"
 
 [[lean_lib]]
 name = "Solution"
+
+[[lean_lib]]
+name = "ChallengeThresholds"
+
+[[lean_lib]]
+name = "SolutionThresholds"
+
+[[lean_lib]]
+name = "ChallengeScrewRH"
+
+[[lean_lib]]
+name = "SolutionScrewRH"
+
+# Slice ported from Levent Alpöge's Lean RH development (mirror CocoSgt @7cbf7a0),
+# used with the author's permission; options match the upstream project.
+[[lean_lib]]
+name = "AlpogeRH"
+globs = ["AlpogeRH.+"]
+moreLeanArgs = ["--tstack=400000"]
+leanOptions = { maxHeartbeats = 4000000, autoImplicit = false, relaxedAutoImplicit = false, maxSynthPendingDepth = 3 }

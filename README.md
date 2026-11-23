@@ -32,15 +32,29 @@ repository's CI, the `lake comparator` shipped with the pinned Lean toolchain
 accepts `Solution.lean` against `Challenge.lean` for these three, with permitted
 axioms exactly `propext`, `Quot.sound`, `Classical.choice`: statement match,
 byte-identical definition graphs, axiom allowlist, and replay through Lean's
-kernel and the NanoDa and con-ron binaries in that toolchain. Other results in
-the repository (the prime-side identity, the horizon-threshold G-tier results, the Tier R frontier
-work, and the rest of the development) are proved in `RequestProject/` but are
-not part of this comparator check. Palomar's own verification of a submission
+kernel and the NanoDa and con-ron binaries in that toolchain. The
+horizon-threshold results are checked the same way under
+`comparator-thresholds.json`, and the screw-function explicit formula and the
+RH ⇒ Gram-positivity theorem under `comparator-screwrh.json` (see Palomar
+entries below). Other results in the
+repository (the prime-side identity, the Tier R frontier work, and the rest of
+the development) are proved in `RequestProject/` but are not part of any
+comparator check. Palomar's own verification of a submission
 is separate from this CI check and uses checkers Palomar pins itself.
 
 ## Provenance (read first)
 
-The `.lean` files are per-batch deliverables of an automated theorem prover
+This section's account of Aristotle applies to the original development:
+the `RequestProject/` modules outside `RequestProject/ScrewRH/`, and the
+first two Palomar entries. The third entry's files have a different
+provenance. Claude agents (Anthropic) wrote the new proofs in
+`RequestProject/ScrewRH/` from a Claude-written blueprint. The files under
+`AlpogeRH/` are a slice of Levent Alpöge's Lean development of the Riemann
+Hypothesis, which he produced working with Claude; a Claude agent ported
+them to Lean v4.35.0 and the module system without changing their
+mathematical content. `screwrh/formalization.yaml` records the details.
+
+The original development's `.lean` files are per-batch deliverables of an automated theorem prover
 (Aristotle, by Harmonic). The author set the problems and made the
 decisions; the specifications were developed in collaboration with an AI
 assistant (Claude, Anthropic), and the statement-level audit of prover
@@ -129,14 +143,44 @@ committed under `RequestProject/` and import each other under the
 placement step. This consolidated build has been reproduced independently;
 see the provenance note above.
 
-## Palomar submission
+## Palomar entries
 
-`comparator.json`, [`Challenge.lean`](Challenge.lean),
-[`Solution.lean`](Solution.lean), and `formalization.yaml` together form the
-Palomar submission surface for this repository. The compared set is the three
-theorems listed in `comparator.json` (named above), each checked against
-`propext`, `Quot.sound`, and `Classical.choice` only. No other result in the
-repository is part of the submission.
+This repository carries three separate Palomar entries, each with its own
+Comparator configuration, Challenge/Solution pair and metadata file. Each is
+checked against `propext`, `Quot.sound`, and `Classical.choice` only.
+
+1. **Positivity windows of the genuine screw kernel**, registered as
+   [PALOMAR-2026-11-14-000017](https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-14-000017&version=1):
+   `comparator.json`, [`Challenge.lean`](Challenge.lean),
+   [`Solution.lean`](Solution.lean), `formalization.yaml`. The three
+   theorems named above.
+2. **Certified horizon thresholds** (prepared for submission):
+   `comparator-thresholds.json`,
+   [`ChallengeThresholds.lean`](ChallengeThresholds.lean),
+   [`SolutionThresholds.lean`](SolutionThresholds.lean),
+   `thresholds/formalization.yaml`. Seven theorems: the positive and
+   negative certificates bracketing the thresholds of windows 2, 3 and 4 of
+   the truncated Toeplitz family at the true prime atoms (`E5_cert_pos`,
+   `E5_cert_neg`, `G3_cert_pos`, `G3_cert_neg`, `G6_cert_pos`,
+   `G6_cert_neg`), and the joint-binding theorem `G6_c`.
+3. **Explicit formula for the screw function; RH implies Gram positivity on
+   every grid**, registered as
+   [PALOMAR-2026-11-23-000010](https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-23-000010&version=1):
+   `comparator-screwrh.json`,
+   [`ChallengeScrewRH.lean`](ChallengeScrewRH.lean),
+   [`SolutionScrewRH.lean`](SolutionScrewRH.lean),
+   `screwrh/formalization.yaml`. Two theorems, proved in
+   `RequestProject/ScrewRH/`: `Psi_eq_tsum_zeros` (unconditional: for
+   `t ≥ 0`, `Psi t` is the sum over the nontrivial zeros `ρ` of `ζ`, with
+   multiplicity, of `(e^{(ρ-½)t} - 1)/(ρ-½)²`; Suzuki, arXiv:2206.03682,
+   eq. (1.3)) and `screw_gram_psd_of_RH` (assuming Mathlib's
+   `RiemannHypothesis`, the Gram matrix `(G (t i) (t j))` is positive
+   semidefinite on every finite grid). The second is an implication only; no
+   proof of `RiemannHypothesis` is imported. The proofs use a slice of Levent
+   Alpöge's Lean RH development, ported to v4.35.0 under `AlpogeRH/` and used
+   with the author's permission (its RH proof itself is not imported).
+
+No other result in the repository is part of any of these entries.
 
 ## License
 

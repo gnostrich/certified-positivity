@@ -65,17 +65,21 @@ jobs:
       - name: Get Mathlib olean cache
         run: lake exe cache get
 
-      - name: Run lake comparator (classical axioms only; Lean, NanoDa and con-ron kernels)
+      - name: Run lake comparator for each entry (classical axioms only; Lean, NanoDa and con-ron kernels)
         run: |
           prefix=$(lean --print-prefix)
-          python3 - "$prefix" > "$RUNNER_TEMP/comparator.json" <<'PY'
+          for cfg in comparator.json comparator-thresholds.json comparator-screwrh.json; do
+            echo "::group::lake comparator: $cfg"
+            python3 - "$prefix" "$cfg" > "$RUNNER_TEMP/$cfg" <<'PY'
           import json, sys
-          prefix = sys.argv[1]
-          config = json.load(open("comparator.json"))
+          prefix, cfg = sys.argv[1], sys.argv[2]
+          config = json.load(open(cfg))
           config["external_kernels"] = {
               "nanoda": [f"{prefix}/bin/nanoda_bin"],
               "con-ron": [f"{prefix}/bin/con-ron"],
           }
           print(json.dumps(config, indent=2))
           PY
-          lake comparator --config "$RUNNER_TEMP/comparator.json"
+            lake comparator --config "$RUNNER_TEMP/$cfg"
+            echo "::endgroup::"
+          done

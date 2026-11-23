@@ -1,0 +1,14 @@
+{
+  "challenge_module": "ChallengeScrewRH",
+  "solution_module": "SolutionScrewRH",
+  "theorem_names": [
+    "ChallengeScrewRH.Psi_eq_tsum_zeros",
+    "ChallengeScrewRH.screw_gram_psd_of_RH"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}
