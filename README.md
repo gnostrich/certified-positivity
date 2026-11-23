@@ -164,7 +164,9 @@ checked against `propext`, `Quot.sound`, and `Classical.choice` only.
    `E5_cert_neg`, `G3_cert_pos`, `G3_cert_neg`, `G6_cert_pos`,
    `G6_cert_neg`), and the joint-binding theorem `G6_c`.
 3. **Explicit formula for the screw function; RH implies Gram positivity on
-   every grid** (prepared for submission): `comparator-screwrh.json`,
+   every grid**, registered as
+   [PALOMAR-2026-11-23-000010](https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-23-000010&version=1):
+   `comparator-screwrh.json`,
    [`ChallengeScrewRH.lean`](ChallengeScrewRH.lean),
    [`SolutionScrewRH.lean`](SolutionScrewRH.lean),
    `screwrh/formalization.yaml`. Two theorems, proved in
